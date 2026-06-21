@@ -1,0 +1,66 @@
+{
+    "path_count": 179,
+    "parsed_path_count": 179,
+    "static_analysis_path_count": 38,
+    "static_analysis_parsed_path_count": 38,
+    "is_partial_parse_enabled": true,
+    "is_static_analysis_enabled": true,
+    "read_files_elapsed": 0.01945620600008624,
+    "load_macros_elapsed": 0.5438849249999294,
+    "parse_project_elapsed": 1.0484731980000106,
+    "patch_sources_elapsed": 0.026695812000070873,
+    "process_manifest_elapsed": 0.11344705900000918,
+    "load_all_elapsed": 1.919695701999899,
+    "projects": [
+        {
+            "project_name": "adventureworks_analytics",
+            "elapsed": 1.0394189580001694,
+            "parsers": [
+                {
+                    "parser": "model",
+                    "elapsed": 0.35897504400008984,
+                    "parsed_path_count": 38
+                },
+                {
+                    "parser": "test",
+                    "elapsed": 0.11172602099986761,
+                    "parsed_path_count": 2
+                },
+                {
+                    "parser": "seed",
+                    "elapsed": 0.160587521999787,
+                    "parsed_path_count": 1
+                },
+                {
+                    "parser": "doc",
+                    "elapsed": 6.872700032545254e-05,
+                    "parsed_path_count": 2
+                },
+                {
+                    "parser": "test",
+                    "elapsed": 0.40431014699970547,
+                    "parsed_path_count": 3
+                }
+            ],
+            "parsed_path_count": 46
+        },
+        {
+            "project_name": "dbt_postgres",
+            "elapsed": 0.004732743000204209,
+            "parsers": [],
+            "parsed_path_count": 0
+        },
+        {
+            "project_name": "dbt",
+            "elapsed": 0.0034302810004191997,
+            "parsers": [
+                {
+                    "parser": "doc",
+                    "elapsed": 0.00019724200001292047,
+                    "parsed_path_count": 1
+                }
+            ],
+            "parsed_path_count": 1
+        }
+    ]
+}

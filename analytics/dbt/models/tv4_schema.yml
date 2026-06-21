@@ -1,0 +1,162 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: One row per calendar date covered by AdventureWorks sales orders.
+    columns:
+      - name: date_key
+        data_tests: [not_null, unique]
+      - name: full_date
+        data_tests: [not_null, unique]
+
+  - name: dim_geography
+    description: Sales territory and country dimension.
+    columns:
+      - name: geography_key
+        data_tests: [not_null, unique]
+      - name: country_code
+        data_tests: [not_null]
+
+  - name: dim_product
+    description: Product dimension enriched with category and subcategory.
+    columns:
+      - name: product_key
+        data_tests: [not_null, unique]
+
+  - name: dim_customer
+    description: Customer dimension for individuals and stores.
+    columns:
+      - name: customer_key
+        data_tests: [not_null, unique]
+
+  - name: fact_sales_order
+    description: One row per sales order.
+    columns:
+      - name: sales_order_id
+        data_tests: [not_null, unique]
+      - name: order_date_key
+        data_tests: [not_null]
+      - name: customer_key
+        data_tests: [not_null]
+
+  - name: fact_sales_order_line
+    description: One row per sales order line with gross-level profitability estimates.
+    columns:
+      - name: sales_order_detail_id
+        data_tests: [not_null, unique]
+      - name: sales_order_id
+        data_tests: [not_null]
+      - name: product_key
+        data_tests: [not_null]
+      - name: net_sales
+        data_tests: [not_null]
+
+  - name: sales_monthly_kpi
+    description: Monthly sales and gross-profit KPI by country and territory.
+    columns:
+      - name: month
+        data_tests: [not_null]
+      - name: revenue
+        data_tests: [not_null]
+
+  - name: sales_country_year_kpi
+    description: Annual business KPI by country, used by Macro Context.
+    columns:
+      - name: country_code
+        data_tests: [not_null]
+      - name: year
+        data_tests: [not_null]
+
+  - name: executive_kpi
+    description: One-row executive KPI snapshot over the complete source period.
+
+  - name: management_pnl_monthly
+    description: Gross-level management P&L; not a statutory net-income statement.
+    columns:
+      - name: accounting_scope
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [gross_level_only]
+
+  - name: customer_base
+    description: Customer value and profitability base for Customer Analytics.
+    columns:
+      - name: customer_key
+        data_tests: [not_null, unique]
+
+  - name: customer_rfm
+    description: Customer RFM features using the day after the latest source order as reference date.
+    columns:
+      - name: customer_key
+        data_tests: [not_null, unique]
+
+  - name: product_sales_summary
+    description: Product/category revenue, quantity and estimated gross-profit summary.
+    columns:
+      - name: product_key
+        data_tests: [not_null, unique]
+
+  - name: monthly_sales_series
+    description: Monthly time series used by the forecasting member.
+    columns:
+      - name: month
+        data_tests: [not_null, unique]
+
+  - name: macro_observation_standardized
+    description: Standardized World Bank macro observations by country, year and indicator.
+    columns:
+      - name: observation_key
+        data_tests: [not_null, unique]
+      - name: source_url
+        data_tests: [not_null]
+
+  - name: business_kpi_macro_period
+    description: AdventureWorks country-year KPI joined to World Bank macro indicators.
+    columns:
+      - name: country_code
+        data_tests: [not_null]
+      - name: year
+        data_tests: [not_null]
+      - name: analysis_caveat
+        data_tests: [not_null]
+
+  - name: macro_kpi_relation
+    description: Descriptive KPI/macro correlations with sample size and a non-causality caveat.
+    columns:
+      - name: interpretation_caveat
+        data_tests: [not_null]
+
+  - name: source_to_dw_reconciliation
+    description: Source-to-DW reconciliation for sales row counts and revenue.
+    columns:
+      - name: metric_name
+        data_tests: [not_null, unique]
+      - name: status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [PASS, FAIL]
+
+  - name: data_quality_summary
+    description: Data quality failures and macro coverage warnings for the TV4 dashboard.
+    columns:
+      - name: status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [PASS, WARN, FAIL]
+
+seeds:
+  - name: macro_observations
+    description: World Bank macro data downloaded by scripts/load_world_bank_macro.py.
+    columns:
+      - name: country_code
+        data_tests: [not_null]
+      - name: year
+        data_tests: [not_null]
+      - name: indicator_code
+        data_tests: [not_null]
+      - name: value
+        data_tests: [not_null]
+

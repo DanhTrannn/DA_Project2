@@ -46,58 +46,72 @@
 # Enjoy!
 
 
+def decode_csv(bytes, csv_file)
+  if bytes.start_with?("\xFF\xFE".b)
+    bytes.force_encoding("UTF-16LE").encode("UTF-8")
+  elsif bytes.start_with?("\xFE\xFF".b)
+    bytes.force_encoding("UTF-16BE").encode("UTF-8")
+  elsif bytes.byteslice(0, 200).to_s.count("\x00") > 20
+    bytes.force_encoding("UTF-16LE").encode("UTF-8")
+  else
+    text = bytes.dup.force_encoding("UTF-8")
+    return text if text.valid_encoding?
+
+    fallback = File.basename(csv_file) == "Address.csv" ? "WINDOWS-1252" : "UTF-8"
+    bytes.force_encoding(fallback).encode("UTF-8", invalid: :replace, undef: :replace, replace: "")
+  end
+end
+
+def csv_quote_if_needed(part)
+  return part unless part.include?("\t") || part.include?("\n") || part.include?('"') || part.start_with?("<")
+
+  %("#{part}")
+end
+
 Dir.glob('./*.csv') do |csv_file|
-  f = if (is_needed = csv_file.end_with?('/Address.csv'))
-        File.open(csv_file, "rb:WINDOWS-1252:UTF-8")
-      else
-        File.open(csv_file, "rb:UTF-16LE:UTF-8")
-      end
+  begin
+  content = decode_csv(File.binread(csv_file), csv_file)
+  content = content[1..-1] if content.start_with?("\uFEFF")
+  content = content.delete("\u0000")
+
+  is_pipes = content.include?("+|")
+  is_needed = is_pipes || csv_file.end_with?('/Address.csv') || content.include?('"')
+  next unless is_needed
+
   output = ""
   text = ""
-  is_first = true
-  is_pipes = false
-  begin
-  f.each do |line|
-    if is_first
-      if line.include?("+|")
-        is_pipes = true
-      end
-      if line[0] == "\uFEFF"
-        line = line[1..-1]
-        is_needed = true
-      end
-    end
-    is_first = false
-    break if !is_needed
-    if is_pipes
+
+  if is_pipes
+    content.each_line do |line|
+      line = line.gsub("|474946383961", "|\\\\x474946383961") # For GIF data
+                 .gsub(/\"/, "\"\"")
+
       if line.strip.end_with?("&|")
-        text << line.gsub("|474946383961", "|\\\\x474946383961") # For GIF data
-                    .gsub(/\"/, "\"\"")
-                    .strip[0..-3]
-        output << text.split("+|").map { |part|
-          (part[1] == "<" && part[-1] == ">") ? '"' + part[1..-1] + '"' :
-          (part.include?("\t") ? '"' + part + '"' : part)
-        }.join("\t")
+        text << line.strip[0..-3]
+        output << text.split("+|", -1).map { |part| csv_quote_if_needed(part) }.join("\t")
         output << "\n"
         text = ""
       else
-        text << line.gsub(/\"/, "\"\"").gsub("\r\n", "\\n")
+        text << line.gsub(/\r?\n/, "\\n")
       end
-    else
-      output << line.gsub(/\"/, "\"\"").gsub(/\&\|\n/, "\n").gsub(/\&\|\r\n/, "\n")
-                    .gsub("\tE6100000010C", "\t\\\\xE6100000010C") # For geospatial data
-                    .gsub(/\r\n/, "\n") # Make everything compatible with Windows -- change \r\n into just \n
+    end
+  else
+    cleaned = content.gsub(/\&\|\n/, "\n").gsub(/\&\|\r\n/, "\n")
+                     .gsub("\tE6100000010C", "\t\\\\xE6100000010C") # For geospatial data
+                     .gsub(/\r\n/, "\n") # Make everything compatible with Windows -- change \r\n into just \n
+
+    cleaned.each_line do |line|
+      output << line.chomp.split("\t", -1).map { |part|
+        csv_quote_if_needed(part.gsub(/\"/, "\"\""))
+      }.join("\t")
+      output << "\n"
     end
   end
-  if is_needed
-    puts "Processing #{csv_file}"
-    f.close
-    w = File.open(csv_file + ".xyz", "w")
-    w.write(output)
-    w.close
-    File.delete(csv_file)
-    File.rename(csv_file + ".xyz", csv_file)
-  end
+
+  puts "Processing #{csv_file}"
+  File.write(csv_file + ".xyz", output)
+  File.delete(csv_file)
+  File.rename(csv_file + ".xyz", csv_file)
 
   # Here's a list of files that get snagged here:
   #    Address.csv
@@ -121,6 +135,6 @@ Dir.glob('./*.csv') do |csv_file|
   #    Vendor.csv
   #    WorkOrder.csv
   rescue Encoding::InvalidByteSequenceError
-    f.close
+    warn "Skipping #{csv_file}: invalid byte sequence"
   end
 end

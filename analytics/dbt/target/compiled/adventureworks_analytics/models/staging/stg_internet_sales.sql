@@ -1,0 +1,30 @@
+select
+    productkey,
+    orderdatekey,
+    duedatekey,
+    shipdatekey,
+    customerkey,
+    promotionkey,
+    currencykey,
+    salesterritorykey,
+    salesordernumber,
+    salesorderlinenumber,
+    orderquantity,
+    unitprice,
+    extendedamount,
+    discountamount,
+    productstandardcost,
+    totalproductcost,
+    salesamount,
+    taxamt,
+    freight,
+    orderdate,
+    duedate,
+    shipdate,
+    salesamount - totalproductcost as gross_profit,
+    case when salesamount = 0 then null
+         else (salesamount - totalproductcost) / salesamount
+    end as gross_margin_pct,
+    shipdate::date - orderdate::date as delivery_days,
+    shipdate::date > duedate::date as is_late
+from "AdventureworksDW"."dbo"."factinternetsales"

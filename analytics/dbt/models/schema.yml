@@ -1,0 +1,116 @@
+version: 2
+
+models:
+  - name: stg_sales_order_header
+    description: Standardized OLTP sales order headers.
+    columns:
+      - name: sales_order_id
+        data_tests: [not_null, unique]
+      - name: customer_id
+        data_tests: [not_null]
+      - name: order_date
+        data_tests: [not_null]
+      - name: total_due
+        data_tests: [not_null]
+
+  - name: stg_sales_order_detail
+    description: Standardized OLTP sales order line items.
+    columns:
+      - name: sales_order_detail_id
+        data_tests: [not_null, unique]
+      - name: sales_order_id
+        data_tests: [not_null]
+      - name: product_id
+        data_tests: [not_null]
+      - name: line_total
+        data_tests: [not_null]
+
+  - name: stg_customer
+    description: Standardized OLTP customer records.
+    columns:
+      - name: customer_id
+        data_tests: [not_null, unique]
+
+  - name: stg_person
+    description: Standardized OLTP person records.
+    columns:
+      - name: business_entity_id
+        data_tests: [not_null, unique]
+      - name: first_name
+        data_tests: [not_null]
+      - name: last_name
+        data_tests: [not_null]
+
+  - name: stg_store
+    description: Standardized OLTP reseller store records.
+    columns:
+      - name: business_entity_id
+        data_tests: [not_null, unique]
+      - name: store_name
+        data_tests: [not_null]
+
+  - name: stg_product
+    description: Standardized OLTP product master records.
+    columns:
+      - name: product_id
+        data_tests: [not_null, unique]
+      - name: product_name
+        data_tests: [not_null]
+
+  - name: stg_product_subcategory
+    description: Standardized OLTP product subcategory records.
+    columns:
+      - name: product_subcategory_id
+        data_tests: [not_null, unique]
+      - name: product_category_id
+        data_tests: [not_null]
+
+  - name: stg_product_category
+    description: Standardized OLTP product category records.
+    columns:
+      - name: product_category_id
+        data_tests: [not_null, unique]
+
+  - name: stg_sales_territory
+    description: Standardized OLTP sales territory records.
+    columns:
+      - name: territory_id
+        data_tests: [not_null, unique]
+
+  - name: stg_purchase_order_header
+    description: Standardized OLTP purchase order headers.
+    columns:
+      - name: purchase_order_id
+        data_tests: [not_null, unique]
+      - name: vendor_id
+        data_tests: [not_null]
+      - name: total_due
+        data_tests: [not_null]
+
+  - name: stg_purchase_order_detail
+    description: Standardized OLTP purchase order line items.
+    columns:
+      - name: purchase_order_detail_id
+        data_tests: [not_null, unique]
+      - name: purchase_order_id
+        data_tests: [not_null]
+      - name: product_id
+        data_tests: [not_null]
+      - name: line_total
+        data_tests: [not_null]
+
+  - name: stg_vendor
+    description: Standardized OLTP vendor records.
+    columns:
+      - name: business_entity_id
+        data_tests: [not_null, unique]
+      - name: vendor_name
+        data_tests: [not_null]
+
+  - name: stg_employee
+    description: Standardized OLTP employee records.
+    columns:
+      - name: business_entity_id
+        data_tests: [not_null, unique]
+      - name: job_title
+        data_tests: [not_null]

@@ -1,0 +1,11 @@
+dbt-core>=1.9,<2
+dbt-postgres>=1.9,<2
+mlflow>=2.20,<4
+mlxtend>=0.23,<1
+numpy>=2.0,<3
+pandas>=2.2,<3
+prefect>=3.1,<4
+psycopg[binary]>=3.2,<4
+scikit-learn>=1.6,<2
+sqlalchemy>=2.0,<3
+statsmodels>=0.14,<1

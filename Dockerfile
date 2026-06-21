@@ -1,18 +1,14 @@
-FROM library/postgres
+FROM postgres:16
 
-RUN apt-get update
-RUN apt-get -y install unzip ruby dos2unix
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ruby \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir /data
+RUN mkdir -p /data
 COPY install.sql /data/
+COPY data/ /data/
 COPY update_csvs.rb /data/
-COPY adventure_works_2014_OLTP_script.zip /data/
-RUN cd /data && \
-    unzip adventure_works_2014_OLTP_script.zip && \
-    rm adventure_works_2014_OLTP_script.zip && \
-    ruby update_csvs.rb && \
-    rm update_csvs.rb
+RUN cd /data && ruby update_csvs.rb && rm update_csvs.rb
 
 COPY install.sh /docker-entrypoint-initdb.d/
 WORKDIR /data/
-RUN dos2unix /docker-entrypoint-initdb.d/*.sh

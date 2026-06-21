@@ -1,0 +1,40 @@
+version: 2
+
+sources:
+  - name: oltp_sales
+    description: AdventureWorks OLTP sales transaction tables.
+    schema: sales
+    tables:
+      - name: salesorderheader
+      - name: salesorderdetail
+      - name: customer
+      - name: store
+      - name: salesterritory
+
+  - name: oltp_production
+    description: AdventureWorks OLTP product master tables.
+    schema: production
+    tables:
+      - name: product
+      - name: productsubcategory
+      - name: productcategory
+
+  - name: oltp_person
+    description: AdventureWorks OLTP person master tables.
+    schema: person
+    tables:
+      - name: person
+
+  - name: oltp_purchasing
+    description: AdventureWorks OLTP purchasing transaction and vendor tables.
+    schema: purchasing
+    tables:
+      - name: purchaseorderheader
+      - name: purchaseorderdetail
+      - name: vendor
+
+  - name: oltp_humanresources
+    description: AdventureWorks OLTP employee master tables.
+    schema: humanresources
+    tables:
+      - name: employee

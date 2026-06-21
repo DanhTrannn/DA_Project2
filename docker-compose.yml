@@ -1,9 +1,167 @@
-version: '2'
 services:
   db:
-    build: ./
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: adventureworks-postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
     ports:
-      - '5432:5432'
+      - "5432:5432"
+    volumes:
+      - adventureworks-oltp-data-v2:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d Adventureworks"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  dw:
+    build:
+      context: ./dw
+    container_name: adventureworksdw-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: "${DW_DATABASE:-AdventureworksDW}"
+    ports:
+      - "${DW_PORT:-5433}:5432"
+    volumes:
+      - adventureworksdw-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ${DW_DATABASE:-AdventureworksDW}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    profiles: ["dw"]
+
+  dbt:
+    build:
+      context: ./analytics
+    container_name: adventureworks-dbt
+    command: ["sleep", "infinity"]
+    environment: &dbt-environment
+      POSTGRES_USER: "${POSTGRES_USER:-postgres}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
+      SOURCE_HOST: db
+      SOURCE_INTERNAL_PORT: "5432"
+      SOURCE_DATABASE: "${SOURCE_DATABASE:-Adventureworks}"
+    volumes:
+      - ./analytics/dbt:/app/dbt
+    depends_on:
+      db:
+        condition: service_healthy
+
+  dbt-docs:
+    build:
+      context: ./analytics
+    container_name: adventureworks-dbt-docs
+    command:
+      - sh
+      - -c
+      - >-
+        dbt docs generate --project-dir /app/dbt --profiles-dir /app/dbt &&
+        dbt docs serve --host 0.0.0.0 --port 8080
+        --project-dir /app/dbt --profiles-dir /app/dbt
+    environment: *dbt-environment
+    ports:
+      - "${DBT_DOCS_PORT:-8081}:8080"
+    volumes:
+      - ./analytics/dbt:/app/dbt
+    depends_on:
+      db:
+        condition: service_healthy
+
+  mlflow:
+    build:
+      context: ./analytics
+    container_name: adventureworks-mlflow
+    command:
+      - mlflow
+      - server
+      - --backend-store-uri
+      - sqlite:////mlflow/mlflow.db
+      - --default-artifact-root
+      - /mlflow/artifacts
+      - --host
+      - 0.0.0.0
+      - --port
+      - "5000"
+      - --allowed-hosts
+      - "mlflow,mlflow:5000,localhost,localhost:5000,127.0.0.1,127.0.0.1:5000"
+    ports:
+      - "${MLFLOW_PORT:-5000}:5000"
+    volumes:
+      - mlflow-data:/mlflow
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  prefect-server:
+    build:
+      context: ./analytics
+    container_name: adventureworks-prefect
+    command: ["prefect", "server", "start", "--host", "0.0.0.0"]
+    environment:
+      <<: *dbt-environment
+      PREFECT_API_URL: http://localhost:4200/api
+    ports:
+      - "${PREFECT_PORT:-4200}:4200"
+    volumes:
+      - prefect-data:/root/.prefect
+      - ./analytics/dbt:/app/dbt
+      - ./analytics/orchestration:/app/orchestration
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4200/api/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  superset:
+    build:
+      context: ./superset
+    container_name: adventureworks-superset
+    command:
+      - /bin/bash
+      - -c
+      - |
+        set -e
+        superset db upgrade
+        superset fab create-admin \
+          --username "$${SUPERSET_ADMIN_USER:-admin}" \
+          --firstname Adventure \
+          --lastname Works \
+          --email admin@example.com \
+          --password "$${SUPERSET_ADMIN_PASSWORD:-admin}" || true
+        superset init
+        superset set-database-uri \
+          --database_name "$${SUPERSET_SOURCE_DATABASE_NAME:-Adventureworks}" \
+          --uri "$${SUPERSET_SOURCE_URI}"
+        exec /usr/bin/run-server.sh
+    environment:
+      SUPERSET_SECRET_KEY: "${SUPERSET_SECRET_KEY:-change-this-secret-key}"
+      SUPERSET_ADMIN_USER: "${SUPERSET_ADMIN_USER:-admin}"
+      SUPERSET_ADMIN_PASSWORD: "${SUPERSET_ADMIN_PASSWORD:-admin}"
+      SUPERSET_SOURCE_DATABASE_NAME: "${SOURCE_DATABASE:-Adventureworks}"
+      SUPERSET_SOURCE_URI: "postgresql+psycopg2://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${SOURCE_DATABASE:-Adventureworks}"
+    ports:
+      - "${SUPERSET_PORT:-8088}:8088"
+    volumes:
+      - superset-data:/app/superset_home
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  adventureworks-oltp-data-v2:
+  adventureworksdw-data:
+  mlflow-data:
+  prefect-data:
+  superset-data:

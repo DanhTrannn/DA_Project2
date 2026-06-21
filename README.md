@@ -1,76 +1,167 @@
-# AdventureWorks for Postgres
+# AdventureWorks OLTP Analytics
 
-This project provides the scripts necessary to set up the OLTP part of the go-to database used in
-training classes and for sample apps on the Microsoft stack. The result is 68 tables containing HR,
-sales, product, and purchasing data organized across 5 schemas. It represents a fictitious bicycle
-parts wholesaler with a hierarchy of nearly 300 employees, 500 products, 20000 customers, and 31000
-sales each having an average of 4 line items. So it's big enough to be interesting, but not
-unwieldy. In addition to being a well-rounded OLTP sample, it is also a good choice to demonstrate
-ETL into a data warehouse.
+Đồ án sử dụng AdventureWorks OLTP trên PostgreSQL. Pipeline TV4 đã triển khai
+import/staging, Core DW, DataMart nền, KPI quản trị, audit/reconciliation và
+Macro Context. Các model Data Mining của TV1-TV3 sử dụng feature/mart do
+pipeline này cung cấp.
 
-Provided is a ruby file to convert CSVs available on CodePlex into a format usable by Postgres, as
-well as a Postgres script to create the tables, load the data, convert the hierarchyid columns, add
-primary and foreign keys, and create some of the views used by Adventureworks.
+## Phạm vi
 
-## How to set up the database:
+Đã triển khai:
 
-Download [Adventure Works 2014 OLTP Script](https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks-oltp-install-script.zip).
+- AdventureWorks OLTP gồm 68 bảng thuộc các schema `sales`, `production`,
+  `purchasing`, `person` và `humanresources`.
+- 13 dbt staging views trong schema `staging` của database `Adventureworks`.
+- Core DW: date/product/customer/geography dimensions và sales facts.
+- DataMart nền cho Sales, Finance gross-level, Customer, Product và Forecast.
+- Audit/reconciliation giữa OLTP và DW.
+- Macro Context từ World Bank theo country/year.
+- dbt data tests và Prefect flow end-to-end.
+- Giao diện dbt Docs, Prefect, MLflow và Superset.
 
-Extract the .zip and copy all of the CSV files into the same folder, also containing update_csvs.rb file and install.sql.
+Các phần do TV1-TV3 tiếp tục triển khai:
 
-Modify the CSVs to work with Postgres by running:
+- K-Means customer segmentation.
+- Apriori/FP-Growth market basket.
+- Sales forecasting và MLflow experiments.
+- Các trang Streamlit cho kết quả model.
+- Tạo chart Superset từ dashboard spec.
+- AdventureWorksDW tùy chọn.
+
+AdventureWorks OLTP không có sổ cái tài chính và dữ liệu công nợ hoàn chỉnh.
+KPI lợi nhuận, lỗ/lãi, nợ và tác động vĩ mô cần business rule hoặc nguồn dữ
+liệu bổ sung trước khi triển khai.
+
+## Khởi động
+
+Không cần chạy script bên ngoài. Khởi động toàn bộ stack mặc định:
+
+```bash
+docker compose up -d --build
 ```
-ruby update_csvs.rb
-```
-Create the database and tables, import the data, and set up the views and keys with:
-```
-psql -c "CREATE DATABASE \"Adventureworks\";"
-psql -d Adventureworks < install.sql
-```
-(If you do not have a database created for your user account then you may need to also add:  `-U postgres`  to the above two commands.)
 
-All 68 tables are properly set up, and 11 of the 20 views are established.  The ones not built are those that rely on XML functions like value and ref.  To see a list of tables, open psql, and then connect to the database and show all the tables with these two commands:
-```
-\c "Adventureworks"
-\dt (humanresources|person|production|purchasing|sales).*
+Chạy toàn bộ phần TV4 sau khi build:
+
+```bash
+./run_tv4.sh
 ```
 
-## Using with Docker
+Khi Superset đang chạy, tạo/cập nhật dashboard TV4:
 
-You can spin up a new database using **Docker** with `docker-compose up`.
+```bash
+python3 superset/bootstrap_tv4.py
+```
 
-_You will need to rename the Adventure Works 2014 OLTP Script archive to **adventure_works_2014_OLTP_script.zip** to get this to work!_
+Khởi động một service và dependency của nó:
 
+```bash
+docker compose up -d db
+docker compose up -d dbt
+docker compose up -d dbt-docs
+docker compose up -d prefect-server
+docker compose up -d mlflow
+docker compose up -d superset
+```
 
-## Motivation
+Kiểm tra trạng thái:
 
-Five years ago I was pretty happy developing .NET apps for large organizations.  The stack was
-mature, and good practices surrounding software development were very respected.  The same kind of
-approach I appreciated from my days writing Java code was there, and the community was passionate.
+```bash
+docker compose ps
+```
 
-Then along came Windows 8.  The //build/ conference in September 2011 revealed its first beta, and
-even with that early peek at the new direction things were headed, it was clear that everything about
-the platform was a haphazard combination of the new Metro apps along with all the traditional control
-panel and options and API for classic code.  It left a very bad taste in my mouth.  Perhaps it would
-look pretty, but be very unusable.  I couldn't see it ever being successful.  Once the "red pill"
-registry setting vanished from the builds in mid-2012, the Windows 7 interface was then no longer
-available even in Server editions.  I knew it was time for a change.  For a year I stuck it out
-watching to see if there was any hope for some kind of tablet miracle out of Redmond, but I was
-consistently unimpressed.
+## Truy cập service
 
-In mid-2013 a friend looped me in on a new project involving Ruby on Rails, and I fervently dove in
-and have very much enjoyed the elegance of that ecosystem.  A big part of that has been ramping up my
-knowledge of Postgres.  What a great database engine!  I figure that others departing the Microsoft
-camp may appreciate the same data samples they're familiar with, so I created this along with the
-Northwind sample.  It's been useful in the classroom training folks about Rails.  I expect with the
-heavy-handed tactics Microsoft has now used around Windows 10 that even more organizations will
-choose to transition away from that platform, so there will be lots of opportunity for samples like
-this to help people learn a new environment.
+| Service | Truy cập |
+|---|---|
+| AdventureWorks OLTP PostgreSQL | `localhost:5432`, database `Adventureworks` |
+| dbt Docs | `http://localhost:8081` |
+| Prefect | `http://localhost:4200` |
+| MLflow | `http://localhost:5000` |
+| Superset | `http://localhost:8088`, tài khoản `admin` / `admin` |
 
-As well, with the imminent release of SQL Server 2017 for Linux, this sample could be used to
-evaluate performance differences between Postgres and SQL 2017.  Never thought I'd see the day that
-MS SQL got compiled for Linux, but alas, here we are. 
+Superset tự tạo kết nối OLTP:
 
-Let's keep coding fun.
+```text
+postgresql+psycopg2://postgres:postgres@db:5432/Adventureworks
+```
 
-Enjoy!
+## Thao tác trực tiếp
+
+PostgreSQL:
+
+```bash
+docker compose exec db psql -U postgres -d Adventureworks
+```
+
+dbt:
+
+```bash
+docker compose exec dbt bash
+dbt seed --project-dir /app/dbt --profiles-dir /app/dbt
+dbt build --project-dir /app/dbt --profiles-dir /app/dbt
+dbt ls --resource-type model
+```
+
+Prefect analytics flow:
+
+```bash
+docker compose exec prefect-server python -m orchestration.pipeline_flow
+```
+
+Vào shell các service:
+
+```bash
+docker compose exec db bash
+docker compose exec dbt bash
+docker compose exec prefect-server bash
+docker compose exec mlflow bash
+docker compose exec superset bash
+```
+
+Xem log và dừng stack:
+
+```bash
+docker compose logs -f dbt-docs
+docker compose logs -f superset
+docker compose stop
+docker compose down
+```
+
+## dbt Analytics Pipeline
+
+Lớp staging tạo các view sau:
+
+- Sales: `stg_sales_order_header`, `stg_sales_order_detail`, `stg_customer`,
+  `stg_store`, `stg_sales_territory`.
+- Products: `stg_product`, `stg_product_subcategory`,
+  `stg_product_category`.
+- Purchasing: `stg_purchase_order_header`, `stg_purchase_order_detail`,
+  `stg_vendor`.
+- People và HR: `stg_person`, `stg_employee`.
+
+Các schema TV4 được tạo thêm:
+
+- `core_dw`: dimension/fact dùng chung.
+- `mart_sales`: Executive, monthly và country-year KPI.
+- `mart_finance`: P&L quản trị gross-level.
+- `mart_customer`, `mart_product`, `mart_sales_forecast`: đầu vào cho TV1-TV3.
+- `raw_macro`, `mart_macro`: World Bank observations và Macro Context.
+- `analytics`: feature tables và macro correlation mô tả.
+- `audit`: source-to-DW reconciliation và data-quality summary.
+
+Tài liệu vận hành:
+
+- `docs/TEAM_RUN_GUIDE.md`
+- `docs/TV4_RUNBOOK.md`
+- `docs/TV4_KPI_DICTIONARY.md`
+- `docs/SUPERSET_TV4_DASHBOARD.md`
+
+## AdventureWorksDW tùy chọn
+
+DWH không được dùng bởi pipeline staging hiện tại. Chỉ khởi động khi cần tham
+khảo:
+
+```bash
+docker compose --profile dw up -d dw
+docker compose exec dw psql -U postgres -d AdventureworksDW
+```

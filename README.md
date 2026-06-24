@@ -151,6 +151,7 @@ Các schema TV4 được tạo thêm:
 
 Tài liệu vận hành:
 
+- `docs/PROJECT_STRUCTURE.md`
 - `docs/TEAM_RUN_GUIDE.md`
 - `docs/TV4_RUNBOOK.md`
 - `docs/TV4_KPI_DICTIONARY.md`

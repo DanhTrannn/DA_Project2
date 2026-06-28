@@ -1,5 +1,72 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+.ipynb_checkpoints/
+
+# Python environments and build output
+.venv/
+venv/
+env/
+.tox/
+.nox/
+build/
+dist/
+*.egg-info/
+
+# Test and coverage output
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
 # dbt build artifacts
 analytics/dbt/target/
 analytics/dbt/logs/
 analytics/dbt/dbt_packages/
 analytics/dbt/.user.yml
+
+# Data-mining and local runtime artifacts
+artifacts/
+outputs/
+mlruns/
+mlartifacts/
+*.joblib
+*.pkl
+*.pickle
+*.parquet
+*.npy
+*.npz
+
+# Local application state
+.prefect/
+superset_home/
+pgdata/
+postgres-data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# IDE and operating-system metadata
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

@@ -42,6 +42,8 @@ services:
       context: ./analytics
     container_name: adventureworks-dbt
     command: ["sleep", "infinity"]
+    ports:
+      - "8501:8501"
     environment: &dbt-environment
       POSTGRES_USER: "${POSTGRES_USER:-postgres}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"

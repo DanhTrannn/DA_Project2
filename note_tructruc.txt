@@ -1,0 +1,2 @@
+docker compose cp analytics/src/aw_analytics/segmentation.py dbt:/app/src/aw_analytics/segmentation.py
+docker compose exec -T dbt python -m aw_analytics.segmentation

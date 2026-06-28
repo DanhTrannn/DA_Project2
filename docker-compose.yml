@@ -41,6 +41,7 @@ services:
     build:
       context: ./analytics
     container_name: adventureworks-dbt
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
     command: ["sleep", "infinity"]
     environment: &dbt-environment
       POSTGRES_USER: "${POSTGRES_USER:-postgres}"
@@ -58,6 +59,7 @@ services:
     build:
       context: ./analytics
     container_name: adventureworks-dbt-docs
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
     command:
       - sh
       - -c

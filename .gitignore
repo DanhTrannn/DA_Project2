@@ -1,0 +1,5 @@
+# dbt build artifacts
+analytics/dbt/target/
+analytics/dbt/logs/
+analytics/dbt/dbt_packages/
+analytics/dbt/.user.yml

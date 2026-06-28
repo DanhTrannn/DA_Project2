@@ -2,6 +2,9 @@
 
 set -euo pipefail
 
+export HOST_UID="${HOST_UID:-$(id -u)}"
+export HOST_GID="${HOST_GID:-$(id -g)}"
+
 docker compose up -d db dbt
 if ! docker compose exec -T dbt python /app/dbt/scripts/load_world_bank_macro.py; then
   echo "WARNING: World Bank refresh failed; continuing with cached/empty macro seed."

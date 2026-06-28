@@ -66,7 +66,7 @@ if product_summary.empty:
 # KPI
 # ============================
 
-st.subheader("📦 Product Summary")
+st.subheader("Product Summary")
 
 c1, c2, c3, c4 = st.columns(4)
 
@@ -103,7 +103,7 @@ min_support = st.sidebar.slider(
     0.00,
     float(rules.support.max()),
     0.01,
-    step=0.01
+    step=0.0001
 )
 
 min_confidence = st.sidebar.slider(
@@ -111,7 +111,7 @@ min_confidence = st.sidebar.slider(
     0.00,
     1.00,
     0.30,
-    step=0.05
+    step=0.0005
 )
 
 min_lift = st.sidebar.slider(
@@ -119,7 +119,7 @@ min_lift = st.sidebar.slider(
     1.00,
     float(max(5.0, rules.lift.max())),
     1.20,
-    step=0.10
+    step=0.001
 )
 
 filtered = rules[
@@ -135,18 +135,17 @@ filtered = rules[
 # ============================
 
 tab_sales, tab_market, tab_recommend = st.tabs([
-    "📊 Sales Overview",
-    "🛒 Market Basket Analysis",
-    "🎯 Product Recommendation"
+    "Sales Overview",
+    "Market Basket Analysis",
+    "Product Recommendation"
 ])
 
 with tab_sales:
+    # ============================
+    # Top 10 sản phẩm bán chạy nhất
+    # ============================
 
-# ============================
-# Top 10 sản phẩm bán chạy nhất
-# ============================
-
-    st.subheader("🏆 Top 10 Selling Products")
+    st.subheader("TOP 10 SELLING PRODUCTS")
 
     top_products = (
         product_summary
@@ -211,7 +210,7 @@ with tab_sales:
     # Category bán chạy nhất
     # ============================
 
-    st.subheader("📦 Quantity Sold by Category")
+    st.subheader("QUANTITY SOLD BY CATEGORY")
 
     category_sales = (
         product_summary
@@ -263,7 +262,7 @@ with tab_sales:
     # Revenue & Gross Profit by Category
     # ============================
 
-    st.subheader("💰 Revenue & Gross Profit by Category")
+    st.subheader("REVENUE & GROSS PROFIT BY CATEGORY")
 
     category_summary = (
         product_summary
@@ -346,7 +345,7 @@ with tab_market:
     # Frequently Bought Together
     # ============================
 
-    st.subheader("📋 Frequently Bought Together")
+    st.subheader("FREQUENTLY BOUGHT TOGETHER")
 
     st.dataframe(
         filtered.sort_values(
@@ -360,14 +359,14 @@ with tab_market:
     # Network Graph – Frequently Bought Together
     # ============================
 
-    st.subheader("🌐 Frequently Bought Together Network")
+    st.subheader("FREQUENTLY BOUGHT TOGETHER NETWORK GRAPH")
 
     G = nx.DiGraph()
 
     top_rules = (
         filtered
         .sort_values(["lift", "confidence"], ascending=False)
-        .head(40)
+        .head(90)
     )
 
     for _, row in top_rules.iterrows():
@@ -408,6 +407,7 @@ with tab_market:
     node_y = []
     hover_text = []
     node_size = []
+    node_degree = []
 
     for node in G.nodes():
 
@@ -416,6 +416,7 @@ with tab_market:
         node_x.append(x)
         node_y.append(y)
         degree = G.degree(node)
+        node_degree.append(degree)
 
         node_size.append(12 + degree * 3)
 
@@ -432,11 +433,11 @@ with tab_market:
         hovertext=hover_text,
         marker=dict(
             size=node_size,
-            color=node_size,
+            color=node_degree,
             colorscale="Blues",
             showscale=True,
             colorbar=dict(
-                title="Degree"
+                title="Number of Connections"
             ),
             line=dict(width=1, color="black")
         )
@@ -450,18 +451,53 @@ with tab_market:
         showlegend=False,
         height=700,
         margin=dict(l=20, r=20, t=20, b=20),
+
+        xaxis=dict(
+            visible=False
+        ),
+
+        yaxis=dict(
+            visible=False
+        ),
+        title="trực quan hóa các luật kết hợp sản phẩm (product association rules)",
     )
 
     st.plotly_chart(fig, use_container_width=True)
+
+    st.info(
+    """
+    **Cách đọc biểu đồ**
+
+    - Mỗi **nút (node)** đại diện cho một sản phẩm.
+    - Mỗi **đường nối (edge)** biểu diễn mối quan hệ mua cùng giữa hai sản phẩm.
+    - **Node càng lớn và màu càng đậm** thì sản phẩm đó càng được mua cùng với nhiều sản phẩm khác.
+    - Các **cụm node gần nhau** thể hiện nhóm sản phẩm có xu hướng xuất hiện trong cùng một đơn hàng.
+    - Những sản phẩm có nhiều kết nối là ứng viên tốt để triển khai **cross-selling, bundle promotion** và **product recommendation.**
+    """
+    )
 
     # ============================
     # Scatter Plot
     # ============================
 
-    st.subheader("📈 Support vs Confidence")
+    st.subheader("SUPPORT vs CONFIDENCE vs LIFT")
+
+    top_n = st.sidebar.slider(
+        "Maximum Rules Displayed",
+        min_value=20,
+        max_value=len(rules),
+        value=200,
+        step=20
+    )
+
+    filtered_plot = (
+        filtered
+        .sort_values(["lift", "confidence"], ascending=False)
+        .head(top_n)
+    )
 
     fig = px.scatter(
-        filtered,
+        filtered_plot,
         x="support",
         y="confidence",
         color="lift",
@@ -472,7 +508,8 @@ with tab_market:
             "support",
             "confidence",
             "lift"
-        ]
+        ],
+        title="Đánh giá chất lượng của các Association Rule",
     )
 
     st.plotly_chart(fig, use_container_width=True)
@@ -481,7 +518,7 @@ with tab_market:
     # Top 10 Rules
     # ============================
 
-    st.subheader("🏆 Top 10 Strongest Association Rules")
+    st.subheader("TOP 10 STRONGEST ASSOCIATION RULES")
 
     top10 = (
         filtered
@@ -505,12 +542,11 @@ with tab_market:
     )
 
 with tab_recommend:
+    # ============================
+    # Cross-selling Recommendation
+    # ============================
 
-# ============================
-# Cross-selling Recommendation
-# ============================
-
-    st.subheader("🎯 Cross-selling Recommendations")
+    st.subheader("CROSS-SELLING RECOMMENDATION")
 
     recommendations = (
         filtered
@@ -538,9 +574,7 @@ with tab_recommend:
 
     Lift : {row['lift']:.2f}
 
-    👉 Recommendation:
-
-    Đưa ra các ưu đãi giảm giá khi mua kèm sản phẩm hoặc hiển thị **{row['consequents']}** như một đề xuất khi khách hàng mua **{row['antecedents']}**.
+    **ĐỀ XUẤT:** Đưa ra các ưu đãi giảm giá khi mua kèm sản phẩm hoặc hiển thị **{row['consequents']}** như một đề xuất khi khách hàng mua **{row['antecedents']}**.
     """)
 
     # ============================
@@ -548,7 +582,7 @@ with tab_recommend:
     # ============================
 
     st.divider()
-    st.subheader("🛍 Product Recommendation")
+    st.subheader("PRODUCT RECOMMENDATION")
 
     # Lấy toàn bộ sản phẩm xuất hiện ở antecedents
     products = sorted({
@@ -598,7 +632,7 @@ with tab_recommend:
             use_container_width=True
         )
 
-        st.markdown("### 🎯 Top Recommended Products")
+        st.markdown("### TOP RECOMMENDED PRODUCTS")
 
         # Gom theo consequent để tránh trùng
         top_products = (
@@ -619,7 +653,7 @@ with tab_recommend:
 
             st.markdown(
                 f"""
-    **🛒 {row['consequents']}**
+    **{row['consequents']}**
 
     - Confidence : **{row['confidence']:.2f}**
     - Lift : **{row['lift']:.2f}**

@@ -19,14 +19,15 @@ pipeline này cung cấp.
 - dbt data tests và Prefect flow end-to-end.
 - Giao diện dbt Docs, Prefect, MLflow và Superset.
 
-Các phần do TV1-TV3 tiếp tục triển khai:
+Các phần do TV1-TV2 tiếp tục triển khai:
 
 - K-Means customer segmentation.
 - Apriori/FP-Growth market basket.
-- Sales forecasting và MLflow experiments.
-- Các trang Streamlit cho kết quả model.
+- Tích hợp các trang Streamlit còn lại cho TV1-TV2.
 - Tạo chart Superset từ dashboard spec.
 - AdventureWorksDW tùy chọn.
+
+TV3 đã triển khai Sales Forecast Analytics trong ứng dụng Streamlit chung.
 
 AdventureWorks OLTP không có sổ cái tài chính và dữ liệu công nợ hoàn chỉnh.
 KPI lợi nhuận, lỗ/lãi, nợ và tác động vĩ mô cần business rule hoặc nguồn dữ
@@ -44,6 +45,21 @@ Chạy toàn bộ phần TV4 sau khi build:
 
 ```bash
 ./run_tv4.sh
+```
+
+Chạy mô hình TV3 và ứng dụng Streamlit chung:
+
+```bash
+./run_tv3.sh
+```
+
+Sau khi script hoàn tất, mở `http://localhost:8501`. Chạy lại script khi
+DataMart có dữ liệu bán hàng mới để cập nhật forecast.
+
+Xem nhanh các bảng kết quả TV3 bằng PostgreSQL:
+
+```bash
+docker compose exec -T db psql -U postgres -d Adventureworks < analytics/sql/tv3_check_output.sql
 ```
 
 Khi Superset đang chạy, tạo/cập nhật dashboard TV4:
@@ -73,11 +89,12 @@ docker compose ps
 
 | Service | Truy cập |
 |---|---|
-| AdventureWorks OLTP PostgreSQL | `localhost:5432`, database `Adventureworks` |
+| AdventureWorks OLTP PostgreSQL | `localhost:15432`, database `Adventureworks` |
 | dbt Docs | `http://localhost:8081` |
 | Prefect | `http://localhost:4200` |
 | MLflow | `http://localhost:5000` |
 | Superset | `http://localhost:8088`, tài khoản `admin` / `admin` |
+| Streamlit Analytics | `http://localhost:8501` |
 
 Superset tự tạo kết nối OLTP:
 

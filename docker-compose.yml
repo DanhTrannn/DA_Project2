@@ -76,6 +76,28 @@ services:
       db:
         condition: service_healthy
 
+  streamlit:
+    build:
+      context: ./analytics
+    container_name: adventureworks-streamlit
+    command:
+      - streamlit
+      - run
+      - /app/streamlit/Home.py
+      - --server.address=0.0.0.0
+      - --server.port=8501
+      - --server.headless=true
+    environment:
+      <<: *dbt-environment
+      DB_HOST: db
+      DB_PORT: "5432"
+    ports:
+      - "${STREAMLIT_PORT:-8501}:8501"
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles: ["analytics"]
+
   mlflow:
     build:
       context: ./analytics

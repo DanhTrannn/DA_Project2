@@ -64,10 +64,14 @@ DW, DataMart hoặc bảng `analytics` đã chuẩn hóa.
 | `analytics/dbt/seeds/` | Dữ liệu seed, hiện có macro từ World Bank |
 | `analytics/dbt/scripts/` | Script tải dữ liệu macro chính thức |
 | `analytics/src/aw_analytics/` | Code Python cho Data Mining/analytics |
+| `analytics/streamlit/Home.py` | Entry point của ứng dụng Streamlit chung |
+| `analytics/streamlit/pages/` | Các trang model của TV1, TV2, TV3 |
+| `analytics/sql/` | Truy vấn kiểm tra output analytics |
 | `analytics/orchestration/` | Flow orchestration cho pipeline |
 | `superset/` | Config và bootstrap dashboard Superset |
 | `docs/` | Tài liệu vận hành, KPI, dashboard và cấu trúc đồ án |
 | `run_tv4.sh` | Script chạy pipeline nền TV4 end-to-end |
+| `run_tv3.sh` | Chạy model TV3 và khởi động app Streamlit chung |
 
 ## 4. Các lớp dữ liệu trong PostgreSQL
 
@@ -250,10 +254,11 @@ TV4 làm phần nền trước. Sau đó TV1, TV2, TV3 có thể làm song song 
 1. Chạy `./run_tv4.sh` để dựng nền dữ liệu.
 2. Kiểm tra `audit.source_to_dw_reconciliation` và `audit.data_quality_summary`.
 3. TV1, TV2, TV3 lấy dữ liệu từ mart/analytics đúng phần của mình.
-4. Mỗi thành viên lưu output model về `analytics` hoặc file kết quả có cấu trúc rõ.
-5. TV4 cập nhật Superset dashboard và báo cáo tổng hợp.
-6. Chạy lại dbt/audit để đảm bảo dữ liệu không vỡ.
-7. Demo theo luồng: nguồn dữ liệu, DW, mart, model, dashboard, insight.
+4. Mỗi thành viên lưu output model về schema `analytics`.
+5. Mỗi model có một page trong cùng ứng dụng `analytics/streamlit/`.
+6. TV4 cập nhật Superset dashboard và báo cáo tổng hợp.
+7. Chạy lại dbt/audit để đảm bảo dữ liệu không vỡ.
+8. Demo theo luồng: nguồn dữ liệu, DW, mart, model, dashboard, insight.
 
 ## 9. Giới hạn cần nói rõ trong báo cáo
 

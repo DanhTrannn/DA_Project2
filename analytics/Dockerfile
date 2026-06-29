@@ -12,8 +12,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY dbt ./dbt
 COPY src ./src
 COPY orchestration ./orchestration
+COPY streamlit ./streamlit
 
 ENV PYTHONPATH=/app/src:/app
 
 CMD ["python", "-m", "orchestration.pipeline_flow"]
-

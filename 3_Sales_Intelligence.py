@@ -134,7 +134,24 @@ def load_all():
             if col in summary.columns:
                 summary[col] = pd.to_datetime(summary[col])
 
-    return actual, forecast, metrics, decomp, scenario, summary
+    # Bảng này được tạo bởi tv3_sales_intelligence.py bản Final.
+    # Nếu chưa có, dashboard vẫn chạy bình thường và bỏ qua Territory section.
+    try:
+        territory = read_sql("""
+            select *
+            from analytics.sales_territory_monthly
+            order by month_start, territory
+        """)
+        territory.columns = [c.lower() for c in territory.columns]
+        if not territory.empty and "month_start" in territory.columns:
+            territory["month_start"] = pd.to_datetime(territory["month_start"])
+        for col in ["order_count", "quantity_sold", "revenue", "estimated_cogs", "gross_profit", "gross_margin"]:
+            if col in territory.columns:
+                territory[col] = pd.to_numeric(territory[col], errors="coerce")
+    except Exception:
+        territory = pd.DataFrame()
+
+    return actual, forecast, metrics, decomp, scenario, summary, territory
 
 
 # 4. Insight helpers
@@ -275,6 +292,93 @@ def build_time_level_insight(df):
         f"quý cao nhất: **{best_quarter['quarter']}** ({md_money(best_quarter['revenue'])}); "
         f"tháng cao nhất: **{best_month['month_start'].strftime('%Y-%m')}** ({md_money(best_month['revenue'])})."
     )
+
+
+def build_seasonality_insight(df):
+    if df.empty:
+        return "Chưa đủ dữ liệu để nhận xét mùa vụ."
+
+    month_avg = df.groupby("month_no", as_index=False)["revenue"].mean()
+    high = month_avg.loc[month_avg["revenue"].idxmax()]
+    low = month_avg.loc[month_avg["revenue"].idxmin()]
+
+    outlier_df = df.dropna(subset=["revenue"]).copy()
+    q1 = outlier_df["revenue"].quantile(0.25)
+    q3 = outlier_df["revenue"].quantile(0.75)
+    iqr = q3 - q1
+    lower = q1 - 1.5 * iqr
+    upper = q3 + 1.5 * iqr
+    outliers = outlier_df[(outlier_df["revenue"] < lower) | (outlier_df["revenue"] > upper)]
+
+    text = (
+        f"Theo trung bình tháng, tháng **{int(high['month_no'])}** có revenue cao nhất "
+        f"({md_money(high['revenue'])}), còn tháng **{int(low['month_no'])}** thấp nhất "
+        f"({md_money(low['revenue'])})."
+    )
+
+    if not outliers.empty:
+        months = ", ".join(outliers["month_start"].dt.strftime("%Y-%m").tolist()[:5])
+        text += f" Một số tháng biến động mạnh cần kiểm tra thêm: **{months}**."
+    else:
+        text += " Chưa phát hiện outlier rõ ràng theo quy tắc IQR trên dữ liệu hoàn chỉnh."
+
+    return text
+
+
+def build_territory_insight(territory_df):
+    if territory_df.empty:
+        return "Chưa có dữ liệu Territory để phân tích."
+
+    terr = territory_df.groupby("territory", as_index=False).agg(
+        revenue=("revenue", "sum"),
+        gross_profit=("gross_profit", "sum")
+    )
+
+    best_rev = terr.loc[terr["revenue"].idxmax()]
+    best_profit = terr.loc[terr["gross_profit"].idxmax()]
+
+    negative_profit = terr[terr["gross_profit"] < 0].sort_values("gross_profit")
+
+    text = (
+        f"**{best_rev['territory']}** là territory có revenue cao nhất "
+        f"({md_money(best_rev['revenue'])}). "
+        f"**{best_profit['territory']}** có gross profit cao nhất "
+        f"({md_money(best_profit['gross_profit'])})."
+    )
+
+    if not negative_profit.empty:
+        names = ", ".join(negative_profit["territory"].head(3).tolist())
+        text += f" Một số territory có gross profit âm như **{names}**, cần xem thêm cơ cấu sản phẩm hoặc chi phí."
+
+    return text
+
+
+def build_country_insight(territory_df):
+    if territory_df.empty or "country" not in territory_df.columns:
+        return "Chưa có dữ liệu Country để phân tích."
+
+    country = territory_df.groupby("country", as_index=False).agg(
+        revenue=("revenue", "sum"),
+        gross_profit=("gross_profit", "sum")
+    ).sort_values("revenue", ascending=False)
+
+    if country.empty:
+        return "Chưa có dữ liệu Country để phân tích."
+
+    total_rev = country["revenue"].sum()
+    top = country.iloc[0]
+    share = top["revenue"] / total_rev if total_rev else 0
+
+    next_countries = country.iloc[1:3]["country"].tolist()
+    next_text = " và ".join(next_countries) if next_countries else "các country còn lại"
+
+    return (
+        f"**{top['country']}** đóng góp revenue lớn nhất "
+        f"({md_money(top['revenue'])}, khoảng {pct(share)} tổng revenue). "
+        f"Các thị trường tiếp theo là **{next_text}**. "
+        "Country giúp nhìn ở cấp thị trường quốc gia, còn Territory là cấp chi tiết hơn bên trong từng thị trường."
+    )
+
 
 def build_model_ranking_insight(metrics):
     if metrics.empty:
@@ -436,7 +540,7 @@ st.caption(
 )
 
 try:
-    actual, forecast, metrics, decomp, scenario, summary = load_all()
+    actual, forecast, metrics, decomp, scenario, summary, territory = load_all()
 except Exception as exc:
     st.error("Chưa đọc được dữ liệu. Hãy chạy script `tv3_sales_intelligence.py` trước.")
     st.exception(exc)
@@ -453,6 +557,11 @@ s = summary.iloc[0]
 current_month = pd.to_datetime(s.get("current_month")) if pd.notna(s.get("current_month")) else actual["month_start"].max()
 actual_eda = actual[actual["month_start"] <= current_month].copy()
 excluded_actual = actual[actual["month_start"] > current_month].copy()
+
+if not territory.empty and "month_start" in territory.columns:
+    territory_eda = territory[territory["month_start"] <= current_month].copy()
+else:
+    territory_eda = pd.DataFrame()
 
 
 # 6. KPI cards
@@ -550,7 +659,25 @@ with tab_year:
 st.markdown("**Insight theo thời gian:**")
 st.markdown(build_time_level_insight(eda_features))
 
-st.subheader("6. Revenue Growth")
+st.subheader("6. Seasonality Heatmap")
+heatmap_df = eda_features.pivot_table(
+    index="year",
+    columns="month_no",
+    values="revenue",
+    aggfunc="sum"
+).sort_index()
+fig_heatmap = px.imshow(
+    heatmap_df,
+    aspect="auto",
+    text_auto=".2s",
+    title="Revenue Heatmap: Year × Month",
+    labels=dict(x="Month", y="Year", color="Revenue")
+)
+st.plotly_chart(fig_heatmap, use_container_width=True)
+st.markdown("**Insight mùa vụ:**")
+st.markdown(build_seasonality_insight(eda_features))
+
+st.subheader("7. Revenue Growth")
 growth_plot = eda_features.dropna(subset=["mom_growth"]).copy()
 growth_plot["mom_growth_pct"] = growth_plot["mom_growth"] * 100
 growth_plot["yoy_growth_pct"] = growth_plot["yoy_growth"] * 100
@@ -584,7 +711,7 @@ with right:
 st.markdown("**Insight tăng trưởng:**")
 st.markdown(build_growth_insight(eda_features))
 
-st.subheader("7. Gross Profit and Gross Margin")
+st.subheader("8. Gross Profit and Gross Margin")
 left, right = st.columns(2)
 with left:
     fig_gp = px.line(
@@ -610,7 +737,7 @@ with right:
 st.markdown("**Insight lợi nhuận:**")
 st.markdown(build_profit_insight(eda_features))
 
-st.subheader("8. Revenue Driver Analysis")
+st.subheader("9. Revenue Driver Analysis")
 driver_df = eda_features[["month_start", "revenue", "order_count", "quantity_sold", "aov"]].copy()
 # Chuẩn hóa về index 100 để so sánh xu hướng các chỉ số khác đơn vị.
 for col in ["revenue", "order_count", "quantity_sold", "aov"]:
@@ -658,6 +785,102 @@ if not excluded_actual.empty:
 for item in build_eda_insights(actual_eda):
     st.markdown(f"- {item}")
 
+st.subheader("10. Territory Analysis")
+if territory_eda.empty:
+    st.info("Chưa có bảng `analytics.sales_territory_monthly`. Hãy chạy lại `tv3_sales_intelligence.py` bản Final để tạo dữ liệu Territory.")
+else:
+    terr_summary = territory_eda.groupby("territory", as_index=False).agg(
+        revenue=("revenue", "sum"),
+        gross_profit=("gross_profit", "sum"),
+        order_count=("order_count", "sum")
+    ).sort_values("revenue", ascending=False)
+
+    left, right = st.columns(2)
+    with left:
+        fig_terr_rev = px.bar(
+            terr_summary.head(10),
+            x="territory",
+            y="revenue",
+            text_auto=".2s",
+            title="Top Territory by Revenue"
+        )
+        fig_terr_rev.update_layout(xaxis_title="Territory", yaxis_title="Revenue")
+        st.plotly_chart(fig_terr_rev, use_container_width=True)
+
+    with right:
+        fig_terr_profit = px.bar(
+            terr_summary.sort_values("gross_profit", ascending=False).head(10),
+            x="territory",
+            y="gross_profit",
+            text_auto=".2s",
+            title="Top Territory by Gross Profit"
+        )
+        fig_terr_profit.update_layout(xaxis_title="Territory", yaxis_title="Gross Profit")
+        st.plotly_chart(fig_terr_profit, use_container_width=True)
+
+    top5_territories = terr_summary.head(5)["territory"].tolist()
+    monthly_territory = (
+        territory_eda[territory_eda["territory"].isin(top5_territories)]
+        .groupby(["month_start", "territory"], as_index=False)["revenue"]
+        .sum()
+    )
+
+    fig_terr_month = px.line(
+        monthly_territory,
+        x="month_start",
+        y="revenue",
+        color="territory",
+        markers=True,
+        title="Monthly Revenue Trend - Top 5 Territories"
+    )
+    fig_terr_month.update_layout(xaxis_title="Month", yaxis_title="Revenue")
+    st.plotly_chart(fig_terr_month, use_container_width=True)
+
+    st.markdown("**Insight Territory:**")
+    st.markdown(build_territory_insight(territory_eda))
+
+    st.subheader("11. Country Analysis")
+    if "country" not in territory_eda.columns:
+        st.info("Bảng Territory hiện chưa có cột country.")
+    else:
+        country_summary = territory_eda.groupby("country", as_index=False).agg(
+            revenue=("revenue", "sum"),
+            gross_profit=("gross_profit", "sum")
+        ).sort_values("revenue", ascending=False)
+
+        c_left, c_right = st.columns(2)
+        with c_left:
+            fig_country_rev = px.bar(
+                country_summary,
+                x="country",
+                y="revenue",
+                text_auto=".2s",
+                title="Revenue by Country"
+            )
+            fig_country_rev.update_layout(xaxis_title="Country", yaxis_title="Revenue")
+            st.plotly_chart(fig_country_rev, use_container_width=True)
+
+        with c_right:
+            fig_country_profit = px.bar(
+                country_summary.sort_values("gross_profit", ascending=False),
+                x="country",
+                y="gross_profit",
+                text_auto=".2s",
+                title="Gross Profit by Country"
+            )
+            fig_country_profit.update_layout(xaxis_title="Country", yaxis_title="Gross Profit")
+            st.plotly_chart(fig_country_profit, use_container_width=True)
+
+        fig_country_share = px.treemap(
+            country_summary,
+            path=["country"],
+            values="revenue",
+            title="Revenue Share by Country"
+        )
+        st.plotly_chart(fig_country_share, use_container_width=True)
+
+        st.markdown("**Insight Country:**")
+        st.markdown(build_country_insight(territory_eda))
 
 st.divider()
 

@@ -103,9 +103,75 @@ def load_monthly_sales(engine):
     return out
 
 
-def split_train_test(df):
-    train = df.iloc[:-6].copy()   # 31 tháng đầu
-    test = df.iloc[-6:].copy()    # 6 tháng cuối
+
+
+def build_territory_sales(engine):
+    query = """
+        select
+            date_trunc('month', h.orderdate)::date as month_start,
+            coalesce(t.name, 'Unknown') as territory,
+            coalesce(t.countryregioncode, 'Unknown') as country,
+            coalesce(t."group", 'Unknown') as territory_group,
+            count(distinct h.salesorderid) as order_count,
+            sum(d.orderqty) as quantity_sold,
+            sum(d.orderqty * d.unitprice * (1 - coalesce(d.unitpricediscount, 0))) as revenue,
+            sum(d.orderqty * coalesce(p.standardcost, 0)) as estimated_cogs,
+            sum(
+                d.orderqty * d.unitprice * (1 - coalesce(d.unitpricediscount, 0))
+                - d.orderqty * coalesce(p.standardcost, 0)
+            ) as gross_profit,
+            case
+                when sum(d.orderqty * d.unitprice * (1 - coalesce(d.unitpricediscount, 0))) = 0 then null
+                else
+                    sum(
+                        d.orderqty * d.unitprice * (1 - coalesce(d.unitpricediscount, 0))
+                        - d.orderqty * coalesce(p.standardcost, 0)
+                    )
+                    / sum(d.orderqty * d.unitprice * (1 - coalesce(d.unitpricediscount, 0)))
+            end as gross_margin
+        from sales.salesorderheader h
+        join sales.salesorderdetail d
+            on h.salesorderid = d.salesorderid
+        join production.product p
+            on d.productid = p.productid
+        left join sales.salesterritory t
+            on h.territoryid = t.territoryid
+        group by
+            date_trunc('month', h.orderdate)::date,
+            coalesce(t.name, 'Unknown'),
+            coalesce(t.countryregioncode, 'Unknown'),
+            coalesce(t."group", 'Unknown')
+        order by
+            month_start,
+            territory
+    """
+
+    try:
+        territory_df = pd.read_sql(query, engine)
+        territory_df.columns = [c.lower() for c in territory_df.columns]
+
+        for col in [
+            "order_count", "quantity_sold", "revenue",
+            "estimated_cogs", "gross_profit", "gross_margin"
+        ]:
+            territory_df[col] = pd.to_numeric(territory_df[col], errors="coerce")
+
+        territory_df["month_start"] = pd.to_datetime(territory_df["month_start"]).dt.date
+        return territory_df
+
+    except Exception as exc:
+        print(f"Territory analysis skipped: {exc}")
+        return pd.DataFrame(columns=[
+            "month_start", "territory", "country", "territory_group",
+            "order_count", "quantity_sold", "revenue",
+            "estimated_cogs", "gross_profit", "gross_margin"
+        ])
+
+
+def split_train_test(df, test_size=6):
+    """Chia train/test theo thứ tự thời gian, không shuffle."""
+    train = df.iloc[:-test_size].copy()
+    test = df.iloc[-test_size:].copy()
 
     return train, test
 
@@ -420,7 +486,7 @@ def build_executive_summary(df, metric_df, future_df):
     }])
 
 
-def save_outputs(engine, forecast_df, metric_df, future_df, decomp_df, scenario_df, summary_df):
+def save_outputs(engine, forecast_df, metric_df, future_df, decomp_df, scenario_df, summary_df, territory_df):
     full_forecast_df = pd.concat([forecast_df, future_df], ignore_index=True)
 
     with engine.begin() as conn:
@@ -431,7 +497,8 @@ def save_outputs(engine, forecast_df, metric_df, future_df, decomp_df, scenario_
             "sales_forecast_metric",
             "sales_forecast_decomposition",
             "sales_forecast_scenario",
-            "sales_forecast_summary"
+            "sales_forecast_summary",
+            "sales_territory_monthly"
         ]:
             conn.execute(text(f"drop table if exists analytics.{table}"))
 
@@ -469,6 +536,14 @@ def save_outputs(engine, forecast_df, metric_df, future_df, decomp_df, scenario_
 
     summary_df.to_sql(
         "sales_forecast_summary",
+        engine,
+        schema="analytics",
+        if_exists="replace",
+        index=False
+    )
+
+    territory_df.to_sql(
+        "sales_territory_monthly",
         engine,
         schema="analytics",
         if_exists="replace",
@@ -513,6 +588,7 @@ def main():
     decomp_df = build_decomposition(df, cfg)
     scenario_df = build_scenarios(future_df)
     summary_df = build_executive_summary(df, metric_df, future_df)
+    territory_df = build_territory_sales(engine)
 
     save_outputs(
         engine,
@@ -521,7 +597,8 @@ def main():
         future_df,
         decomp_df,
         scenario_df,
-        summary_df
+        summary_df,
+        territory_df
     )
 
     print("Saved outputs to analytics schema:")
@@ -530,6 +607,7 @@ def main():
     print("- analytics.sales_forecast_decomposition")
     print("- analytics.sales_forecast_scenario")
     print("- analytics.sales_forecast_summary")
+    print("- analytics.sales_territory_monthly")
 
     print("Executive summary:")
     print(summary_df.T)

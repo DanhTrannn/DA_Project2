@@ -144,9 +144,11 @@ verify_output "TV2 association rules" "analytics.product_association_rules" 10
 verify_output "TV3 sales forecast" "analytics.sales_forecast" 1
 
 echo
-echo "=== 6/7 Bootstrapping the Superset dashboard ==="
+echo "=== 6/7 Bootstrapping the Superset dashboards ==="
 wait_http "Superset" "http://localhost:${superset_port}/health"
-docker compose exec -T superset python - < superset/bootstrap_tv4.py
+docker compose exec -T superset python /app/bootstrap/bootstrap_tv4.py
+docker compose exec -T superset python /app/bootstrap/bootstrap_tv2.py
+docker compose exec -T superset python /app/bootstrap/bootstrap_tv3.py
 
 echo
 echo "=== 7/7 Starting and validating analytics applications ==="
@@ -169,6 +171,9 @@ echo
 echo "Full pipeline completed successfully."
 echo "Streamlit : http://localhost:${streamlit_port}"
 echo "Superset  : http://localhost:${superset_port} (admin/admin by default)"
+echo "TV2 BI    : http://localhost:${superset_port}/superset/dashboard/adventureworks-tv2-product-analytics/"
+echo "TV3 BI    : http://localhost:${superset_port}/superset/dashboard/adventureworks-tv3-sales-forecast/"
+echo "TV4 BI    : http://localhost:${superset_port}/superset/dashboard/adventureworks-tv4-executive-macro/"
 echo "MLflow    : http://localhost:${mlflow_port}"
 echo "dbt Docs  : http://localhost:${dbt_docs_port}"
 echo "Prefect   : http://localhost:${prefect_port}"

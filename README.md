@@ -19,15 +19,13 @@ pipeline này cung cấp.
 - dbt data tests và Prefect flow end-to-end.
 - Giao diện dbt Docs, Prefect, MLflow và Superset.
 
-Các phần do TV2 tiếp tục triển khai:
-
-- Apriori/FP-Growth market basket.
-- Tích hợp trang Streamlit Market Basket.
-- Tạo chart Superset từ dashboard spec.
-- AdventureWorksDW tùy chọn.
-
 TV1 đã triển khai Customer Analytics với RFM + K-Means.
+TV2 đã triển khai Product Analytics, FP-Growth, Streamlit Market Basket và
+dashboard Superset Product Performance tập trung vào revenue concentration và
+margin risk.
 TV3 đã triển khai Sales Forecast Analytics trong ứng dụng Streamlit chung.
+
+AdventureWorksDW vẫn là thành phần tùy chọn, không được dùng bởi pipeline chính.
 
 AdventureWorks OLTP không có sổ cái tài chính và dữ liệu công nợ hoàn chỉnh.
 KPI lợi nhuận, lỗ/lãi, nợ và tác động vĩ mô cần business rule hoặc nguồn dữ
@@ -68,10 +66,12 @@ Xem nhanh các bảng kết quả TV3 bằng PostgreSQL:
 docker compose exec -T db psql -U postgres -d Adventureworks < analytics/sql/tv3_check_output.sql
 ```
 
-Khi Superset đang chạy, tạo/cập nhật dashboard TV4:
+Khi Superset đang chạy, tạo/cập nhật các dashboard:
 
 ```bash
-python3 superset/bootstrap_tv4.py
+docker compose exec -T superset python /app/bootstrap/bootstrap_tv4.py
+docker compose exec -T superset python /app/bootstrap/bootstrap_tv2.py
+docker compose exec -T superset python /app/bootstrap/bootstrap_tv3.py
 ```
 
 Khởi động một service và dependency của nó:
@@ -100,6 +100,8 @@ docker compose ps
 | Prefect | `http://localhost:4200` |
 | MLflow | `http://localhost:5000` |
 | Superset | `http://localhost:8088`, tài khoản `admin` / `admin` |
+| Superset TV2 | `http://localhost:8088/superset/dashboard/adventureworks-tv2-product-analytics/` |
+| Superset TV3 | `http://localhost:8088/superset/dashboard/adventureworks-tv3-sales-forecast/` |
 | Streamlit Analytics | `http://localhost:8501` |
 
 Superset tự tạo kết nối OLTP:
@@ -179,6 +181,8 @@ Tài liệu vận hành:
 - `docs/TV4_RUNBOOK.md`
 - `docs/TV4_KPI_DICTIONARY.md`
 - `docs/SUPERSET_TV4_DASHBOARD.md`
+- `docs/SUPERSET_TV2_DASHBOARD.md`
+- `docs/SUPERSET_TV3_DASHBOARD.md`
 
 ## AdventureWorksDW tùy chọn
 

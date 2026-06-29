@@ -103,6 +103,14 @@ models:
       - name: month
         data_tests: [not_null, unique]
 
+  - name: monthly_sales_eda
+    description: Complete-month EDA series with calendar and YoY attributes for Superset TV3.
+    columns:
+      - name: month
+        data_tests: [not_null, unique]
+      - name: is_complete_month
+        data_tests: [not_null]
+
   - name: macro_observation_standardized
     description: Standardized World Bank macro observations by country, year and indicator.
     columns:
@@ -159,4 +167,3 @@ seeds:
         data_tests: [not_null]
       - name: value
         data_tests: [not_null]
-

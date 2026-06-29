@@ -40450,3 +40450,1291 @@ select distinct
 [0m06:42:31.173152 [debug] [MainThread]: running dbt with arguments {'write_json': 'True', 'send_anonymous_usage_stats': 'True', 'empty': 'None', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'quiet': 'False', 'log_cache_events': 'False', 'invocation_command': 'dbt docs serve --host 0.0.0.0 --port 8080 --project-dir /app/dbt --profiles-dir /app/dbt', 'fail_fast': 'False', 'indirect_selection': 'eager', 'use_experimental_parser': 'False', 'version_check': 'True', 'use_colors': 'True', 'log_path': '/app/dbt/logs', 'printer_width': '80', 'cache_selected_only': 'False', 'no_print': 'None', 'introspect': 'True', 'target_path': 'None', 'warn_error': 'None', 'partial_parse': 'True', 'profiles_dir': '/app/dbt', 'log_format': 'default', 'static_parser': 'True', 'debug': 'False'}
 [0m06:42:31.792903 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': '770fb3f8-c30b-462d-92e2-b1caca72cea2', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7ba791fa3110>]}
 [0m06:42:32.003099 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': '770fb3f8-c30b-462d-92e2-b1caca72cea2', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7ba794db47d0>]}
+[0m05:05:46.075274 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x752a187d8470>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x752a17c5cc80>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x752a188f4680>]}
+
+
+============================== 05:05:46.087010 | ae20bf6d-df00-4293-b28e-6340713e2dcc ==============================
+[0m05:05:46.087010 [info ] [MainThread]: Running with dbt=1.11.11
+[0m05:05:46.089032 [debug] [MainThread]: running dbt with arguments {'target_path': 'None', 'cache_selected_only': 'False', 'profiles_dir': '/app/dbt', 'send_anonymous_usage_stats': 'True', 'introspect': 'True', 'no_print': 'None', 'quiet': 'False', 'invocation_command': 'dbt docs generate --project-dir /app/dbt --profiles-dir /app/dbt', 'version_check': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'write_json': 'True', 'log_path': '/app/dbt/logs', 'fail_fast': 'False', 'printer_width': '80', 'partial_parse': 'True', 'log_format': 'default', 'indirect_selection': 'eager', 'empty': 'None', 'use_experimental_parser': 'False', 'log_cache_events': 'False', 'static_parser': 'True', 'debug': 'False', 'warn_error': 'None', 'use_colors': 'True'}
+[0m05:05:46.475866 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': 'ae20bf6d-df00-4293-b28e-6340713e2dcc', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x752a176eb260>]}
+[0m05:05:46.628314 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': 'ae20bf6d-df00-4293-b28e-6340713e2dcc', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x752a1a270200>]}
+[0m05:05:46.633544 [info ] [MainThread]: Registered adapter: postgres=1.10.2
+[0m05:05:46.778967 [debug] [MainThread]: checksum: 30a8cc8fdcbf66701b0944d4ccce3fa46dd04b61e5df68b9f16d57b2e0e3f0be, vars: {}, profile: , target: , version: 1.11.11
+[0m05:05:50.162355 [debug] [MainThread]: Partial parsing enabled: 0 files deleted, 0 files added, 0 files changed.
+[0m05:05:50.171758 [debug] [MainThread]: Nothing changed, skipping partial parsing.
+[0m05:05:50.172849 [debug] [MainThread]: Partial parsing enabled, no changes found, skipping parsing
+[0m05:05:50.362852 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'load_project', 'label': 'ae20bf6d-df00-4293-b28e-6340713e2dcc', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x752a165dbef0>]}
+[0m05:05:50.556138 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'resource_counts', 'label': 'ae20bf6d-df00-4293-b28e-6340713e2dcc', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x752a15582300>]}
+[0m05:05:50.562396 [info ] [MainThread]: Found 34 models, 94 data tests, 1 seed, 13 sources, 476 macros
+[0m05:05:50.566740 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': 'ae20bf6d-df00-4293-b28e-6340713e2dcc', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x752a159ca900>]}
+[0m05:05:50.584912 [info ] [MainThread]: 
+[0m05:05:50.590798 [info ] [MainThread]: Concurrency: 4 threads (target='dev')
+[0m05:05:50.592241 [info ] [MainThread]: 
+[0m05:05:50.594353 [debug] [MainThread]: Acquiring new postgres connection 'master'
+[0m05:05:50.627028 [debug] [ThreadPool]: Acquiring new postgres connection 'list_Adventureworks_analytics'
+[0m05:05:50.628343 [debug] [ThreadPool]: Acquiring new postgres connection 'list_Adventureworks_mart_product'
+[0m05:05:50.629522 [debug] [ThreadPool]: Acquiring new postgres connection 'list_Adventureworks_raw_macro'
+[0m05:05:50.630640 [debug] [ThreadPool]: Acquiring new postgres connection 'list_Adventureworks_mart_customer'
+[0m05:05:50.813599 [debug] [ThreadPool]: Using postgres connection "list_Adventureworks_raw_macro"
+[0m05:05:50.814436 [debug] [ThreadPool]: Using postgres connection "list_Adventureworks_mart_product"
+[0m05:05:50.814991 [debug] [ThreadPool]: Using postgres connection "list_Adventureworks_analytics"
+[0m05:05:50.815492 [debug] [ThreadPool]: Using postgres connection "list_Adventureworks_mart_customer"
+[0m05:05:50.860425 [debug] [ThreadPool]: On list_Adventureworks_raw_macro: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "adventureworks_analytics", "target_name": "dev", "connection_name": "list_Adventureworks_raw_macro"} */
+select
+      'Adventureworks' as database,
+      tablename as name,
+      schemaname as schema,
+      'table' as type
+    from pg_tables
+    where schemaname ilike 'raw_macro'
+    union all
+    select
+      'Adventureworks' as database,
+      viewname as name,
+      schemaname as schema,
+      'view' as type
+    from pg_views
+    where schemaname ilike 'raw_macro'
+    union all
+    select
+      'Adventureworks' as database,
+      matviewname as name,
+      schemaname as schema,
+      'materialized_view' as type
+    from pg_matviews
+    where schemaname ilike 'raw_macro'
+  
+[0m05:05:50.879805 [debug] [ThreadPool]: On list_Adventureworks_mart_product: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "adventureworks_analytics", "target_name": "dev", "connection_name": "list_Adventureworks_mart_product"} */
+select
+      'Adventureworks' as database,
+      tablename as name,
+      schemaname as schema,
+      'table' as type
+    from pg_tables
+    where schemaname ilike 'mart_product'
+    union all
+    select
+      'Adventureworks' as database,
+      viewname as name,
+      schemaname as schema,
+      'view' as type
+    from pg_views
+    where schemaname ilike 'mart_product'
+    union all
+    select
+      'Adventureworks' as database,
+      matviewname as name,
+      schemaname as schema,
+      'materialized_view' as type
+    from pg_matviews
+    where schemaname ilike 'mart_product'
+  
+[0m05:05:51.113494 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m05:05:50.997627 [debug] [ThreadPool]: On list_Adventureworks_mart_customer: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "adventureworks_analytics", "target_name": "dev", "connection_name": "list_Adventureworks_mart_customer"} */
+select
+      'Adventureworks' as database,
+      tablename as name,
+      schemaname as schema,
+      'table' as type
+    from pg_tables
+    where schemaname ilike 'mart_customer'
+    union all
+    select
+      'Adventureworks' as database,
+      viewname as name,
+      schemaname as schema,
+      'view' as type
+    from pg_views
+    where schemaname ilike 'mart_customer'
+    union all
+    select
+      'Adventureworks' as database,
+      matviewname as name,
+      schemaname as schema,
+      'materialized_view' as type
+    from pg_matviews
+    where schemaname ilike 'mart_customer'
+  
+[0m05:05:51.054389 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m05:05:50.950498 [debug] [ThreadPool]: On list_Adventureworks_analytics: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "adventureworks_analytics", "target_name": "dev", "connection_name": "list_Adventureworks_analytics"} */
+select
+      'Adventureworks' as database,
+      tablename as name,
+      schemaname as schema,
+      'table' as type
+    from pg_tables
+    where schemaname ilike 'analytics'
+    union all
+    select
+      'Adventureworks' as database,
+      viewname as name,
+      schemaname as schema,
+      'view' as type
+    from pg_views
+    where schemaname ilike 'analytics'
+    union all
+    select
+      'Adventureworks' as database,
+      matviewname as name,
+      schemaname as schema,
+      'materialized_view' as type
+    from pg_matviews
+    where schemaname ilike 'analytics'
+  
+[0m05:05:51.177919 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m05:05:51.214389 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m05:05:51.297777 [debug] [ThreadPool]: SQL status: SELECT 2 in 0.120 seconds
+[0m05:05:51.299307 [debug] [ThreadPool]: SQL status: SELECT 1 in 0.245 seconds
+[0m05:05:51.299835 [debug] [ThreadPool]: SQL status: SELECT 1 in 0.186 seconds
+[0m05:05:51.300272 [debug] [ThreadPool]: SQL status: SELECT 10 in 0.086 seconds
+[0m05:05:51.319889 [debug] [ThreadPool]: On list_Adventureworks_mart_customer: ROLLBACK
+[0m05:05:51.329389 [debug] [ThreadPool]: On list_Adventureworks_raw_macro: ROLLBACK
+[0m05:05:51.344828 [debug] [ThreadPool]: On list_Adventureworks_mart_product: ROLLBACK
+[0m05:05:51.355066 [debug] [ThreadPool]: On list_Adventureworks_analytics: ROLLBACK
+[0m05:05:51.366427 [debug] [ThreadPool]: On list_Adventureworks_mart_customer: Close
+[0m05:05:51.378538 [debug] [ThreadPool]: On list_Adventureworks_raw_macro: Close
+[0m05:05:51.391560 [debug] [ThreadPool]: On list_Adventureworks_mart_product: Close
+[0m05:05:51.430927 [debug] [ThreadPool]: Re-using an available connection from the pool (formerly list_Adventureworks_mart_product, now list_Adventureworks_staging)
+[0m05:05:51.416050 [debug] [ThreadPool]: Re-using an available connection from the pool (formerly list_Adventureworks_mart_customer, now list_Adventureworks_mart_finance)
+[0m05:05:51.423811 [debug] [ThreadPool]: Re-using an available connection from the pool (formerly list_Adventureworks_raw_macro, now list_Adventureworks_mart_sales)
+[0m05:05:51.397537 [debug] [ThreadPool]: On list_Adventureworks_analytics: Close
+[0m05:05:51.447863 [debug] [ThreadPool]: Using postgres connection "list_Adventureworks_staging"
+[0m05:05:51.480756 [debug] [ThreadPool]: On list_Adventureworks_staging: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "adventureworks_analytics", "target_name": "dev", "connection_name": "list_Adventureworks_staging"} */
+select
+      'Adventureworks' as database,
+      tablename as name,
+      schemaname as schema,
+      'table' as type
+    from pg_tables
+    where schemaname ilike 'staging'
+    union all
+    select
+      'Adventureworks' as database,
+      viewname as name,
+      schemaname as schema,
+      'view' as type
+    from pg_views
+    where schemaname ilike 'staging'
+    union all
+    select
+      'Adventureworks' as database,
+      matviewname as name,
+      schemaname as schema,
+      'materialized_view' as type
+    from pg_matviews
+    where schemaname ilike 'staging'
+  
+[0m05:05:51.470365 [debug] [ThreadPool]: Using postgres connection "list_Adventureworks_mart_sales"
+[0m05:05:51.477899 [debug] [ThreadPool]: Re-using an available connection from the pool (formerly list_Adventureworks_analytics, now list_Adventureworks_mart_macro)
+[0m05:05:51.460744 [debug] [ThreadPool]: Using postgres connection "list_Adventureworks_mart_finance"
+[0m05:05:51.496221 [debug] [ThreadPool]: On list_Adventureworks_mart_finance: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "adventureworks_analytics", "target_name": "dev", "connection_name": "list_Adventureworks_mart_finance"} */
+select
+      'Adventureworks' as database,
+      tablename as name,
+      schemaname as schema,
+      'table' as type
+    from pg_tables
+    where schemaname ilike 'mart_finance'
+    union all
+    select
+      'Adventureworks' as database,
+      viewname as name,
+      schemaname as schema,
+      'view' as type
+    from pg_views
+    where schemaname ilike 'mart_finance'
+    union all
+    select
+      'Adventureworks' as database,
+      matviewname as name,
+      schemaname as schema,
+      'materialized_view' as type
+    from pg_matviews
+    where schemaname ilike 'mart_finance'
+  
+[0m05:05:51.486293 [debug] [ThreadPool]: On list_Adventureworks_mart_sales: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "adventureworks_analytics", "target_name": "dev", "connection_name": "list_Adventureworks_mart_sales"} */
+select
+      'Adventureworks' as database,
+      tablename as name,
+      schemaname as schema,
+      'table' as type
+    from pg_tables
+    where schemaname ilike 'mart_sales'
+    union all
+    select
+      'Adventureworks' as database,
+      viewname as name,
+      schemaname as schema,
+      'view' as type
+    from pg_views
+    where schemaname ilike 'mart_sales'
+    union all
+    select
+      'Adventureworks' as database,
+      matviewname as name,
+      schemaname as schema,
+      'materialized_view' as type
+    from pg_matviews
+    where schemaname ilike 'mart_sales'
+  
+[0m05:05:51.503913 [debug] [ThreadPool]: Opening a new connection, currently in state closed
+[0m05:05:51.483927 [debug] [ThreadPool]: Opening a new connection, currently in state closed
+[0m05:05:51.497654 [debug] [ThreadPool]: Opening a new connection, currently in state closed
+[0m05:05:51.493328 [debug] [ThreadPool]: Using postgres connection "list_Adventureworks_mart_macro"
+[0m05:05:51.530636 [debug] [ThreadPool]: On list_Adventureworks_mart_macro: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "adventureworks_analytics", "target_name": "dev", "connection_name": "list_Adventureworks_mart_macro"} */
+select
+      'Adventureworks' as database,
+      tablename as name,
+      schemaname as schema,
+      'table' as type
+    from pg_tables
+    where schemaname ilike 'mart_macro'
+    union all
+    select
+      'Adventureworks' as database,
+      viewname as name,
+      schemaname as schema,
+      'view' as type
+    from pg_views
+    where schemaname ilike 'mart_macro'
+    union all
+    select
+      'Adventureworks' as database,
+      matviewname as name,
+      schemaname as schema,
+      'materialized_view' as type
+    from pg_matviews
+    where schemaname ilike 'mart_macro'
+  
+[0m05:05:51.531429 [debug] [ThreadPool]: SQL status: SELECT 3 in 0.027 seconds
+[0m05:05:51.538334 [debug] [ThreadPool]: SQL status: SELECT 1 in 0.041 seconds
+[0m05:05:51.549903 [debug] [ThreadPool]: On list_Adventureworks_mart_finance: ROLLBACK
+[0m05:05:51.546176 [debug] [ThreadPool]: SQL status: SELECT 13 in 0.062 seconds
+[0m05:05:51.552537 [debug] [ThreadPool]: On list_Adventureworks_mart_sales: ROLLBACK
+[0m05:05:51.538950 [debug] [ThreadPool]: Opening a new connection, currently in state closed
+[0m05:05:51.553123 [debug] [ThreadPool]: On list_Adventureworks_mart_finance: Close
+[0m05:05:51.560116 [debug] [ThreadPool]: Re-using an available connection from the pool (formerly list_Adventureworks_mart_finance, now list_Adventureworks_audit)
+[0m05:05:51.557838 [debug] [ThreadPool]: On list_Adventureworks_mart_sales: Close
+[0m05:05:51.555743 [debug] [ThreadPool]: On list_Adventureworks_staging: ROLLBACK
+[0m05:05:51.577324 [debug] [ThreadPool]: On list_Adventureworks_staging: Close
+[0m05:05:51.583220 [debug] [ThreadPool]: Re-using an available connection from the pool (formerly list_Adventureworks_staging, now list_Adventureworks_mart_sales_forecast)
+[0m05:05:51.567679 [debug] [ThreadPool]: Using postgres connection "list_Adventureworks_audit"
+[0m05:05:51.572529 [debug] [ThreadPool]: Re-using an available connection from the pool (formerly list_Adventureworks_mart_sales, now list_Adventureworks_core_dw)
+[0m05:05:51.604832 [debug] [ThreadPool]: Using postgres connection "list_Adventureworks_core_dw"
+[0m05:05:51.589527 [debug] [ThreadPool]: SQL status: SELECT 2 in 0.051 seconds
+[0m05:05:51.616603 [debug] [ThreadPool]: On list_Adventureworks_mart_macro: ROLLBACK
+[0m05:05:51.588877 [debug] [ThreadPool]: Using postgres connection "list_Adventureworks_mart_sales_forecast"
+[0m05:05:51.642158 [debug] [ThreadPool]: On list_Adventureworks_mart_sales_forecast: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "adventureworks_analytics", "target_name": "dev", "connection_name": "list_Adventureworks_mart_sales_forecast"} */
+select
+      'Adventureworks' as database,
+      tablename as name,
+      schemaname as schema,
+      'table' as type
+    from pg_tables
+    where schemaname ilike 'mart_sales_forecast'
+    union all
+    select
+      'Adventureworks' as database,
+      viewname as name,
+      schemaname as schema,
+      'view' as type
+    from pg_views
+    where schemaname ilike 'mart_sales_forecast'
+    union all
+    select
+      'Adventureworks' as database,
+      matviewname as name,
+      schemaname as schema,
+      'materialized_view' as type
+    from pg_matviews
+    where schemaname ilike 'mart_sales_forecast'
+  
+[0m05:05:51.647521 [debug] [ThreadPool]: Opening a new connection, currently in state closed
+[0m05:05:51.633518 [debug] [ThreadPool]: On list_Adventureworks_mart_macro: Close
+[0m05:05:51.610768 [debug] [ThreadPool]: On list_Adventureworks_core_dw: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "adventureworks_analytics", "target_name": "dev", "connection_name": "list_Adventureworks_core_dw"} */
+select
+      'Adventureworks' as database,
+      tablename as name,
+      schemaname as schema,
+      'table' as type
+    from pg_tables
+    where schemaname ilike 'core_dw'
+    union all
+    select
+      'Adventureworks' as database,
+      viewname as name,
+      schemaname as schema,
+      'view' as type
+    from pg_views
+    where schemaname ilike 'core_dw'
+    union all
+    select
+      'Adventureworks' as database,
+      matviewname as name,
+      schemaname as schema,
+      'materialized_view' as type
+    from pg_matviews
+    where schemaname ilike 'core_dw'
+  
+[0m05:05:51.650926 [debug] [ThreadPool]: Opening a new connection, currently in state closed
+[0m05:05:51.591044 [debug] [ThreadPool]: On list_Adventureworks_audit: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "adventureworks_analytics", "target_name": "dev", "connection_name": "list_Adventureworks_audit"} */
+select
+      'Adventureworks' as database,
+      tablename as name,
+      schemaname as schema,
+      'table' as type
+    from pg_tables
+    where schemaname ilike 'audit'
+    union all
+    select
+      'Adventureworks' as database,
+      viewname as name,
+      schemaname as schema,
+      'view' as type
+    from pg_views
+    where schemaname ilike 'audit'
+    union all
+    select
+      'Adventureworks' as database,
+      matviewname as name,
+      schemaname as schema,
+      'materialized_view' as type
+    from pg_matviews
+    where schemaname ilike 'audit'
+  
+[0m05:05:51.654499 [debug] [ThreadPool]: Opening a new connection, currently in state closed
+[0m05:05:51.673649 [debug] [ThreadPool]: SQL status: SELECT 1 in 0.026 seconds
+[0m05:05:51.677773 [debug] [ThreadPool]: On list_Adventureworks_mart_sales_forecast: ROLLBACK
+[0m05:05:51.678589 [debug] [ThreadPool]: SQL status: SELECT 2 in 0.024 seconds
+[0m05:05:51.679090 [debug] [ThreadPool]: SQL status: SELECT 6 in 0.028 seconds
+[0m05:05:51.681650 [debug] [ThreadPool]: On list_Adventureworks_mart_sales_forecast: Close
+[0m05:05:51.686818 [debug] [ThreadPool]: On list_Adventureworks_audit: ROLLBACK
+[0m05:05:51.691128 [debug] [ThreadPool]: On list_Adventureworks_core_dw: ROLLBACK
+[0m05:05:51.700195 [debug] [ThreadPool]: On list_Adventureworks_audit: Close
+[0m05:05:51.704601 [debug] [ThreadPool]: On list_Adventureworks_core_dw: Close
+[0m05:05:51.754758 [debug] [MainThread]: Using postgres connection "master"
+[0m05:05:51.757952 [debug] [MainThread]: On master: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "adventureworks_analytics", "target_name": "dev", "connection_name": "master"} */
+select distinct
+        dependent_namespace.nspname as dependent_schema,
+        dependent_class.relname as dependent_name,
+        referenced_namespace.nspname as referenced_schema,
+        referenced_class.relname as referenced_name
+
+    -- Query for views: views are entries in pg_class with an entry in pg_rewrite, but we avoid
+    -- a seq scan on pg_rewrite by leveraging the fact there is an "internal" row in pg_depend for
+    -- the view...
+    from pg_class as dependent_class
+    join pg_namespace as dependent_namespace on dependent_namespace.oid = dependent_class.relnamespace
+    join pg_depend as dependent_depend on dependent_depend.refobjid = dependent_class.oid
+        and dependent_depend.classid = 'pg_rewrite'::regclass
+        and dependent_depend.refclassid = 'pg_class'::regclass
+        and dependent_depend.deptype = 'i'
+
+    -- ... and via pg_depend (that has a row per column, hence the need for "distinct" above, and
+    -- making sure to exclude the internal row to avoid a view appearing to depend on itself)...
+    join pg_depend as joining_depend on joining_depend.objid = dependent_depend.objid
+        and joining_depend.classid = 'pg_rewrite'::regclass
+        and joining_depend.refclassid = 'pg_class'::regclass
+        and joining_depend.refobjid != dependent_depend.refobjid
+
+    -- ... we can find the tables they query from in pg_class, but excluding system tables. Note we
+    -- don't need need to exclude _dependent_ system tables, because they only query from other
+    -- system tables, and so are automatically excluded by excluding _referenced_ system tables
+    join pg_class as referenced_class on referenced_class.oid = joining_depend.refobjid
+    join pg_namespace as referenced_namespace on referenced_namespace.oid = referenced_class.relnamespace
+        and referenced_namespace.nspname != 'information_schema'
+        and referenced_namespace.nspname not like 'pg\_%'
+
+    order by
+        dependent_schema, dependent_name, referenced_schema, referenced_name;
+[0m05:05:51.764111 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m05:05:51.867486 [debug] [MainThread]: SQL status: SELECT 165 in 0.103 seconds
+[0m05:05:51.891784 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': 'ae20bf6d-df00-4293-b28e-6340713e2dcc', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x752a161f38c0>]}
+[0m05:05:51.896484 [debug] [MainThread]: On master: ROLLBACK
+[0m05:05:51.902241 [debug] [MainThread]: On master: Close
+[0m05:05:51.924980 [debug] [Thread-1 (]: Began running node model.adventureworks_analytics.stg_customer
+[0m05:05:51.925971 [debug] [Thread-2 (]: Began running node model.adventureworks_analytics.stg_employee
+[0m05:05:51.947210 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly list_Adventureworks_audit, now model.adventureworks_analytics.stg_employee)
+[0m05:05:51.954019 [debug] [Thread-2 (]: Began compiling node model.adventureworks_analytics.stg_employee
+[0m05:05:51.927864 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly list_Adventureworks_core_dw, now model.adventureworks_analytics.stg_customer)
+[0m05:05:51.926520 [debug] [Thread-3 (]: Began running node model.adventureworks_analytics.stg_person
+[0m05:05:52.011810 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly list_Adventureworks_mart_sales_forecast, now model.adventureworks_analytics.stg_person)
+[0m05:05:51.995024 [debug] [Thread-1 (]: Began compiling node model.adventureworks_analytics.stg_customer
+[0m05:05:51.999829 [debug] [Thread-2 (]: Writing injected SQL for node "model.adventureworks_analytics.stg_employee"
+[0m05:05:51.927005 [debug] [Thread-4 (]: Began running node model.adventureworks_analytics.stg_product
+[0m05:05:52.049149 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly list_Adventureworks_mart_macro, now model.adventureworks_analytics.stg_product)
+[0m05:05:52.045582 [debug] [Thread-1 (]: Writing injected SQL for node "model.adventureworks_analytics.stg_customer"
+[0m05:05:52.018279 [debug] [Thread-3 (]: Began compiling node model.adventureworks_analytics.stg_person
+[0m05:05:52.051691 [debug] [Thread-4 (]: Began compiling node model.adventureworks_analytics.stg_product
+[0m05:05:52.184841 [debug] [Thread-3 (]: Writing injected SQL for node "model.adventureworks_analytics.stg_person"
+[0m05:05:52.187560 [debug] [Thread-2 (]: Began executing node model.adventureworks_analytics.stg_employee
+[0m05:05:52.219080 [debug] [Thread-2 (]: Finished running node model.adventureworks_analytics.stg_employee
+[0m05:05:52.222987 [debug] [Thread-2 (]: Began running node model.adventureworks_analytics.stg_product_category
+[0m05:05:52.226803 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.stg_employee, now model.adventureworks_analytics.stg_product_category)
+[0m05:05:52.231146 [debug] [Thread-2 (]: Began compiling node model.adventureworks_analytics.stg_product_category
+[0m05:05:52.240621 [debug] [Thread-2 (]: Writing injected SQL for node "model.adventureworks_analytics.stg_product_category"
+[0m05:05:52.200030 [debug] [Thread-4 (]: Writing injected SQL for node "model.adventureworks_analytics.stg_product"
+[0m05:05:52.246148 [debug] [Thread-1 (]: Began executing node model.adventureworks_analytics.stg_customer
+[0m05:05:52.253634 [debug] [Thread-1 (]: Finished running node model.adventureworks_analytics.stg_customer
+[0m05:05:52.258210 [debug] [Thread-3 (]: Began executing node model.adventureworks_analytics.stg_person
+[0m05:05:52.262596 [debug] [Thread-1 (]: Began running node model.adventureworks_analytics.stg_product_subcategory
+[0m05:05:52.284905 [debug] [Thread-3 (]: Finished running node model.adventureworks_analytics.stg_person
+[0m05:05:52.310597 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.stg_customer, now model.adventureworks_analytics.stg_product_subcategory)
+[0m05:05:52.316659 [debug] [Thread-4 (]: Began executing node model.adventureworks_analytics.stg_product
+[0m05:05:52.324661 [debug] [Thread-3 (]: Began running node model.adventureworks_analytics.stg_purchase_order_detail
+[0m05:05:52.332023 [debug] [Thread-1 (]: Began compiling node model.adventureworks_analytics.stg_product_subcategory
+[0m05:05:52.335806 [debug] [Thread-4 (]: Finished running node model.adventureworks_analytics.stg_product
+[0m05:05:52.337208 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.stg_person, now model.adventureworks_analytics.stg_purchase_order_detail)
+[0m05:05:52.343939 [debug] [Thread-1 (]: Writing injected SQL for node "model.adventureworks_analytics.stg_product_subcategory"
+[0m05:05:52.345026 [debug] [Thread-2 (]: Began executing node model.adventureworks_analytics.stg_product_category
+[0m05:05:52.349764 [debug] [Thread-2 (]: Finished running node model.adventureworks_analytics.stg_product_category
+[0m05:05:52.346913 [debug] [Thread-3 (]: Began compiling node model.adventureworks_analytics.stg_purchase_order_detail
+[0m05:05:52.345719 [debug] [Thread-4 (]: Began running node model.adventureworks_analytics.stg_purchase_order_header
+[0m05:05:52.368739 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.stg_product, now model.adventureworks_analytics.stg_purchase_order_header)
+[0m05:05:52.367008 [debug] [Thread-3 (]: Writing injected SQL for node "model.adventureworks_analytics.stg_purchase_order_detail"
+[0m05:05:52.351229 [debug] [Thread-2 (]: Began running node model.adventureworks_analytics.stg_sales_order_detail
+[0m05:05:52.371692 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.stg_product_category, now model.adventureworks_analytics.stg_sales_order_detail)
+[0m05:05:52.375122 [debug] [Thread-2 (]: Began compiling node model.adventureworks_analytics.stg_sales_order_detail
+[0m05:05:52.369864 [debug] [Thread-4 (]: Began compiling node model.adventureworks_analytics.stg_purchase_order_header
+[0m05:05:52.385032 [debug] [Thread-2 (]: Writing injected SQL for node "model.adventureworks_analytics.stg_sales_order_detail"
+[0m05:05:52.394991 [debug] [Thread-4 (]: Writing injected SQL for node "model.adventureworks_analytics.stg_purchase_order_header"
+[0m05:05:52.429131 [debug] [Thread-2 (]: Began executing node model.adventureworks_analytics.stg_sales_order_detail
+[0m05:05:52.432771 [debug] [Thread-2 (]: Finished running node model.adventureworks_analytics.stg_sales_order_detail
+[0m05:05:52.434943 [debug] [Thread-3 (]: Began executing node model.adventureworks_analytics.stg_purchase_order_detail
+[0m05:05:52.436679 [debug] [Thread-2 (]: Began running node model.adventureworks_analytics.stg_sales_order_header
+[0m05:05:52.454911 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.stg_sales_order_detail, now model.adventureworks_analytics.stg_sales_order_header)
+[0m05:05:52.450881 [debug] [Thread-3 (]: Finished running node model.adventureworks_analytics.stg_purchase_order_detail
+[0m05:05:52.448044 [debug] [Thread-1 (]: Began executing node model.adventureworks_analytics.stg_product_subcategory
+[0m05:05:52.457047 [debug] [Thread-2 (]: Began compiling node model.adventureworks_analytics.stg_sales_order_header
+[0m05:05:52.465272 [debug] [Thread-3 (]: Began running node model.adventureworks_analytics.stg_sales_territory
+[0m05:05:52.472709 [debug] [Thread-1 (]: Finished running node model.adventureworks_analytics.stg_product_subcategory
+[0m05:05:52.473544 [debug] [Thread-4 (]: Began executing node model.adventureworks_analytics.stg_purchase_order_header
+[0m05:05:52.486793 [debug] [Thread-2 (]: Writing injected SQL for node "model.adventureworks_analytics.stg_sales_order_header"
+[0m05:05:52.488458 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.stg_purchase_order_detail, now model.adventureworks_analytics.stg_sales_territory)
+[0m05:05:52.499458 [debug] [Thread-1 (]: Began running node model.adventureworks_analytics.stg_store
+[0m05:05:52.501612 [debug] [Thread-4 (]: Finished running node model.adventureworks_analytics.stg_purchase_order_header
+[0m05:05:52.504305 [debug] [Thread-3 (]: Began compiling node model.adventureworks_analytics.stg_sales_territory
+[0m05:05:52.506149 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.stg_product_subcategory, now model.adventureworks_analytics.stg_store)
+[0m05:05:52.507979 [debug] [Thread-4 (]: Began running node model.adventureworks_analytics.stg_vendor
+[0m05:05:52.537005 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.stg_purchase_order_header, now model.adventureworks_analytics.stg_vendor)
+[0m05:05:52.522879 [debug] [Thread-1 (]: Began compiling node model.adventureworks_analytics.stg_store
+[0m05:05:52.517322 [debug] [Thread-3 (]: Writing injected SQL for node "model.adventureworks_analytics.stg_sales_territory"
+[0m05:05:52.540559 [debug] [Thread-4 (]: Began compiling node model.adventureworks_analytics.stg_vendor
+[0m05:05:52.562092 [debug] [Thread-1 (]: Writing injected SQL for node "model.adventureworks_analytics.stg_store"
+[0m05:05:52.570200 [debug] [Thread-4 (]: Writing injected SQL for node "model.adventureworks_analytics.stg_vendor"
+[0m05:05:52.616986 [debug] [Thread-2 (]: Began executing node model.adventureworks_analytics.stg_sales_order_header
+[0m05:05:52.619625 [debug] [Thread-3 (]: Began executing node model.adventureworks_analytics.stg_sales_territory
+[0m05:05:52.625097 [debug] [Thread-2 (]: Finished running node model.adventureworks_analytics.stg_sales_order_header
+[0m05:05:52.650363 [debug] [Thread-2 (]: Began running node seed.adventureworks_analytics.macro_observations
+[0m05:05:52.640081 [debug] [Thread-3 (]: Finished running node model.adventureworks_analytics.stg_sales_territory
+[0m05:05:52.626136 [debug] [Thread-1 (]: Began executing node model.adventureworks_analytics.stg_store
+[0m05:05:52.663632 [debug] [Thread-1 (]: Finished running node model.adventureworks_analytics.stg_store
+[0m05:05:52.658236 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.not_null_stg_employee_business_entity_id.11f6b554e9
+[0m05:05:52.655902 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.stg_sales_order_header, now seed.adventureworks_analytics.macro_observations)
+[0m05:05:52.672243 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_stg_employee_job_title.3e03fbe912
+[0m05:05:52.677895 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.stg_sales_territory, now test.adventureworks_analytics.not_null_stg_employee_business_entity_id.11f6b554e9)
+[0m05:05:52.683927 [debug] [Thread-4 (]: Began executing node model.adventureworks_analytics.stg_vendor
+[0m05:05:52.684877 [debug] [Thread-2 (]: Began compiling node seed.adventureworks_analytics.macro_observations
+[0m05:05:52.692229 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.stg_store, now test.adventureworks_analytics.not_null_stg_employee_job_title.3e03fbe912)
+[0m05:05:52.726254 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_stg_employee_job_title.3e03fbe912
+[0m05:05:52.707364 [debug] [Thread-4 (]: Finished running node model.adventureworks_analytics.stg_vendor
+[0m05:05:52.713827 [debug] [Thread-2 (]: Began executing node seed.adventureworks_analytics.macro_observations
+[0m05:05:52.702690 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.not_null_stg_employee_business_entity_id.11f6b554e9
+[0m05:05:52.754471 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.unique_stg_employee_business_entity_id.61238f52e6
+[0m05:05:52.767779 [debug] [Thread-2 (]: Finished running node seed.adventureworks_analytics.macro_observations
+[0m05:05:52.783584 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_employee_job_title.3e03fbe912"
+[0m05:05:52.786257 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.stg_vendor, now test.adventureworks_analytics.unique_stg_employee_business_entity_id.61238f52e6)
+[0m05:05:52.789030 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_employee_business_entity_id.11f6b554e9"
+[0m05:05:52.790568 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_stg_customer_customer_id.4721d3b88d
+[0m05:05:52.795040 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.unique_stg_employee_business_entity_id.61238f52e6
+[0m05:05:52.796955 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly seed.adventureworks_analytics.macro_observations, now test.adventureworks_analytics.not_null_stg_customer_customer_id.4721d3b88d)
+[0m05:05:52.814030 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_stg_customer_customer_id.4721d3b88d
+[0m05:05:52.818403 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_stg_employee_business_entity_id.61238f52e6"
+[0m05:05:52.838860 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_customer_customer_id.4721d3b88d"
+[0m05:05:52.842882 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_stg_employee_job_title.3e03fbe912
+[0m05:05:52.844711 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_stg_employee_job_title.3e03fbe912
+[0m05:05:52.845327 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.not_null_stg_employee_business_entity_id.11f6b554e9
+[0m05:05:52.854979 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.not_null_stg_employee_business_entity_id.11f6b554e9
+[0m05:05:52.858815 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.not_null_stg_person_business_entity_id.c0f299e465
+[0m05:05:52.848261 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.unique_stg_customer_customer_id.310773d0ea
+[0m05:05:52.861407 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_employee_business_entity_id.11f6b554e9, now test.adventureworks_analytics.not_null_stg_person_business_entity_id.c0f299e465)
+[0m05:05:52.862692 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_employee_job_title.3e03fbe912, now test.adventureworks_analytics.unique_stg_customer_customer_id.310773d0ea)
+[0m05:05:52.864504 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.not_null_stg_person_business_entity_id.c0f299e465
+[0m05:05:52.866090 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.unique_stg_customer_customer_id.310773d0ea
+[0m05:05:52.866898 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.unique_stg_employee_business_entity_id.61238f52e6
+[0m05:05:52.873844 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_person_business_entity_id.c0f299e465"
+[0m05:05:52.887835 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_stg_customer_customer_id.310773d0ea"
+[0m05:05:52.889133 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.unique_stg_employee_business_entity_id.61238f52e6
+[0m05:05:52.894267 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_stg_customer_customer_id.4721d3b88d
+[0m05:05:52.898198 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.not_null_stg_person_first_name.6255b98c74
+[0m05:05:52.900730 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_stg_customer_customer_id.4721d3b88d
+[0m05:05:52.907562 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_stg_employee_business_entity_id.61238f52e6, now test.adventureworks_analytics.not_null_stg_person_first_name.6255b98c74)
+[0m05:05:52.916656 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_stg_person_last_name.247ba853e6
+[0m05:05:52.918310 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.not_null_stg_person_first_name.6255b98c74
+[0m05:05:52.919596 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_customer_customer_id.4721d3b88d, now test.adventureworks_analytics.not_null_stg_person_last_name.247ba853e6)
+[0m05:05:52.928450 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_stg_person_last_name.247ba853e6
+[0m05:05:52.938899 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_person_first_name.6255b98c74"
+[0m05:05:52.949346 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.unique_stg_customer_customer_id.310773d0ea
+[0m05:05:52.954127 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.unique_stg_customer_customer_id.310773d0ea
+[0m05:05:52.951811 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_person_last_name.247ba853e6"
+[0m05:05:52.950426 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.not_null_stg_person_business_entity_id.c0f299e465
+[0m05:05:52.955394 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.unique_stg_person_business_entity_id.f3ed8eef33
+[0m05:05:52.960880 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_stg_customer_customer_id.310773d0ea, now test.adventureworks_analytics.unique_stg_person_business_entity_id.f3ed8eef33)
+[0m05:05:52.958333 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.not_null_stg_person_business_entity_id.c0f299e465
+[0m05:05:52.965335 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.unique_stg_person_business_entity_id.f3ed8eef33
+[0m05:05:52.969945 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.not_null_stg_product_product_id.5e35fa3f95
+[0m05:05:52.984545 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_person_business_entity_id.c0f299e465, now test.adventureworks_analytics.not_null_stg_product_product_id.5e35fa3f95)
+[0m05:05:52.985897 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.not_null_stg_product_product_id.5e35fa3f95
+[0m05:05:52.983673 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_stg_person_business_entity_id.f3ed8eef33"
+[0m05:05:52.997353 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_product_product_id.5e35fa3f95"
+[0m05:05:53.024936 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.not_null_stg_person_first_name.6255b98c74
+[0m05:05:53.034833 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.not_null_stg_person_first_name.6255b98c74
+[0m05:05:53.040859 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.not_null_stg_product_product_name.f18866185e
+[0m05:05:53.053493 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_stg_person_last_name.247ba853e6
+[0m05:05:53.054493 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_person_first_name.6255b98c74, now test.adventureworks_analytics.not_null_stg_product_product_name.f18866185e)
+[0m05:05:53.060957 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_stg_person_last_name.247ba853e6
+[0m05:05:53.067345 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.not_null_stg_product_product_name.f18866185e
+[0m05:05:53.072806 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.unique_stg_product_product_id.fd1037e514
+[0m05:05:53.084795 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_product_product_name.f18866185e"
+[0m05:05:53.085911 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_person_last_name.247ba853e6, now test.adventureworks_analytics.unique_stg_product_product_id.fd1037e514)
+[0m05:05:53.103129 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.not_null_stg_product_product_id.5e35fa3f95
+[0m05:05:53.108212 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.unique_stg_product_product_id.fd1037e514
+[0m05:05:53.109176 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.unique_stg_person_business_entity_id.f3ed8eef33
+[0m05:05:53.120807 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.not_null_stg_product_product_id.5e35fa3f95
+[0m05:05:53.148849 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_stg_product_product_id.fd1037e514"
+[0m05:05:53.151378 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.unique_stg_person_business_entity_id.f3ed8eef33
+[0m05:05:53.153989 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.not_null_stg_product_category_product_category_id.fc519274ee
+[0m05:05:53.159761 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.not_null_stg_product_product_name.f18866185e
+[0m05:05:53.172286 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.not_null_stg_product_product_name.f18866185e
+[0m05:05:53.169201 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_product_product_id.5e35fa3f95, now test.adventureworks_analytics.not_null_stg_product_category_product_category_id.fc519274ee)
+[0m05:05:53.162511 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.unique_stg_product_category_product_category_id.84ad9419a4
+[0m05:05:53.176131 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_stg_person_business_entity_id.f3ed8eef33, now test.adventureworks_analytics.unique_stg_product_category_product_category_id.84ad9419a4)
+[0m05:05:53.175058 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.not_null_stg_product_category_product_category_id.fc519274ee
+[0m05:05:53.173989 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.not_null_stg_sales_order_detail_line_total.1f826d68d3
+[0m05:05:53.177435 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.unique_stg_product_category_product_category_id.84ad9419a4
+[0m05:05:53.195722 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_product_category_product_category_id.fc519274ee"
+[0m05:05:53.197761 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_product_product_name.f18866185e, now test.adventureworks_analytics.not_null_stg_sales_order_detail_line_total.1f826d68d3)
+[0m05:05:53.215290 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.not_null_stg_sales_order_detail_line_total.1f826d68d3
+[0m05:05:53.214415 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.unique_stg_product_product_id.fd1037e514
+[0m05:05:53.205338 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_stg_product_category_product_category_id.84ad9419a4"
+[0m05:05:53.222516 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_sales_order_detail_line_total.1f826d68d3"
+[0m05:05:53.227246 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.unique_stg_product_product_id.fd1037e514
+[0m05:05:53.241371 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_stg_sales_order_detail_product_id.b53c3bd26e
+[0m05:05:53.243592 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_stg_product_product_id.fd1037e514, now test.adventureworks_analytics.not_null_stg_sales_order_detail_product_id.b53c3bd26e)
+[0m05:05:53.244896 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.not_null_stg_product_category_product_category_id.fc519274ee
+[0m05:05:53.245689 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_stg_sales_order_detail_product_id.b53c3bd26e
+[0m05:05:53.252039 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.not_null_stg_product_category_product_category_id.fc519274ee
+[0m05:05:53.267415 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.not_null_stg_sales_order_detail_sales_order_detail_id.50604dc01e
+[0m05:05:53.269172 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_product_category_product_category_id.fc519274ee, now test.adventureworks_analytics.not_null_stg_sales_order_detail_sales_order_detail_id.50604dc01e)
+[0m05:05:53.270035 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.unique_stg_product_category_product_category_id.84ad9419a4
+[0m05:05:53.270763 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.not_null_stg_sales_order_detail_sales_order_detail_id.50604dc01e
+[0m05:05:53.272242 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.not_null_stg_sales_order_detail_line_total.1f826d68d3
+[0m05:05:53.273895 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.unique_stg_product_category_product_category_id.84ad9419a4
+[0m05:05:53.266121 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_sales_order_detail_product_id.b53c3bd26e"
+[0m05:05:53.285062 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.not_null_stg_sales_order_detail_line_total.1f826d68d3
+[0m05:05:53.287998 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_sales_order_detail_sales_order_detail_id.50604dc01e"
+[0m05:05:53.288791 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_stg_sales_order_detail_sales_order_id.8f7bd83153
+[0m05:05:53.294355 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.unique_stg_sales_order_detail_sales_order_detail_id.7a0c319c1b
+[0m05:05:53.296498 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_stg_product_category_product_category_id.84ad9419a4, now test.adventureworks_analytics.not_null_stg_sales_order_detail_sales_order_id.8f7bd83153)
+[0m05:05:53.297951 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_sales_order_detail_line_total.1f826d68d3, now test.adventureworks_analytics.unique_stg_sales_order_detail_sales_order_detail_id.7a0c319c1b)
+[0m05:05:53.300279 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_stg_sales_order_detail_sales_order_id.8f7bd83153
+[0m05:05:53.308235 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.unique_stg_sales_order_detail_sales_order_detail_id.7a0c319c1b
+[0m05:05:53.315839 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_sales_order_detail_sales_order_id.8f7bd83153"
+[0m05:05:53.326678 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_stg_sales_order_detail_sales_order_detail_id.7a0c319c1b"
+[0m05:05:53.351547 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.not_null_stg_sales_order_detail_sales_order_detail_id.50604dc01e
+[0m05:05:53.358793 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.not_null_stg_sales_order_detail_sales_order_detail_id.50604dc01e
+[0m05:05:53.362508 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_stg_sales_order_detail_product_id.b53c3bd26e
+[0m05:05:53.372107 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.not_null_stg_purchase_order_detail_line_total.1ce85b9c83
+[0m05:05:53.375948 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_stg_sales_order_detail_sales_order_id.8f7bd83153
+[0m05:05:53.377910 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_stg_sales_order_detail_product_id.b53c3bd26e
+[0m05:05:53.382221 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_sales_order_detail_sales_order_detail_id.50604dc01e, now test.adventureworks_analytics.not_null_stg_purchase_order_detail_line_total.1ce85b9c83)
+[0m05:05:53.384622 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_stg_sales_order_detail_sales_order_id.8f7bd83153
+[0m05:05:53.387172 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_stg_purchase_order_detail_product_id.cf84c747fb
+[0m05:05:53.388308 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.unique_stg_sales_order_detail_sales_order_detail_id.7a0c319c1b
+[0m05:05:53.388914 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.not_null_stg_purchase_order_detail_line_total.1ce85b9c83
+[0m05:05:53.390303 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_stg_purchase_order_detail_purchase_order_detail_id.8bb2682aef
+[0m05:05:53.391794 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_sales_order_detail_product_id.b53c3bd26e, now test.adventureworks_analytics.not_null_stg_purchase_order_detail_product_id.cf84c747fb)
+[0m05:05:53.393513 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.unique_stg_sales_order_detail_sales_order_detail_id.7a0c319c1b
+[0m05:05:53.406282 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_sales_order_detail_sales_order_id.8f7bd83153, now test.adventureworks_analytics.not_null_stg_purchase_order_detail_purchase_order_detail_id.8bb2682aef)
+[0m05:05:53.408470 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_purchase_order_detail_line_total.1ce85b9c83"
+[0m05:05:53.410029 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_stg_purchase_order_detail_product_id.cf84c747fb
+[0m05:05:53.411433 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.not_null_stg_purchase_order_detail_purchase_order_id.ce3b5f87d4
+[0m05:05:53.412501 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_stg_purchase_order_detail_purchase_order_detail_id.8bb2682aef
+[0m05:05:53.422082 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_purchase_order_detail_product_id.cf84c747fb"
+[0m05:05:53.423978 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_stg_sales_order_detail_sales_order_detail_id.7a0c319c1b, now test.adventureworks_analytics.not_null_stg_purchase_order_detail_purchase_order_id.ce3b5f87d4)
+[0m05:05:53.439982 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.not_null_stg_purchase_order_detail_purchase_order_id.ce3b5f87d4
+[0m05:05:53.434023 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_purchase_order_detail_purchase_order_detail_id.8bb2682aef"
+[0m05:05:53.448317 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_purchase_order_detail_purchase_order_id.ce3b5f87d4"
+[0m05:05:53.471725 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.not_null_stg_purchase_order_detail_line_total.1ce85b9c83
+[0m05:05:53.474515 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.not_null_stg_purchase_order_detail_line_total.1ce85b9c83
+[0m05:05:53.477463 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.unique_stg_purchase_order_detail_purchase_order_detail_id.581ffceb6a
+[0m05:05:53.478450 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_stg_purchase_order_detail_purchase_order_detail_id.8bb2682aef
+[0m05:05:53.479418 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_purchase_order_detail_line_total.1ce85b9c83, now test.adventureworks_analytics.unique_stg_purchase_order_detail_purchase_order_detail_id.581ffceb6a)
+[0m05:05:53.482340 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_stg_purchase_order_detail_purchase_order_detail_id.8bb2682aef
+[0m05:05:53.483166 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.not_null_stg_purchase_order_detail_purchase_order_id.ce3b5f87d4
+[0m05:05:53.487735 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.unique_stg_purchase_order_detail_purchase_order_detail_id.581ffceb6a
+[0m05:05:53.493225 [debug] [Thread-1 (]: Began running node model.adventureworks_analytics.dim_product
+[0m05:05:53.496996 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.not_null_stg_purchase_order_detail_purchase_order_id.ce3b5f87d4
+[0m05:05:53.497778 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_stg_purchase_order_detail_product_id.cf84c747fb
+[0m05:05:53.504812 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_stg_purchase_order_detail_purchase_order_detail_id.581ffceb6a"
+[0m05:05:53.505528 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_purchase_order_detail_purchase_order_detail_id.8bb2682aef, now model.adventureworks_analytics.dim_product)
+[0m05:05:53.506759 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.not_null_stg_product_subcategory_product_category_id.19eb0c2ce4
+[0m05:05:53.508363 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_stg_purchase_order_detail_product_id.cf84c747fb
+[0m05:05:53.510180 [debug] [Thread-1 (]: Began compiling node model.adventureworks_analytics.dim_product
+[0m05:05:53.511364 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_purchase_order_detail_purchase_order_id.ce3b5f87d4, now test.adventureworks_analytics.not_null_stg_product_subcategory_product_category_id.19eb0c2ce4)
+[0m05:05:53.512557 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_stg_product_subcategory_product_subcategory_id.3cb97d7566
+[0m05:05:53.525057 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.not_null_stg_product_subcategory_product_category_id.19eb0c2ce4
+[0m05:05:53.525902 [debug] [Thread-1 (]: Writing injected SQL for node "model.adventureworks_analytics.dim_product"
+[0m05:05:53.526921 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_purchase_order_detail_product_id.cf84c747fb, now test.adventureworks_analytics.not_null_stg_product_subcategory_product_subcategory_id.3cb97d7566)
+[0m05:05:53.536804 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_product_subcategory_product_category_id.19eb0c2ce4"
+[0m05:05:53.538571 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_stg_product_subcategory_product_subcategory_id.3cb97d7566
+[0m05:05:53.546999 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_product_subcategory_product_subcategory_id.3cb97d7566"
+[0m05:05:53.555121 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.unique_stg_purchase_order_detail_purchase_order_detail_id.581ffceb6a
+[0m05:05:53.558718 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.unique_stg_purchase_order_detail_purchase_order_detail_id.581ffceb6a
+[0m05:05:53.560101 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.unique_stg_product_subcategory_product_subcategory_id.e74c12daab
+[0m05:05:53.561678 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_stg_purchase_order_detail_purchase_order_detail_id.581ffceb6a, now test.adventureworks_analytics.unique_stg_product_subcategory_product_subcategory_id.e74c12daab)
+[0m05:05:53.563102 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.unique_stg_product_subcategory_product_subcategory_id.e74c12daab
+[0m05:05:53.578303 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.not_null_stg_product_subcategory_product_category_id.19eb0c2ce4
+[0m05:05:53.579089 [debug] [Thread-1 (]: Began executing node model.adventureworks_analytics.dim_product
+[0m05:05:53.579642 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_stg_product_subcategory_product_subcategory_id.e74c12daab"
+[0m05:05:53.580752 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.not_null_stg_product_subcategory_product_category_id.19eb0c2ce4
+[0m05:05:53.582454 [debug] [Thread-1 (]: Finished running node model.adventureworks_analytics.dim_product
+[0m05:05:53.586330 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.not_null_stg_purchase_order_header_purchase_order_id.698cc9ef6b
+[0m05:05:53.587292 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_stg_product_subcategory_product_subcategory_id.3cb97d7566
+[0m05:05:53.589163 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_stg_purchase_order_header_total_due.5639df7db1
+[0m05:05:53.590788 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_product_subcategory_product_category_id.19eb0c2ce4, now test.adventureworks_analytics.not_null_stg_purchase_order_header_purchase_order_id.698cc9ef6b)
+[0m05:05:53.592613 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_stg_product_subcategory_product_subcategory_id.3cb97d7566
+[0m05:05:53.593995 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.dim_product, now test.adventureworks_analytics.not_null_stg_purchase_order_header_total_due.5639df7db1)
+[0m05:05:53.595016 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.not_null_stg_purchase_order_header_purchase_order_id.698cc9ef6b
+[0m05:05:53.596266 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_stg_purchase_order_header_vendor_id.3659ddf36c
+[0m05:05:53.597177 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_stg_purchase_order_header_total_due.5639df7db1
+[0m05:05:53.609277 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_purchase_order_header_purchase_order_id.698cc9ef6b"
+[0m05:05:53.610327 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_product_subcategory_product_subcategory_id.3cb97d7566, now test.adventureworks_analytics.not_null_stg_purchase_order_header_vendor_id.3659ddf36c)
+[0m05:05:53.621498 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_purchase_order_header_total_due.5639df7db1"
+[0m05:05:53.623441 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_stg_purchase_order_header_vendor_id.3659ddf36c
+[0m05:05:53.624212 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.unique_stg_product_subcategory_product_subcategory_id.e74c12daab
+[0m05:05:53.636237 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_purchase_order_header_vendor_id.3659ddf36c"
+[0m05:05:53.637611 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.unique_stg_product_subcategory_product_subcategory_id.e74c12daab
+[0m05:05:53.642382 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.unique_stg_purchase_order_header_purchase_order_id.5572d0d1fa
+[0m05:05:53.643947 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_stg_product_subcategory_product_subcategory_id.e74c12daab, now test.adventureworks_analytics.unique_stg_purchase_order_header_purchase_order_id.5572d0d1fa)
+[0m05:05:53.644762 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.not_null_stg_purchase_order_header_purchase_order_id.698cc9ef6b
+[0m05:05:53.645386 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.unique_stg_purchase_order_header_purchase_order_id.5572d0d1fa
+[0m05:05:53.647709 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.not_null_stg_purchase_order_header_purchase_order_id.698cc9ef6b
+[0m05:05:53.656632 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_stg_purchase_order_header_purchase_order_id.5572d0d1fa"
+[0m05:05:53.658316 [debug] [Thread-4 (]: Began running node model.adventureworks_analytics.dim_date
+[0m05:05:53.661968 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_stg_purchase_order_header_total_due.5639df7db1
+[0m05:05:53.663946 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_purchase_order_header_purchase_order_id.698cc9ef6b, now model.adventureworks_analytics.dim_date)
+[0m05:05:53.666175 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_stg_purchase_order_header_total_due.5639df7db1
+[0m05:05:53.668585 [debug] [Thread-4 (]: Began compiling node model.adventureworks_analytics.dim_date
+[0m05:05:53.669466 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_stg_purchase_order_header_vendor_id.3659ddf36c
+[0m05:05:53.670679 [debug] [Thread-1 (]: Began running node model.adventureworks_analytics.fact_sales_order
+[0m05:05:53.684110 [debug] [Thread-4 (]: Writing injected SQL for node "model.adventureworks_analytics.dim_date"
+[0m05:05:53.686562 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_stg_purchase_order_header_vendor_id.3659ddf36c
+[0m05:05:53.687896 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_purchase_order_header_total_due.5639df7db1, now model.adventureworks_analytics.fact_sales_order)
+[0m05:05:53.690340 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.unique_stg_purchase_order_header_purchase_order_id.5572d0d1fa
+[0m05:05:53.693700 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_stg_sales_order_header_customer_id.913a021b58
+[0m05:05:53.695304 [debug] [Thread-1 (]: Began compiling node model.adventureworks_analytics.fact_sales_order
+[0m05:05:53.697155 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.unique_stg_purchase_order_header_purchase_order_id.5572d0d1fa
+[0m05:05:53.702849 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_purchase_order_header_vendor_id.3659ddf36c, now test.adventureworks_analytics.not_null_stg_sales_order_header_customer_id.913a021b58)
+[0m05:05:53.710571 [debug] [Thread-1 (]: Writing injected SQL for node "model.adventureworks_analytics.fact_sales_order"
+[0m05:05:53.711880 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.not_null_stg_sales_order_header_order_date.7627b146be
+[0m05:05:53.713572 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_stg_sales_order_header_customer_id.913a021b58
+[0m05:05:53.715691 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_stg_purchase_order_header_purchase_order_id.5572d0d1fa, now test.adventureworks_analytics.not_null_stg_sales_order_header_order_date.7627b146be)
+[0m05:05:53.724195 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_sales_order_header_customer_id.913a021b58"
+[0m05:05:53.725543 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.not_null_stg_sales_order_header_order_date.7627b146be
+[0m05:05:53.735811 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_sales_order_header_order_date.7627b146be"
+[0m05:05:53.740521 [debug] [Thread-4 (]: Began executing node model.adventureworks_analytics.dim_date
+[0m05:05:53.748808 [debug] [Thread-4 (]: Finished running node model.adventureworks_analytics.dim_date
+[0m05:05:53.749605 [debug] [Thread-1 (]: Began executing node model.adventureworks_analytics.fact_sales_order
+[0m05:05:53.750280 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.not_null_stg_sales_order_header_sales_order_id.68f43b4ae3
+[0m05:05:53.752072 [debug] [Thread-1 (]: Finished running node model.adventureworks_analytics.fact_sales_order
+[0m05:05:53.755247 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.dim_date, now test.adventureworks_analytics.not_null_stg_sales_order_header_sales_order_id.68f43b4ae3)
+[0m05:05:53.757048 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_stg_sales_order_header_total_due.d0f2276b53
+[0m05:05:53.758498 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.not_null_stg_sales_order_header_sales_order_id.68f43b4ae3
+[0m05:05:53.759681 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.fact_sales_order, now test.adventureworks_analytics.not_null_stg_sales_order_header_total_due.d0f2276b53)
+[0m05:05:53.760283 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_stg_sales_order_header_customer_id.913a021b58
+[0m05:05:53.767090 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_sales_order_header_sales_order_id.68f43b4ae3"
+[0m05:05:53.767785 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_stg_sales_order_header_total_due.d0f2276b53
+[0m05:05:53.769508 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_stg_sales_order_header_customer_id.913a021b58
+[0m05:05:53.776669 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.not_null_stg_sales_order_header_order_date.7627b146be
+[0m05:05:53.777560 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_sales_order_header_total_due.d0f2276b53"
+[0m05:05:53.778278 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.unique_stg_sales_order_header_sales_order_id.e3bffd9042
+[0m05:05:53.779951 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.not_null_stg_sales_order_header_order_date.7627b146be
+[0m05:05:53.781595 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_sales_order_header_customer_id.913a021b58, now test.adventureworks_analytics.unique_stg_sales_order_header_sales_order_id.e3bffd9042)
+[0m05:05:53.782674 [debug] [Thread-3 (]: Began running node model.adventureworks_analytics.dim_geography
+[0m05:05:53.785180 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.unique_stg_sales_order_header_sales_order_id.e3bffd9042
+[0m05:05:53.786604 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_sales_order_header_order_date.7627b146be, now model.adventureworks_analytics.dim_geography)
+[0m05:05:53.794476 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_stg_sales_order_header_sales_order_id.e3bffd9042"
+[0m05:05:53.795131 [debug] [Thread-3 (]: Began compiling node model.adventureworks_analytics.dim_geography
+[0m05:05:53.800699 [debug] [Thread-3 (]: Writing injected SQL for node "model.adventureworks_analytics.dim_geography"
+[0m05:05:53.801413 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.not_null_stg_sales_order_header_sales_order_id.68f43b4ae3
+[0m05:05:53.804418 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.not_null_stg_sales_order_header_sales_order_id.68f43b4ae3
+[0m05:05:53.805863 [debug] [Thread-4 (]: Began running node model.adventureworks_analytics.fact_sales_order_line
+[0m05:05:53.807560 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_stg_sales_order_header_total_due.d0f2276b53
+[0m05:05:53.813564 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_sales_order_header_sales_order_id.68f43b4ae3, now model.adventureworks_analytics.fact_sales_order_line)
+[0m05:05:53.816682 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_stg_sales_order_header_total_due.d0f2276b53
+[0m05:05:53.817978 [debug] [Thread-4 (]: Began compiling node model.adventureworks_analytics.fact_sales_order_line
+[0m05:05:53.819083 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_stg_sales_territory_territory_id.c0b5043d5d
+[0m05:05:53.827856 [debug] [Thread-4 (]: Writing injected SQL for node "model.adventureworks_analytics.fact_sales_order_line"
+[0m05:05:53.828621 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_sales_order_header_total_due.d0f2276b53, now test.adventureworks_analytics.not_null_stg_sales_territory_territory_id.c0b5043d5d)
+[0m05:05:53.829586 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.unique_stg_sales_order_header_sales_order_id.e3bffd9042
+[0m05:05:53.831116 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_stg_sales_territory_territory_id.c0b5043d5d
+[0m05:05:53.831832 [debug] [Thread-3 (]: Began executing node model.adventureworks_analytics.dim_geography
+[0m05:05:53.833675 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.unique_stg_sales_order_header_sales_order_id.e3bffd9042
+[0m05:05:53.841149 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_sales_territory_territory_id.c0b5043d5d"
+[0m05:05:53.842550 [debug] [Thread-3 (]: Finished running node model.adventureworks_analytics.dim_geography
+[0m05:05:53.844038 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.unique_stg_sales_territory_territory_id.c727ab1932
+[0m05:05:53.846069 [debug] [Thread-3 (]: Began running node model.adventureworks_analytics.dim_customer
+[0m05:05:53.847357 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_stg_sales_order_header_sales_order_id.e3bffd9042, now test.adventureworks_analytics.unique_stg_sales_territory_territory_id.c727ab1932)
+[0m05:05:53.848918 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.dim_geography, now model.adventureworks_analytics.dim_customer)
+[0m05:05:53.850214 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.unique_stg_sales_territory_territory_id.c727ab1932
+[0m05:05:53.851048 [debug] [Thread-4 (]: Began executing node model.adventureworks_analytics.fact_sales_order_line
+[0m05:05:53.851648 [debug] [Thread-3 (]: Began compiling node model.adventureworks_analytics.dim_customer
+[0m05:05:53.857598 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_stg_sales_territory_territory_id.c727ab1932"
+[0m05:05:53.859314 [debug] [Thread-4 (]: Finished running node model.adventureworks_analytics.fact_sales_order_line
+[0m05:05:53.863833 [debug] [Thread-3 (]: Writing injected SQL for node "model.adventureworks_analytics.dim_customer"
+[0m05:05:53.866171 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.not_null_stg_store_business_entity_id.a937a523c6
+[0m05:05:53.868575 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.fact_sales_order_line, now test.adventureworks_analytics.not_null_stg_store_business_entity_id.a937a523c6)
+[0m05:05:53.869764 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.not_null_stg_store_business_entity_id.a937a523c6
+[0m05:05:53.876519 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_stg_sales_territory_territory_id.c0b5043d5d
+[0m05:05:53.877446 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_store_business_entity_id.a937a523c6"
+[0m05:05:53.878602 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_stg_sales_territory_territory_id.c0b5043d5d
+[0m05:05:53.881855 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_stg_store_store_name.d83d883df1
+[0m05:05:53.883490 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_sales_territory_territory_id.c0b5043d5d, now test.adventureworks_analytics.not_null_stg_store_store_name.d83d883df1)
+[0m05:05:53.886431 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.unique_stg_sales_territory_territory_id.c727ab1932
+[0m05:05:53.887003 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_stg_store_store_name.d83d883df1
+[0m05:05:53.889162 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.unique_stg_sales_territory_territory_id.c727ab1932
+[0m05:05:53.899372 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_store_store_name.d83d883df1"
+[0m05:05:53.900357 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.unique_stg_store_business_entity_id.0fb312f519
+[0m05:05:53.902724 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_stg_sales_territory_territory_id.c727ab1932, now test.adventureworks_analytics.unique_stg_store_business_entity_id.0fb312f519)
+[0m05:05:53.903576 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.not_null_stg_store_business_entity_id.a937a523c6
+[0m05:05:53.904166 [debug] [Thread-3 (]: Began executing node model.adventureworks_analytics.dim_customer
+[0m05:05:53.904901 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.unique_stg_store_business_entity_id.0fb312f519
+[0m05:05:53.906596 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.not_null_stg_store_business_entity_id.a937a523c6
+[0m05:05:53.908163 [debug] [Thread-3 (]: Finished running node model.adventureworks_analytics.dim_customer
+[0m05:05:53.915826 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_stg_store_business_entity_id.0fb312f519"
+[0m05:05:53.916775 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.not_null_stg_vendor_business_entity_id.cb2dc86896
+[0m05:05:53.917961 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.not_null_stg_vendor_vendor_name.894c0af8f5
+[0m05:05:53.919812 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_store_business_entity_id.a937a523c6, now test.adventureworks_analytics.not_null_stg_vendor_business_entity_id.cb2dc86896)
+[0m05:05:53.921035 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.dim_customer, now test.adventureworks_analytics.not_null_stg_vendor_vendor_name.894c0af8f5)
+[0m05:05:53.922239 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.not_null_stg_vendor_business_entity_id.cb2dc86896
+[0m05:05:53.923960 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.not_null_stg_vendor_vendor_name.894c0af8f5
+[0m05:05:53.924620 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_stg_store_store_name.d83d883df1
+[0m05:05:53.933130 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_vendor_business_entity_id.cb2dc86896"
+[0m05:05:53.939754 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_stg_vendor_vendor_name.894c0af8f5"
+[0m05:05:53.942525 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_stg_store_store_name.d83d883df1
+[0m05:05:53.944969 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.unique_stg_store_business_entity_id.0fb312f519
+[0m05:05:53.949975 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.unique_stg_vendor_business_entity_id.3a0a7cd13c
+[0m05:05:53.951942 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.unique_stg_store_business_entity_id.0fb312f519
+[0m05:05:53.956635 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_store_store_name.d83d883df1, now test.adventureworks_analytics.unique_stg_vendor_business_entity_id.3a0a7cd13c)
+[0m05:05:53.958186 [debug] [Thread-2 (]: Began running node model.adventureworks_analytics.macro_observation_standardized
+[0m05:05:53.959402 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.unique_stg_vendor_business_entity_id.3a0a7cd13c
+[0m05:05:53.960798 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_stg_store_business_entity_id.0fb312f519, now model.adventureworks_analytics.macro_observation_standardized)
+[0m05:05:53.968100 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_stg_vendor_business_entity_id.3a0a7cd13c"
+[0m05:05:53.970236 [debug] [Thread-2 (]: Began compiling node model.adventureworks_analytics.macro_observation_standardized
+[0m05:05:53.971936 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.not_null_stg_vendor_business_entity_id.cb2dc86896
+[0m05:05:53.977985 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.not_null_stg_vendor_vendor_name.894c0af8f5
+[0m05:05:53.980678 [debug] [Thread-2 (]: Writing injected SQL for node "model.adventureworks_analytics.macro_observation_standardized"
+[0m05:05:53.982017 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.not_null_stg_vendor_business_entity_id.cb2dc86896
+[0m05:05:53.983981 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.not_null_stg_vendor_vendor_name.894c0af8f5
+[0m05:05:53.987972 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.not_null_macro_observations_country_code.7e5df2e625
+[0m05:05:53.989132 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.not_null_macro_observations_indicator_code.8d7fb3f516
+[0m05:05:53.990407 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_vendor_business_entity_id.cb2dc86896, now test.adventureworks_analytics.not_null_macro_observations_country_code.7e5df2e625)
+[0m05:05:53.991503 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_stg_vendor_vendor_name.894c0af8f5, now test.adventureworks_analytics.not_null_macro_observations_indicator_code.8d7fb3f516)
+[0m05:05:53.992555 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.not_null_macro_observations_country_code.7e5df2e625
+[0m05:05:53.993534 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.not_null_macro_observations_indicator_code.8d7fb3f516
+[0m05:05:54.001962 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_macro_observations_country_code.7e5df2e625"
+[0m05:05:54.008382 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_macro_observations_indicator_code.8d7fb3f516"
+[0m05:05:54.011455 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.unique_stg_vendor_business_entity_id.3a0a7cd13c
+[0m05:05:54.013359 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.unique_stg_vendor_business_entity_id.3a0a7cd13c
+[0m05:05:54.014082 [debug] [Thread-2 (]: Began executing node model.adventureworks_analytics.macro_observation_standardized
+[0m05:05:54.014810 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_macro_observations_value.90fc0ddaa3
+[0m05:05:54.016715 [debug] [Thread-2 (]: Finished running node model.adventureworks_analytics.macro_observation_standardized
+[0m05:05:54.018124 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_stg_vendor_business_entity_id.3a0a7cd13c, now test.adventureworks_analytics.not_null_macro_observations_value.90fc0ddaa3)
+[0m05:05:54.020713 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_macro_observations_year.3d10981184
+[0m05:05:54.021780 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_macro_observations_value.90fc0ddaa3
+[0m05:05:54.025050 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.macro_observation_standardized, now test.adventureworks_analytics.not_null_macro_observations_year.3d10981184)
+[0m05:05:54.034397 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_macro_observations_value.90fc0ddaa3"
+[0m05:05:54.035442 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_macro_observations_year.3d10981184
+[0m05:05:54.043056 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.not_null_macro_observations_indicator_code.8d7fb3f516
+[0m05:05:54.044214 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_macro_observations_year.3d10981184"
+[0m05:05:54.044836 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.not_null_macro_observations_country_code.7e5df2e625
+[0m05:05:54.045996 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.not_null_macro_observations_indicator_code.8d7fb3f516
+[0m05:05:54.049547 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.not_null_macro_observations_country_code.7e5df2e625
+[0m05:05:54.050772 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.not_null_dim_product_product_key.f0e1d838d3
+[0m05:05:54.052065 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.unique_dim_product_product_key.1753236bd0
+[0m05:05:54.053247 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_macro_observations_indicator_code.8d7fb3f516, now test.adventureworks_analytics.not_null_dim_product_product_key.f0e1d838d3)
+[0m05:05:54.055023 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_macro_observations_country_code.7e5df2e625, now test.adventureworks_analytics.unique_dim_product_product_key.1753236bd0)
+[0m05:05:54.056524 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.not_null_dim_product_product_key.f0e1d838d3
+[0m05:05:54.057866 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.unique_dim_product_product_key.1753236bd0
+[0m05:05:54.065967 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_dim_product_product_key.f0e1d838d3"
+[0m05:05:54.070927 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_dim_product_product_key.1753236bd0"
+[0m05:05:54.074209 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_macro_observations_value.90fc0ddaa3
+[0m05:05:54.074989 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_macro_observations_year.3d10981184
+[0m05:05:54.077600 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_macro_observations_value.90fc0ddaa3
+[0m05:05:54.082932 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_macro_observations_year.3d10981184
+[0m05:05:54.090571 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_dim_date_date_key.881d0a31b6
+[0m05:05:54.092032 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_dim_date_full_date.598d7b137c
+[0m05:05:54.093744 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_macro_observations_value.90fc0ddaa3, now test.adventureworks_analytics.not_null_dim_date_date_key.881d0a31b6)
+[0m05:05:54.096147 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_macro_observations_year.3d10981184, now test.adventureworks_analytics.not_null_dim_date_full_date.598d7b137c)
+[0m05:05:54.097740 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_dim_date_date_key.881d0a31b6
+[0m05:05:54.098706 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_dim_date_full_date.598d7b137c
+[0m05:05:54.104407 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_dim_date_date_key.881d0a31b6"
+[0m05:05:54.110203 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_dim_date_full_date.598d7b137c"
+[0m05:05:54.110797 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.not_null_dim_product_product_key.f0e1d838d3
+[0m05:05:54.112417 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.unique_dim_product_product_key.1753236bd0
+[0m05:05:54.114646 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.not_null_dim_product_product_key.f0e1d838d3
+[0m05:05:54.116262 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.unique_dim_product_product_key.1753236bd0
+[0m05:05:54.117289 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.unique_dim_date_date_key.0869fd48f9
+[0m05:05:54.118916 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.unique_dim_date_full_date.fd8739c008
+[0m05:05:54.121481 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_dim_product_product_key.f0e1d838d3, now test.adventureworks_analytics.unique_dim_date_date_key.0869fd48f9)
+[0m05:05:54.123326 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_dim_product_product_key.1753236bd0, now test.adventureworks_analytics.unique_dim_date_full_date.fd8739c008)
+[0m05:05:54.125818 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.unique_dim_date_date_key.0869fd48f9
+[0m05:05:54.127044 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.unique_dim_date_full_date.fd8739c008
+[0m05:05:54.134930 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_dim_date_date_key.0869fd48f9"
+[0m05:05:54.139976 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_dim_date_full_date.fd8739c008"
+[0m05:05:54.141869 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_dim_date_full_date.598d7b137c
+[0m05:05:54.143420 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_dim_date_date_key.881d0a31b6
+[0m05:05:54.144395 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_dim_date_full_date.598d7b137c
+[0m05:05:54.146439 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_dim_date_date_key.881d0a31b6
+[0m05:05:54.149497 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_fact_sales_order_customer_key.acd2f9f86f
+[0m05:05:54.159921 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_fact_sales_order_order_date_key.7c50f7e4c8
+[0m05:05:54.161767 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_dim_date_full_date.598d7b137c, now test.adventureworks_analytics.not_null_fact_sales_order_customer_key.acd2f9f86f)
+[0m05:05:54.163523 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_dim_date_date_key.881d0a31b6, now test.adventureworks_analytics.not_null_fact_sales_order_order_date_key.7c50f7e4c8)
+[0m05:05:54.164637 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_fact_sales_order_customer_key.acd2f9f86f
+[0m05:05:54.166006 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_fact_sales_order_order_date_key.7c50f7e4c8
+[0m05:05:54.172438 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.unique_dim_date_full_date.fd8739c008
+[0m05:05:54.176551 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_fact_sales_order_customer_key.acd2f9f86f"
+[0m05:05:54.177096 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.unique_dim_date_date_key.0869fd48f9
+[0m05:05:54.183357 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_fact_sales_order_order_date_key.7c50f7e4c8"
+[0m05:05:54.185251 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.unique_dim_date_full_date.fd8739c008
+[0m05:05:54.186951 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.unique_dim_date_date_key.0869fd48f9
+[0m05:05:54.188278 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.not_null_fact_sales_order_sales_order_id.dbfea36ff2
+[0m05:05:54.189121 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.unique_fact_sales_order_sales_order_id.3589d0339d
+[0m05:05:54.190500 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_dim_date_full_date.fd8739c008, now test.adventureworks_analytics.not_null_fact_sales_order_sales_order_id.dbfea36ff2)
+[0m05:05:54.191879 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_dim_date_date_key.0869fd48f9, now test.adventureworks_analytics.unique_fact_sales_order_sales_order_id.3589d0339d)
+[0m05:05:54.193180 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.not_null_fact_sales_order_sales_order_id.dbfea36ff2
+[0m05:05:54.196599 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.unique_fact_sales_order_sales_order_id.3589d0339d
+[0m05:05:54.202788 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_fact_sales_order_sales_order_id.dbfea36ff2"
+[0m05:05:54.212999 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_fact_sales_order_sales_order_id.3589d0339d"
+[0m05:05:54.215162 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_fact_sales_order_customer_key.acd2f9f86f
+[0m05:05:54.215687 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_fact_sales_order_order_date_key.7c50f7e4c8
+[0m05:05:54.220329 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_fact_sales_order_customer_key.acd2f9f86f
+[0m05:05:54.221925 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_fact_sales_order_order_date_key.7c50f7e4c8
+[0m05:05:54.229447 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_dim_geography_country_code.9612d191b8
+[0m05:05:54.232696 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_dim_geography_geography_key.c102675438
+[0m05:05:54.234169 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_fact_sales_order_customer_key.acd2f9f86f, now test.adventureworks_analytics.not_null_dim_geography_country_code.9612d191b8)
+[0m05:05:54.235879 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_fact_sales_order_order_date_key.7c50f7e4c8, now test.adventureworks_analytics.not_null_dim_geography_geography_key.c102675438)
+[0m05:05:54.237171 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_dim_geography_country_code.9612d191b8
+[0m05:05:54.238838 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_dim_geography_geography_key.c102675438
+[0m05:05:54.239374 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.unique_fact_sales_order_sales_order_id.3589d0339d
+[0m05:05:54.245636 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_dim_geography_country_code.9612d191b8"
+[0m05:05:54.249646 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_dim_geography_geography_key.c102675438"
+[0m05:05:54.251290 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.unique_fact_sales_order_sales_order_id.3589d0339d
+[0m05:05:54.254106 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.not_null_fact_sales_order_sales_order_id.dbfea36ff2
+[0m05:05:54.255687 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.unique_dim_geography_geography_key.0bbb80e1c1
+[0m05:05:54.258012 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.not_null_fact_sales_order_sales_order_id.dbfea36ff2
+[0m05:05:54.259067 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_fact_sales_order_sales_order_id.3589d0339d, now test.adventureworks_analytics.unique_dim_geography_geography_key.0bbb80e1c1)
+[0m05:05:54.260418 [debug] [Thread-4 (]: Began running node model.adventureworks_analytics.executive_kpi
+[0m05:05:54.261530 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.unique_dim_geography_geography_key.0bbb80e1c1
+[0m05:05:54.264520 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_fact_sales_order_sales_order_id.dbfea36ff2, now model.adventureworks_analytics.executive_kpi)
+[0m05:05:54.273938 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_dim_geography_geography_key.0bbb80e1c1"
+[0m05:05:54.275211 [debug] [Thread-4 (]: Began compiling node model.adventureworks_analytics.executive_kpi
+[0m05:05:54.279814 [debug] [Thread-4 (]: Writing injected SQL for node "model.adventureworks_analytics.executive_kpi"
+[0m05:05:54.282709 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_dim_geography_geography_key.c102675438
+[0m05:05:54.283208 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_dim_geography_country_code.9612d191b8
+[0m05:05:54.284220 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_dim_geography_geography_key.c102675438
+[0m05:05:54.290730 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_dim_geography_country_code.9612d191b8
+[0m05:05:54.297982 [debug] [Thread-1 (]: Began running node model.adventureworks_analytics.management_pnl_monthly
+[0m05:05:54.300801 [debug] [Thread-2 (]: Began running node model.adventureworks_analytics.monthly_sales_series
+[0m05:05:54.302564 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_dim_geography_geography_key.c102675438, now model.adventureworks_analytics.management_pnl_monthly)
+[0m05:05:54.303784 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.unique_dim_geography_geography_key.0bbb80e1c1
+[0m05:05:54.304451 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_dim_geography_country_code.9612d191b8, now model.adventureworks_analytics.monthly_sales_series)
+[0m05:05:54.312317 [debug] [Thread-1 (]: Began compiling node model.adventureworks_analytics.management_pnl_monthly
+[0m05:05:54.317361 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.unique_dim_geography_geography_key.0bbb80e1c1
+[0m05:05:54.320203 [debug] [Thread-2 (]: Began compiling node model.adventureworks_analytics.monthly_sales_series
+[0m05:05:54.324903 [debug] [Thread-1 (]: Writing injected SQL for node "model.adventureworks_analytics.management_pnl_monthly"
+[0m05:05:54.326300 [debug] [Thread-3 (]: Began running node model.adventureworks_analytics.product_sales_summary
+[0m05:05:54.330631 [debug] [Thread-2 (]: Writing injected SQL for node "model.adventureworks_analytics.monthly_sales_series"
+[0m05:05:54.331412 [debug] [Thread-4 (]: Began executing node model.adventureworks_analytics.executive_kpi
+[0m05:05:54.277075 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_dim_geography_geography_key.0bbb80e1c1, now model.adventureworks_analytics.product_sales_summary)
+[0m05:05:54.280404 [debug] [Thread-4 (]: Finished running node model.adventureworks_analytics.executive_kpi
+[0m05:05:54.282977 [debug] [Thread-3 (]: Began compiling node model.adventureworks_analytics.product_sales_summary
+[0m05:05:54.285399 [debug] [Thread-4 (]: Began running node model.adventureworks_analytics.sales_country_year_kpi
+[0m05:05:54.293275 [debug] [Thread-3 (]: Writing injected SQL for node "model.adventureworks_analytics.product_sales_summary"
+[0m05:05:54.294071 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.executive_kpi, now model.adventureworks_analytics.sales_country_year_kpi)
+[0m05:05:54.295876 [debug] [Thread-4 (]: Began compiling node model.adventureworks_analytics.sales_country_year_kpi
+[0m05:05:54.300004 [debug] [Thread-4 (]: Writing injected SQL for node "model.adventureworks_analytics.sales_country_year_kpi"
+[0m05:05:54.319601 [debug] [Thread-1 (]: Began executing node model.adventureworks_analytics.management_pnl_monthly
+[0m05:05:54.323545 [debug] [Thread-1 (]: Finished running node model.adventureworks_analytics.management_pnl_monthly
+[0m05:05:54.325683 [debug] [Thread-1 (]: Began running node model.adventureworks_analytics.sales_monthly_kpi
+[0m05:05:54.326616 [debug] [Thread-2 (]: Began executing node model.adventureworks_analytics.monthly_sales_series
+[0m05:05:54.331124 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.management_pnl_monthly, now model.adventureworks_analytics.sales_monthly_kpi)
+[0m05:05:54.332453 [debug] [Thread-4 (]: Began executing node model.adventureworks_analytics.sales_country_year_kpi
+[0m05:05:54.334261 [debug] [Thread-2 (]: Finished running node model.adventureworks_analytics.monthly_sales_series
+[0m05:05:54.338621 [debug] [Thread-1 (]: Began compiling node model.adventureworks_analytics.sales_monthly_kpi
+[0m05:05:54.341329 [debug] [Thread-4 (]: Finished running node model.adventureworks_analytics.sales_country_year_kpi
+[0m05:05:54.343797 [debug] [Thread-2 (]: Began running node model.adventureworks_analytics.source_to_dw_reconciliation
+[0m05:05:54.344650 [debug] [Thread-3 (]: Began executing node model.adventureworks_analytics.product_sales_summary
+[0m05:05:54.349286 [debug] [Thread-1 (]: Writing injected SQL for node "model.adventureworks_analytics.sales_monthly_kpi"
+[0m05:05:54.350743 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.not_null_fact_sales_order_line_net_sales.cd29419f21
+[0m05:05:54.352221 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.monthly_sales_series, now model.adventureworks_analytics.source_to_dw_reconciliation)
+[0m05:05:54.354085 [debug] [Thread-3 (]: Finished running node model.adventureworks_analytics.product_sales_summary
+[0m05:05:54.356227 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.sales_country_year_kpi, now test.adventureworks_analytics.not_null_fact_sales_order_line_net_sales.cd29419f21)
+[0m05:05:54.358014 [debug] [Thread-2 (]: Began compiling node model.adventureworks_analytics.source_to_dw_reconciliation
+[0m05:05:54.359431 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.not_null_fact_sales_order_line_product_key.c9f6ee69c5
+[0m05:05:54.360981 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.not_null_fact_sales_order_line_net_sales.cd29419f21
+[0m05:05:54.371245 [debug] [Thread-2 (]: Writing injected SQL for node "model.adventureworks_analytics.source_to_dw_reconciliation"
+[0m05:05:54.373530 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.product_sales_summary, now test.adventureworks_analytics.not_null_fact_sales_order_line_product_key.c9f6ee69c5)
+[0m05:05:54.381482 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_fact_sales_order_line_net_sales.cd29419f21"
+[0m05:05:54.383255 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.not_null_fact_sales_order_line_product_key.c9f6ee69c5
+[0m05:05:54.390979 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_fact_sales_order_line_product_key.c9f6ee69c5"
+[0m05:05:54.399171 [debug] [Thread-1 (]: Began executing node model.adventureworks_analytics.sales_monthly_kpi
+[0m05:05:54.403329 [debug] [Thread-1 (]: Finished running node model.adventureworks_analytics.sales_monthly_kpi
+[0m05:05:54.405608 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_fact_sales_order_line_sales_order_detail_id.a7a85e0fda
+[0m05:05:54.415584 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.sales_monthly_kpi, now test.adventureworks_analytics.not_null_fact_sales_order_line_sales_order_detail_id.a7a85e0fda)
+[0m05:05:54.418509 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_fact_sales_order_line_sales_order_detail_id.a7a85e0fda
+[0m05:05:54.420443 [debug] [Thread-2 (]: Began executing node model.adventureworks_analytics.source_to_dw_reconciliation
+[0m05:05:54.427565 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_fact_sales_order_line_sales_order_detail_id.a7a85e0fda"
+[0m05:05:54.428762 [debug] [Thread-2 (]: Finished running node model.adventureworks_analytics.source_to_dw_reconciliation
+[0m05:05:54.429331 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.not_null_fact_sales_order_line_net_sales.cd29419f21
+[0m05:05:54.432933 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.not_null_fact_sales_order_line_product_key.c9f6ee69c5
+[0m05:05:54.433555 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_fact_sales_order_line_sales_order_id.779f6f7da5
+[0m05:05:54.436528 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.not_null_fact_sales_order_line_net_sales.cd29419f21
+[0m05:05:54.440846 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.not_null_fact_sales_order_line_product_key.c9f6ee69c5
+[0m05:05:54.444772 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.source_to_dw_reconciliation, now test.adventureworks_analytics.not_null_fact_sales_order_line_sales_order_id.779f6f7da5)
+[0m05:05:54.446310 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.unique_fact_sales_order_line_sales_order_detail_id.e1791f496b
+[0m05:05:54.447518 [debug] [Thread-3 (]: Began running node model.adventureworks_analytics.customer_base
+[0m05:05:54.448621 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_fact_sales_order_line_sales_order_id.779f6f7da5
+[0m05:05:54.450086 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_fact_sales_order_line_net_sales.cd29419f21, now test.adventureworks_analytics.unique_fact_sales_order_line_sales_order_detail_id.e1791f496b)
+[0m05:05:54.451248 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_fact_sales_order_line_product_key.c9f6ee69c5, now model.adventureworks_analytics.customer_base)
+[0m05:05:54.457994 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_fact_sales_order_line_sales_order_id.779f6f7da5"
+[0m05:05:54.460389 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.unique_fact_sales_order_line_sales_order_detail_id.e1791f496b
+[0m05:05:54.463132 [debug] [Thread-3 (]: Began compiling node model.adventureworks_analytics.customer_base
+[0m05:05:54.474405 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_fact_sales_order_line_sales_order_detail_id.e1791f496b"
+[0m05:05:54.482324 [debug] [Thread-3 (]: Writing injected SQL for node "model.adventureworks_analytics.customer_base"
+[0m05:05:54.487637 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_fact_sales_order_line_sales_order_detail_id.a7a85e0fda
+[0m05:05:54.489990 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_fact_sales_order_line_sales_order_detail_id.a7a85e0fda
+[0m05:05:54.493056 [debug] [Thread-1 (]: Began running node model.adventureworks_analytics.customer_rfm
+[0m05:05:54.495443 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_fact_sales_order_line_sales_order_detail_id.a7a85e0fda, now model.adventureworks_analytics.customer_rfm)
+[0m05:05:54.498247 [debug] [Thread-1 (]: Began compiling node model.adventureworks_analytics.customer_rfm
+[0m05:05:54.505591 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_fact_sales_order_line_sales_order_id.779f6f7da5
+[0m05:05:54.508404 [debug] [Thread-1 (]: Writing injected SQL for node "model.adventureworks_analytics.customer_rfm"
+[0m05:05:54.512075 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_fact_sales_order_line_sales_order_id.779f6f7da5
+[0m05:05:54.517189 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_dim_customer_customer_key.c289fe4d1f
+[0m05:05:54.521065 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_fact_sales_order_line_sales_order_id.779f6f7da5, now test.adventureworks_analytics.not_null_dim_customer_customer_key.c289fe4d1f)
+[0m05:05:54.522322 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.unique_fact_sales_order_line_sales_order_detail_id.e1791f496b
+[0m05:05:54.523844 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_dim_customer_customer_key.c289fe4d1f
+[0m05:05:54.526856 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.unique_fact_sales_order_line_sales_order_detail_id.e1791f496b
+[0m05:05:54.537861 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_dim_customer_customer_key.c289fe4d1f"
+[0m05:05:54.538658 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.unique_dim_customer_customer_key.7b0683cc6e
+[0m05:05:54.541343 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_fact_sales_order_line_sales_order_detail_id.e1791f496b, now test.adventureworks_analytics.unique_dim_customer_customer_key.7b0683cc6e)
+[0m05:05:54.542078 [debug] [Thread-3 (]: Began executing node model.adventureworks_analytics.customer_base
+[0m05:05:54.543247 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.unique_dim_customer_customer_key.7b0683cc6e
+[0m05:05:54.545044 [debug] [Thread-3 (]: Finished running node model.adventureworks_analytics.customer_base
+[0m05:05:54.552089 [debug] [Thread-1 (]: Began executing node model.adventureworks_analytics.customer_rfm
+[0m05:05:54.555030 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_dim_customer_customer_key.7b0683cc6e"
+[0m05:05:54.555937 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.not_null_macro_observation_standardized_observation_key.61a45bd9b7
+[0m05:05:54.557629 [debug] [Thread-1 (]: Finished running node model.adventureworks_analytics.customer_rfm
+[0m05:05:54.561681 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.customer_base, now test.adventureworks_analytics.not_null_macro_observation_standardized_observation_key.61a45bd9b7)
+[0m05:05:54.563124 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_macro_observation_standardized_source_url.9989327225
+[0m05:05:54.564126 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_dim_customer_customer_key.c289fe4d1f
+[0m05:05:54.564622 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.not_null_macro_observation_standardized_observation_key.61a45bd9b7
+[0m05:05:54.565878 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.customer_rfm, now test.adventureworks_analytics.not_null_macro_observation_standardized_source_url.9989327225)
+[0m05:05:54.567575 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_dim_customer_customer_key.c289fe4d1f
+[0m05:05:54.573644 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_macro_observation_standardized_observation_key.61a45bd9b7"
+[0m05:05:54.575372 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_macro_observation_standardized_source_url.9989327225
+[0m05:05:54.576763 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.unique_macro_observation_standardized_observation_key.19aec8e81d
+[0m05:05:54.583469 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_macro_observation_standardized_source_url.9989327225"
+[0m05:05:54.585112 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_dim_customer_customer_key.c289fe4d1f, now test.adventureworks_analytics.unique_macro_observation_standardized_observation_key.19aec8e81d)
+[0m05:05:54.587246 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.unique_macro_observation_standardized_observation_key.19aec8e81d
+[0m05:05:54.594799 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_macro_observation_standardized_observation_key.19aec8e81d"
+[0m05:05:54.596829 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.unique_dim_customer_customer_key.7b0683cc6e
+[0m05:05:54.601281 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.unique_dim_customer_customer_key.7b0683cc6e
+[0m05:05:54.601932 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.not_null_macro_observation_standardized_observation_key.61a45bd9b7
+[0m05:05:54.606824 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.accepted_values_management_pnl_monthly_accounting_scope__gross_level_only.5b5001abde
+[0m05:05:54.608896 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.not_null_macro_observation_standardized_observation_key.61a45bd9b7
+[0m05:05:54.612419 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_dim_customer_customer_key.7b0683cc6e, now test.adventureworks_analytics.accepted_values_management_pnl_monthly_accounting_scope__gross_level_only.5b5001abde)
+[0m05:05:54.614275 [debug] [Thread-3 (]: Began running node model.adventureworks_analytics.feature_monthly_sales
+[0m05:05:54.615551 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.accepted_values_management_pnl_monthly_accounting_scope__gross_level_only.5b5001abde
+[0m05:05:54.617091 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_macro_observation_standardized_observation_key.61a45bd9b7, now model.adventureworks_analytics.feature_monthly_sales)
+[0m05:05:54.629923 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.accepted_values_management_pnl_monthly_accounting_scope__gross_level_only.5b5001abde"
+[0m05:05:54.630534 [debug] [Thread-3 (]: Began compiling node model.adventureworks_analytics.feature_monthly_sales
+[0m05:05:54.631068 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_macro_observation_standardized_source_url.9989327225
+[0m05:05:54.636447 [debug] [Thread-3 (]: Writing injected SQL for node "model.adventureworks_analytics.feature_monthly_sales"
+[0m05:05:54.638230 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.unique_macro_observation_standardized_observation_key.19aec8e81d
+[0m05:05:54.639186 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_macro_observation_standardized_source_url.9989327225
+[0m05:05:54.643953 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.unique_macro_observation_standardized_observation_key.19aec8e81d
+[0m05:05:54.645409 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_monthly_sales_series_month.90416522f6
+[0m05:05:54.646684 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.unique_monthly_sales_series_month.93d83a126d
+[0m05:05:54.650524 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_macro_observation_standardized_source_url.9989327225, now test.adventureworks_analytics.not_null_monthly_sales_series_month.90416522f6)
+[0m05:05:54.651942 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_macro_observation_standardized_observation_key.19aec8e81d, now test.adventureworks_analytics.unique_monthly_sales_series_month.93d83a126d)
+[0m05:05:54.653303 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_monthly_sales_series_month.90416522f6
+[0m05:05:54.655186 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.unique_monthly_sales_series_month.93d83a126d
+[0m05:05:54.662910 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_monthly_sales_series_month.90416522f6"
+[0m05:05:54.668764 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_monthly_sales_series_month.93d83a126d"
+[0m05:05:54.674437 [debug] [Thread-3 (]: Began executing node model.adventureworks_analytics.feature_monthly_sales
+[0m05:05:54.678310 [debug] [Thread-3 (]: Finished running node model.adventureworks_analytics.feature_monthly_sales
+[0m05:05:54.680899 [debug] [Thread-3 (]: Began running node model.adventureworks_analytics.business_kpi_macro_period
+[0m05:05:54.682474 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.feature_monthly_sales, now model.adventureworks_analytics.business_kpi_macro_period)
+[0m05:05:54.683982 [debug] [Thread-3 (]: Began compiling node model.adventureworks_analytics.business_kpi_macro_period
+[0m05:05:54.690124 [debug] [Thread-3 (]: Writing injected SQL for node "model.adventureworks_analytics.business_kpi_macro_period"
+[0m05:05:54.691934 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.accepted_values_management_pnl_monthly_accounting_scope__gross_level_only.5b5001abde
+[0m05:05:54.693819 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_monthly_sales_series_month.90416522f6
+[0m05:05:54.694797 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.accepted_values_management_pnl_monthly_accounting_scope__gross_level_only.5b5001abde
+[0m05:05:54.697691 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_monthly_sales_series_month.90416522f6
+[0m05:05:54.699683 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.not_null_sales_country_year_kpi_country_code.e4b5dfaa02
+[0m05:05:54.702068 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.unique_monthly_sales_series_month.93d83a126d
+[0m05:05:54.704005 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_sales_country_year_kpi_year.77dfae3082
+[0m05:05:54.713310 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.accepted_values_management_pnl_monthly_accounting_scope__gross_level_only.5b5001abde, now test.adventureworks_analytics.not_null_sales_country_year_kpi_country_code.e4b5dfaa02)
+[0m05:05:54.716775 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.unique_monthly_sales_series_month.93d83a126d
+[0m05:05:54.719190 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_monthly_sales_series_month.90416522f6, now test.adventureworks_analytics.not_null_sales_country_year_kpi_year.77dfae3082)
+[0m05:05:54.721545 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.not_null_sales_country_year_kpi_country_code.e4b5dfaa02
+[0m05:05:54.723259 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_product_sales_summary_product_key.99f89e3497
+[0m05:05:54.724667 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_sales_country_year_kpi_year.77dfae3082
+[0m05:05:54.733775 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_sales_country_year_kpi_country_code.e4b5dfaa02"
+[0m05:05:54.735468 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_monthly_sales_series_month.93d83a126d, now test.adventureworks_analytics.not_null_product_sales_summary_product_key.99f89e3497)
+[0m05:05:54.743993 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_sales_country_year_kpi_year.77dfae3082"
+[0m05:05:54.746859 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_product_sales_summary_product_key.99f89e3497
+[0m05:05:54.754571 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_product_sales_summary_product_key.99f89e3497"
+[0m05:05:54.759136 [debug] [Thread-3 (]: Began executing node model.adventureworks_analytics.business_kpi_macro_period
+[0m05:05:54.761985 [debug] [Thread-3 (]: Finished running node model.adventureworks_analytics.business_kpi_macro_period
+[0m05:05:54.774340 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.unique_product_sales_summary_product_key.e6aaa95d03
+[0m05:05:54.781263 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.business_kpi_macro_period, now test.adventureworks_analytics.unique_product_sales_summary_product_key.e6aaa95d03)
+[0m05:05:54.785832 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.unique_product_sales_summary_product_key.e6aaa95d03
+[0m05:05:54.786503 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.not_null_sales_country_year_kpi_country_code.e4b5dfaa02
+[0m05:05:54.795618 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_product_sales_summary_product_key.e6aaa95d03"
+[0m05:05:54.796788 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.not_null_sales_country_year_kpi_country_code.e4b5dfaa02
+[0m05:05:54.799003 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_sales_country_year_kpi_year.77dfae3082
+[0m05:05:54.803389 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_product_sales_summary_product_key.99f89e3497
+[0m05:05:54.804007 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.not_null_sales_monthly_kpi_month.576d7b5d59
+[0m05:05:54.810688 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_sales_country_year_kpi_year.77dfae3082
+[0m05:05:54.813194 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_product_sales_summary_product_key.99f89e3497
+[0m05:05:54.817432 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_sales_country_year_kpi_country_code.e4b5dfaa02, now test.adventureworks_analytics.not_null_sales_monthly_kpi_month.576d7b5d59)
+[0m05:05:54.819200 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_sales_monthly_kpi_revenue.8fb8d9e34b
+[0m05:05:54.821198 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.accepted_values_source_to_dw_reconciliation_status__PASS__FAIL.844692ecb9
+[0m05:05:54.823332 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.not_null_sales_monthly_kpi_month.576d7b5d59
+[0m05:05:54.825113 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_sales_country_year_kpi_year.77dfae3082, now test.adventureworks_analytics.not_null_sales_monthly_kpi_revenue.8fb8d9e34b)
+[0m05:05:54.826482 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_product_sales_summary_product_key.99f89e3497, now test.adventureworks_analytics.accepted_values_source_to_dw_reconciliation_status__PASS__FAIL.844692ecb9)
+[0m05:05:54.834714 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_sales_monthly_kpi_month.576d7b5d59"
+[0m05:05:54.835604 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_sales_monthly_kpi_revenue.8fb8d9e34b
+[0m05:05:54.837139 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.accepted_values_source_to_dw_reconciliation_status__PASS__FAIL.844692ecb9
+[0m05:05:54.846607 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_sales_monthly_kpi_revenue.8fb8d9e34b"
+[0m05:05:54.856181 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.accepted_values_source_to_dw_reconciliation_status__PASS__FAIL.844692ecb9"
+[0m05:05:54.861490 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.unique_product_sales_summary_product_key.e6aaa95d03
+[0m05:05:54.865936 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.unique_product_sales_summary_product_key.e6aaa95d03
+[0m05:05:54.866545 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.not_null_sales_monthly_kpi_month.576d7b5d59
+[0m05:05:54.876199 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.assert_reconciliation_passes
+[0m05:05:54.880312 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.not_null_sales_monthly_kpi_month.576d7b5d59
+[0m05:05:54.882972 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_product_sales_summary_product_key.e6aaa95d03, now test.adventureworks_analytics.assert_reconciliation_passes)
+[0m05:05:54.885029 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.not_null_source_to_dw_reconciliation_metric_name.34c62c107a
+[0m05:05:54.885837 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_sales_monthly_kpi_revenue.8fb8d9e34b
+[0m05:05:54.886429 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.assert_reconciliation_passes
+[0m05:05:54.887811 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_sales_monthly_kpi_month.576d7b5d59, now test.adventureworks_analytics.not_null_source_to_dw_reconciliation_metric_name.34c62c107a)
+[0m05:05:54.889387 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_sales_monthly_kpi_revenue.8fb8d9e34b
+[0m05:05:54.895080 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.assert_reconciliation_passes"
+[0m05:05:54.896702 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.not_null_source_to_dw_reconciliation_metric_name.34c62c107a
+[0m05:05:54.897988 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.unique_source_to_dw_reconciliation_metric_name.eb0f1a2e41
+[0m05:05:54.904958 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_source_to_dw_reconciliation_metric_name.34c62c107a"
+[0m05:05:54.906445 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_sales_monthly_kpi_revenue.8fb8d9e34b, now test.adventureworks_analytics.unique_source_to_dw_reconciliation_metric_name.eb0f1a2e41)
+[0m05:05:54.908331 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.unique_source_to_dw_reconciliation_metric_name.eb0f1a2e41
+[0m05:05:54.908961 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.accepted_values_source_to_dw_reconciliation_status__PASS__FAIL.844692ecb9
+[0m05:05:54.913767 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_source_to_dw_reconciliation_metric_name.eb0f1a2e41"
+[0m05:05:54.915850 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.accepted_values_source_to_dw_reconciliation_status__PASS__FAIL.844692ecb9
+[0m05:05:54.918337 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_customer_base_customer_key.5f523ec7fc
+[0m05:05:54.922080 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.accepted_values_source_to_dw_reconciliation_status__PASS__FAIL.844692ecb9, now test.adventureworks_analytics.not_null_customer_base_customer_key.5f523ec7fc)
+[0m05:05:54.925883 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_customer_base_customer_key.5f523ec7fc
+[0m05:05:54.932175 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_customer_base_customer_key.5f523ec7fc"
+[0m05:05:54.935398 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.not_null_source_to_dw_reconciliation_metric_name.34c62c107a
+[0m05:05:54.936110 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.assert_reconciliation_passes
+[0m05:05:54.938710 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.not_null_source_to_dw_reconciliation_metric_name.34c62c107a
+[0m05:05:54.946913 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.assert_reconciliation_passes
+[0m05:05:54.948641 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.unique_customer_base_customer_key.33f1fb74ff
+[0m05:05:54.950105 [debug] [Thread-3 (]: Began running node model.adventureworks_analytics.feature_customer_rfm
+[0m05:05:54.951959 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_source_to_dw_reconciliation_metric_name.34c62c107a, now test.adventureworks_analytics.unique_customer_base_customer_key.33f1fb74ff)
+[0m05:05:54.952556 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.unique_source_to_dw_reconciliation_metric_name.eb0f1a2e41
+[0m05:05:54.953133 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.assert_reconciliation_passes, now model.adventureworks_analytics.feature_customer_rfm)
+[0m05:05:54.954835 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.unique_customer_base_customer_key.33f1fb74ff
+[0m05:05:54.956471 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.unique_source_to_dw_reconciliation_metric_name.eb0f1a2e41
+[0m05:05:54.957775 [debug] [Thread-3 (]: Began compiling node model.adventureworks_analytics.feature_customer_rfm
+[0m05:05:54.967424 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_customer_base_customer_key.33f1fb74ff"
+[0m05:05:54.968330 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_customer_rfm_customer_key.5616d5b637
+[0m05:05:54.972513 [debug] [Thread-3 (]: Writing injected SQL for node "model.adventureworks_analytics.feature_customer_rfm"
+[0m05:05:54.973435 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_customer_base_customer_key.5f523ec7fc
+[0m05:05:54.974916 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_source_to_dw_reconciliation_metric_name.eb0f1a2e41, now test.adventureworks_analytics.not_null_customer_rfm_customer_key.5616d5b637)
+[0m05:05:54.977157 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_customer_base_customer_key.5f523ec7fc
+[0m05:05:54.978120 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_customer_rfm_customer_key.5616d5b637
+[0m05:05:54.979416 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.unique_customer_rfm_customer_key.8dc4b6cd63
+[0m05:05:54.987331 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_customer_rfm_customer_key.5616d5b637"
+[0m05:05:54.988138 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_customer_base_customer_key.5f523ec7fc, now test.adventureworks_analytics.unique_customer_rfm_customer_key.8dc4b6cd63)
+[0m05:05:54.990635 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.unique_customer_rfm_customer_key.8dc4b6cd63
+[0m05:05:54.998266 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.unique_customer_rfm_customer_key.8dc4b6cd63"
+[0m05:05:55.003630 [debug] [Thread-3 (]: Began executing node model.adventureworks_analytics.feature_customer_rfm
+[0m05:05:55.005861 [debug] [Thread-3 (]: Finished running node model.adventureworks_analytics.feature_customer_rfm
+[0m05:05:55.012019 [debug] [Thread-3 (]: Began running node model.adventureworks_analytics.data_quality_summary
+[0m05:05:55.014596 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.feature_customer_rfm, now model.adventureworks_analytics.data_quality_summary)
+[0m05:05:55.015172 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.unique_customer_base_customer_key.33f1fb74ff
+[0m05:05:55.021030 [debug] [Thread-3 (]: Began compiling node model.adventureworks_analytics.data_quality_summary
+[0m05:05:55.024262 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.unique_customer_base_customer_key.33f1fb74ff
+[0m05:05:55.025479 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_customer_rfm_customer_key.5616d5b637
+[0m05:05:55.034649 [debug] [Thread-3 (]: Writing injected SQL for node "model.adventureworks_analytics.data_quality_summary"
+[0m05:05:55.036970 [debug] [Thread-4 (]: Began running node model.adventureworks_analytics.macro_kpi_relation
+[0m05:05:55.039617 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_customer_rfm_customer_key.5616d5b637
+[0m05:05:55.042308 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.unique_customer_rfm_customer_key.8dc4b6cd63
+[0m05:05:55.043231 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_customer_base_customer_key.33f1fb74ff, now model.adventureworks_analytics.macro_kpi_relation)
+[0m05:05:55.045275 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.not_null_business_kpi_macro_period_analysis_caveat.479930d3fa
+[0m05:05:55.047397 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.unique_customer_rfm_customer_key.8dc4b6cd63
+[0m05:05:55.050152 [debug] [Thread-4 (]: Began compiling node model.adventureworks_analytics.macro_kpi_relation
+[0m05:05:55.054369 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_customer_rfm_customer_key.5616d5b637, now test.adventureworks_analytics.not_null_business_kpi_macro_period_analysis_caveat.479930d3fa)
+[0m05:05:55.056449 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_business_kpi_macro_period_country_code.8edaf6251c
+[0m05:05:55.060855 [debug] [Thread-4 (]: Writing injected SQL for node "model.adventureworks_analytics.macro_kpi_relation"
+[0m05:05:55.062317 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.not_null_business_kpi_macro_period_analysis_caveat.479930d3fa
+[0m05:05:55.063628 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.unique_customer_rfm_customer_key.8dc4b6cd63, now test.adventureworks_analytics.not_null_business_kpi_macro_period_country_code.8edaf6251c)
+[0m05:05:55.070539 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_business_kpi_macro_period_analysis_caveat.479930d3fa"
+[0m05:05:55.072995 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_business_kpi_macro_period_country_code.8edaf6251c
+[0m05:05:55.084380 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_business_kpi_macro_period_country_code.8edaf6251c"
+[0m05:05:55.112680 [debug] [Thread-3 (]: Began executing node model.adventureworks_analytics.data_quality_summary
+[0m05:05:55.117922 [debug] [Thread-3 (]: Finished running node model.adventureworks_analytics.data_quality_summary
+[0m05:05:55.120743 [debug] [Thread-3 (]: Began running node test.adventureworks_analytics.not_null_business_kpi_macro_period_year.a70d879c25
+[0m05:05:55.123198 [debug] [Thread-3 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.data_quality_summary, now test.adventureworks_analytics.not_null_business_kpi_macro_period_year.a70d879c25)
+[0m05:05:55.124015 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.not_null_business_kpi_macro_period_analysis_caveat.479930d3fa
+[0m05:05:55.124586 [debug] [Thread-4 (]: Began executing node model.adventureworks_analytics.macro_kpi_relation
+[0m05:05:55.126597 [debug] [Thread-3 (]: Began compiling node test.adventureworks_analytics.not_null_business_kpi_macro_period_year.a70d879c25
+[0m05:05:55.132123 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.not_null_business_kpi_macro_period_analysis_caveat.479930d3fa
+[0m05:05:55.141866 [debug] [Thread-4 (]: Finished running node model.adventureworks_analytics.macro_kpi_relation
+[0m05:05:55.148831 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_business_kpi_macro_period_country_code.8edaf6251c
+[0m05:05:55.148293 [debug] [Thread-3 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_business_kpi_macro_period_year.a70d879c25"
+[0m05:05:55.150557 [debug] [Thread-1 (]: Began running node test.adventureworks_analytics.accepted_values_data_quality_summary_status__PASS__WARN__FAIL.f74c55369a
+[0m05:05:55.152000 [debug] [Thread-4 (]: Began running node test.adventureworks_analytics.assert_core_data_quality
+[0m05:05:55.153656 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_business_kpi_macro_period_country_code.8edaf6251c
+[0m05:05:55.155227 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_business_kpi_macro_period_analysis_caveat.479930d3fa, now test.adventureworks_analytics.accepted_values_data_quality_summary_status__PASS__WARN__FAIL.f74c55369a)
+[0m05:05:55.156569 [debug] [Thread-4 (]: Re-using an available connection from the pool (formerly model.adventureworks_analytics.macro_kpi_relation, now test.adventureworks_analytics.assert_core_data_quality)
+[0m05:05:55.157633 [debug] [Thread-2 (]: Began running node test.adventureworks_analytics.not_null_macro_kpi_relation_interpretation_caveat.90c6ca1f92
+[0m05:05:55.158724 [debug] [Thread-1 (]: Began compiling node test.adventureworks_analytics.accepted_values_data_quality_summary_status__PASS__WARN__FAIL.f74c55369a
+[0m05:05:55.160038 [debug] [Thread-4 (]: Began compiling node test.adventureworks_analytics.assert_core_data_quality
+[0m05:05:55.161132 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly test.adventureworks_analytics.not_null_business_kpi_macro_period_country_code.8edaf6251c, now test.adventureworks_analytics.not_null_macro_kpi_relation_interpretation_caveat.90c6ca1f92)
+[0m05:05:55.168303 [debug] [Thread-1 (]: Writing injected SQL for node "test.adventureworks_analytics.accepted_values_data_quality_summary_status__PASS__WARN__FAIL.f74c55369a"
+[0m05:05:55.173672 [debug] [Thread-4 (]: Writing injected SQL for node "test.adventureworks_analytics.assert_core_data_quality"
+[0m05:05:55.174991 [debug] [Thread-2 (]: Began compiling node test.adventureworks_analytics.not_null_macro_kpi_relation_interpretation_caveat.90c6ca1f92
+[0m05:05:55.186433 [debug] [Thread-2 (]: Writing injected SQL for node "test.adventureworks_analytics.not_null_macro_kpi_relation_interpretation_caveat.90c6ca1f92"
+[0m05:05:55.193490 [debug] [Thread-3 (]: Began executing node test.adventureworks_analytics.not_null_business_kpi_macro_period_year.a70d879c25
+[0m05:05:55.195125 [debug] [Thread-3 (]: Finished running node test.adventureworks_analytics.not_null_business_kpi_macro_period_year.a70d879c25
+[0m05:05:55.202851 [debug] [Thread-4 (]: Began executing node test.adventureworks_analytics.assert_core_data_quality
+[0m05:05:55.203650 [debug] [Thread-2 (]: Began executing node test.adventureworks_analytics.not_null_macro_kpi_relation_interpretation_caveat.90c6ca1f92
+[0m05:05:55.204985 [debug] [Thread-4 (]: Finished running node test.adventureworks_analytics.assert_core_data_quality
+[0m05:05:55.206998 [debug] [Thread-2 (]: Finished running node test.adventureworks_analytics.not_null_macro_kpi_relation_interpretation_caveat.90c6ca1f92
+[0m05:05:55.212739 [debug] [Thread-1 (]: Began executing node test.adventureworks_analytics.accepted_values_data_quality_summary_status__PASS__WARN__FAIL.f74c55369a
+[0m05:05:55.214544 [debug] [Thread-1 (]: Finished running node test.adventureworks_analytics.accepted_values_data_quality_summary_status__PASS__WARN__FAIL.f74c55369a
+[0m05:05:55.218118 [debug] [MainThread]: Connection 'master' was properly closed.
+[0m05:05:55.219240 [debug] [MainThread]: Connection 'test.adventureworks_analytics.assert_core_data_quality' was properly closed.
+[0m05:05:55.220260 [debug] [MainThread]: Connection 'test.adventureworks_analytics.not_null_business_kpi_macro_period_year.a70d879c25' was properly closed.
+[0m05:05:55.220999 [debug] [MainThread]: Connection 'test.adventureworks_analytics.accepted_values_data_quality_summary_status__PASS__WARN__FAIL.f74c55369a' was properly closed.
+[0m05:05:55.221630 [debug] [MainThread]: Connection 'test.adventureworks_analytics.not_null_macro_kpi_relation_interpretation_caveat.90c6ca1f92' was properly closed.
+[0m05:05:55.240438 [debug] [MainThread]: Command end result
+[0m05:05:55.662481 [debug] [MainThread]: Wrote artifact WritableManifest to /app/dbt/target/manifest.json
+[0m05:05:55.711641 [debug] [MainThread]: Wrote artifact SemanticManifest to /app/dbt/target/semantic_manifest.json
+[0m05:05:55.761115 [debug] [MainThread]: Wrote artifact RunExecutionResult to /app/dbt/target/run_results.json
+[0m05:05:56.527956 [debug] [MainThread]: Acquiring new postgres connection 'generate_catalog'
+[0m05:05:56.529387 [info ] [MainThread]: Building catalog
+[0m05:05:56.550359 [debug] [ThreadPool]: Acquiring new postgres connection 'Adventureworks.information_schema'
+[0m05:05:56.562874 [debug] [ThreadPool]: Using postgres connection "Adventureworks.information_schema"
+[0m05:05:56.564638 [debug] [ThreadPool]: On Adventureworks.information_schema: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "adventureworks_analytics", "target_name": "dev", "connection_name": "Adventureworks.information_schema"} */
+
+    
+    
+
+    select
+        'Adventureworks' as table_database,
+        sch.nspname as table_schema,
+        tbl.relname as table_name,
+        case tbl.relkind
+            when 'v' then 'VIEW'
+            when 'm' then 'MATERIALIZED VIEW'
+            else 'BASE TABLE'
+        end as table_type,
+        tbl_desc.description as table_comment,
+        col.attname as column_name,
+        col.attnum as column_index,
+        pg_catalog.format_type(col.atttypid, col.atttypmod) as column_type,
+        col_desc.description as column_comment,
+        pg_get_userbyid(tbl.relowner) as table_owner
+
+    from pg_catalog.pg_namespace sch
+    join pg_catalog.pg_class tbl on tbl.relnamespace = sch.oid
+    join pg_catalog.pg_attribute col on col.attrelid = tbl.oid
+    left outer join pg_catalog.pg_description tbl_desc on (tbl_desc.objoid = tbl.oid and tbl_desc.objsubid = 0)
+    left outer join pg_catalog.pg_description col_desc on (col_desc.objoid = tbl.oid and col_desc.objsubid = col.attnum)
+    where ((upper(sch.nspname) = upper('staging') and
+           upper(tbl.relname) = upper('stg_purchase_order_detail')) or (upper(sch.nspname) = upper('production') and
+           upper(tbl.relname) = upper('product')) or (upper(sch.nspname) = upper('analytics') and
+           upper(tbl.relname) = upper('feature_customer_rfm')) or (upper(sch.nspname) = upper('core_dw') and
+           upper(tbl.relname) = upper('dim_geography')) or (upper(sch.nspname) = upper('staging') and
+           upper(tbl.relname) = upper('stg_sales_territory')) or (upper(sch.nspname) = upper('core_dw') and
+           upper(tbl.relname) = upper('dim_date')) or (upper(sch.nspname) = upper('mart_sales') and
+           upper(tbl.relname) = upper('sales_country_year_kpi')) or (upper(sch.nspname) = upper('production') and
+           upper(tbl.relname) = upper('productsubcategory')) or (upper(sch.nspname) = upper('mart_customer') and
+           upper(tbl.relname) = upper('customer_rfm')) or (upper(sch.nspname) = upper('staging') and
+           upper(tbl.relname) = upper('stg_employee')) or (upper(sch.nspname) = upper('staging') and
+           upper(tbl.relname) = upper('stg_person')) or (upper(sch.nspname) = upper('mart_finance') and
+           upper(tbl.relname) = upper('management_pnl_monthly')) or (upper(sch.nspname) = upper('audit') and
+           upper(tbl.relname) = upper('source_to_dw_reconciliation')) or (upper(sch.nspname) = upper('core_dw') and
+           upper(tbl.relname) = upper('fact_sales_order_line')) or (upper(sch.nspname) = upper('core_dw') and
+           upper(tbl.relname) = upper('fact_sales_order')) or (upper(sch.nspname) = upper('raw_macro') and
+           upper(tbl.relname) = upper('macro_observations')) or (upper(sch.nspname) = upper('sales') and
+           upper(tbl.relname) = upper('store')) or (upper(sch.nspname) = upper('sales') and
+           upper(tbl.relname) = upper('salesorderheader')) or (upper(sch.nspname) = upper('staging') and
+           upper(tbl.relname) = upper('stg_vendor')) or (upper(sch.nspname) = upper('staging') and
+           upper(tbl.relname) = upper('stg_customer')) or (upper(sch.nspname) = upper('staging') and
+           upper(tbl.relname) = upper('stg_purchase_order_header')) or (upper(sch.nspname) = upper('staging') and
+           upper(tbl.relname) = upper('stg_product_subcategory')) or (upper(sch.nspname) = upper('mart_sales_forecast') and
+           upper(tbl.relname) = upper('monthly_sales_series')) or (upper(sch.nspname) = upper('mart_customer') and
+           upper(tbl.relname) = upper('customer_base')) or (upper(sch.nspname) = upper('purchasing') and
+           upper(tbl.relname) = upper('purchaseorderdetail')) or (upper(sch.nspname) = upper('mart_product') and
+           upper(tbl.relname) = upper('product_sales_summary')) or (upper(sch.nspname) = upper('staging') and
+           upper(tbl.relname) = upper('stg_sales_order_header')) or (upper(sch.nspname) = upper('staging') and
+           upper(tbl.relname) = upper('stg_store')) or (upper(sch.nspname) = upper('mart_sales') and
+           upper(tbl.relname) = upper('sales_monthly_kpi')) or (upper(sch.nspname) = upper('analytics') and
+           upper(tbl.relname) = upper('macro_kpi_relation')) or (upper(sch.nspname) = upper('staging') and
+           upper(tbl.relname) = upper('stg_product')) or (upper(sch.nspname) = upper('staging') and
+           upper(tbl.relname) = upper('stg_sales_order_detail')) or (upper(sch.nspname) = upper('mart_sales') and
+           upper(tbl.relname) = upper('executive_kpi')) or (upper(sch.nspname) = upper('analytics') and
+           upper(tbl.relname) = upper('feature_monthly_sales')) or (upper(sch.nspname) = upper('core_dw') and
+           upper(tbl.relname) = upper('dim_customer')) or (upper(sch.nspname) = upper('mart_macro') and
+           upper(tbl.relname) = upper('business_kpi_macro_period')) or (upper(sch.nspname) = upper('sales') and
+           upper(tbl.relname) = upper('salesterritory')) or (upper(sch.nspname) = upper('purchasing') and
+           upper(tbl.relname) = upper('vendor')) or (upper(sch.nspname) = upper('mart_macro') and
+           upper(tbl.relname) = upper('macro_observation_standardized')) or (upper(sch.nspname) = upper('humanresources') and
+           upper(tbl.relname) = upper('employee')) or (upper(sch.nspname) = upper('staging') and
+           upper(tbl.relname) = upper('stg_product_category')) or (upper(sch.nspname) = upper('person') and
+           upper(tbl.relname) = upper('person')) or (upper(sch.nspname) = upper('audit') and
+           upper(tbl.relname) = upper('data_quality_summary')) or (upper(sch.nspname) = upper('purchasing') and
+           upper(tbl.relname) = upper('purchaseorderheader')) or (upper(sch.nspname) = upper('sales') and
+           upper(tbl.relname) = upper('customer')) or (upper(sch.nspname) = upper('production') and
+           upper(tbl.relname) = upper('productcategory')) or (upper(sch.nspname) = upper('sales') and
+           upper(tbl.relname) = upper('salesorderdetail')) or (upper(sch.nspname) = upper('core_dw') and
+           upper(tbl.relname) = upper('dim_product')))
+      and not pg_is_other_temp_schema(sch.oid) -- not a temporary schema belonging to another session
+      and tbl.relpersistence in ('p', 'u') -- [p]ermanent table or [u]nlogged table. Exclude [t]emporary tables
+      and tbl.relkind in ('r', 'v', 'f', 'p', 'm') -- o[r]dinary table, [v]iew, [f]oreign table, [p]artitioned table, [m]aterialized view. Other values are [i]ndex, [S]equence, [c]omposite type, [t]OAST table
+      and col.attnum > 0 -- negative numbers are used for system columns such as oid
+      and not col.attisdropped -- column as not been dropped
+
+    order by
+        sch.nspname,
+        tbl.relname,
+        col.attnum
+[0m05:05:56.566128 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m05:05:56.616734 [debug] [ThreadPool]: SQL status: SELECT 558 in 0.051 seconds
+[0m05:05:56.637707 [debug] [ThreadPool]: On Adventureworks.information_schema: ROLLBACK
+[0m05:05:56.639353 [debug] [ThreadPool]: On Adventureworks.information_schema: Close
+[0m05:05:56.710485 [debug] [MainThread]: Wrote artifact CatalogArtifact to /app/dbt/target/catalog.json
+[0m05:05:56.863124 [debug] [MainThread]: Wrote artifact WritableManifest to /app/dbt/target/manifest.json
+[0m05:05:56.879584 [debug] [MainThread]: Wrote artifact SemanticManifest to /app/dbt/target/semantic_manifest.json
+[0m05:05:56.881767 [info ] [MainThread]: Catalog written to /app/dbt/target/catalog.json
+[0m05:05:56.885610 [debug] [MainThread]: Resource report: {"command_name": "generate", "command_success": true, "command_wall_clock_time": 11.696179, "process_in_blocks": "65600", "process_kernel_time": 0.983097, "process_mem_max_rss": "136360", "process_out_blocks": "0", "process_user_time": 6.453361}
+[0m05:05:56.886753 [debug] [MainThread]: Command `dbt docs generate` succeeded at 05:05:56.886592 after 11.70 seconds
+[0m05:05:56.887740 [debug] [MainThread]: Connection 'generate_catalog' was properly closed.
+[0m05:05:56.888530 [debug] [MainThread]: Connection 'Adventureworks.information_schema' was properly closed.
+[0m05:05:56.889315 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x752a17576e10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x752a17784320>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x752a17e3c2f0>]}
+[0m05:05:56.890107 [debug] [MainThread]: Flushing usage events
+[0m05:05:58.009186 [debug] [MainThread]: An error was encountered while trying to flush usage events

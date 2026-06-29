@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import mlflow
 import pandas as pd
+import numpy as np
+from sklearn.preprocessing import FunctionTransformer
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from sklearn.pipeline import Pipeline
@@ -19,10 +21,14 @@ SELECTED_K = 5
 def build_pipeline(n_clusters: int) -> Pipeline:
     return Pipeline(
         [
+            ("log", FunctionTransformer(np.log1p, validate=False)),
             ("scale", StandardScaler()),
             ("model", KMeans(n_clusters=n_clusters, random_state=42, n_init=20)),
         ]
     )
+
+def transform_for_scoring(pipeline: Pipeline, values: pd.DataFrame):
+    return pipeline[:-1].transform(values)
 
 def build_customer_analytics_tables(db_engine) -> None:
     with db_engine.begin() as conn:
@@ -94,6 +100,28 @@ def build_customer_analytics_tables(db_engine) -> None:
             """
         )
 
+def build_eda_summary(customers: pd.DataFrame, values: pd.DataFrame) -> pd.DataFrame:
+    log_values = values.copy()
+    log_values[FEATURES] = np.log1p(log_values[FEATURES])
+
+    rows = []
+    for feature in FEATURES:
+        rows.append(
+            {
+                "feature": feature,
+                "missing_values": int(customers[feature].isna().sum()),
+                "mean": float(values[feature].mean()),
+                "std": float(values[feature].std()),
+                "min": float(values[feature].min()),
+                "median": float(values[feature].median()),
+                "max": float(values[feature].max()),
+                "skewness_before_log": float(values[feature].skew()),
+                "skewness_after_log": float(log_values[feature].skew()),
+            }
+        )
+
+    return pd.DataFrame(rows)
+
 def run_customer_segmentation(n_clusters: int = SELECTED_K) -> pd.DataFrame:
     ensure_analytics_schema()
     db_engine = engine()
@@ -103,18 +131,19 @@ def run_customer_segmentation(n_clusters: int = SELECTED_K) -> pd.DataFrame:
         db_engine,
     )
     values = customers[FEATURES].fillna(0)
+    eda_df = build_eda_summary(customers, values)
 
     evaluation = []
 
     for k in K_RANGE:
         pipeline = build_pipeline(k)
         labels = pipeline.fit_predict(values)
-        scaled = pipeline.named_steps["scale"].transform(values)
+        processed = transform_for_scoring(pipeline, values)
 
         evaluation.append(
             {
                 "k": k,
-                "silhouette_score": silhouette_score(scaled, labels),
+                "silhouette_score": silhouette_score(processed, labels),
                 "inertia": pipeline.named_steps["model"].inertia_,
             }
         )
@@ -125,11 +154,11 @@ def run_customer_segmentation(n_clusters: int = SELECTED_K) -> pd.DataFrame:
 
     pipeline = build_pipeline(selected_k)
     labels = pipeline.fit_predict(values)
-    scaled = pipeline.named_steps["scale"].transform(values)
+    processed = transform_for_scoring(pipeline, values)
 
     customers["segment_id"] = labels
 
-    score = silhouette_score(scaled, labels)
+    score = silhouette_score(processed, labels)
     inertia = pipeline.named_steps["model"].inertia_
 
     profile = (
@@ -274,6 +303,14 @@ def run_customer_segmentation(n_clusters: int = SELECTED_K) -> pd.DataFrame:
 
     evaluation_df.to_sql(
         "customer_segmentation_metrics",
+        db_engine,
+        schema="analytics",
+        if_exists="replace",
+        index=False,
+    )
+
+    eda_df.to_sql(
+        "customer_eda_summary",
         db_engine,
         schema="analytics",
         if_exists="replace",

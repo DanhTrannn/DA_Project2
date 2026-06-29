@@ -103,9 +103,16 @@ def load_monthly_sales(engine):
     return out
 
 
-def split_train_test(df):
-    train = df.iloc[:-6].copy()   # 31 tháng đầu
-    test = df.iloc[-6:].copy()    # 6 tháng cuối
+def split_train_test(df, test_size):
+    if test_size <= 0:
+        raise ValueError("TV3_TEST_SIZE must be greater than zero.")
+    if len(df) <= test_size:
+        raise ValueError(
+            f"Not enough monthly rows ({len(df)}) for a {test_size}-month test set."
+        )
+
+    train = df.iloc[:-test_size].copy()
+    test = df.iloc[-test_size:].copy()
 
     return train, test
 

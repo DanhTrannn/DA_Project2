@@ -41,9 +41,14 @@ def run_market_basket(min_support: float | None = None) -> pd.DataFrame:
         )
     else:
         output = rules[["antecedents", "consequents", "support", "confidence", "lift"]].copy()
-        output["antecedents"] = output["antecedents"].map(lambda value: ", ".join(sorted(value)))
-        output["consequents"] = output["consequents"].map(lambda value: ", ".join(sorted(value)))
-        output = output.sort_values(["lift", "confidence"], ascending=False).head(500)
+        output["antecedents"] = output["antecedents"].map(lambda value: " + ".join(sorted(value)))
+        output["consequents"] = output["consequents"].map(lambda value: " + ".join(sorted(value)))
+        output = output[
+            (output["support"] >= 0.01) &
+            (output["confidence"] >= 0.50) &
+            (output["lift"] >= 1.20)
+        ]
+        output = output.sort_values(["lift", "confidence", "support"], ascending=False)        
         output["scored_at"] = pd.Timestamp.now(tz="UTC")
 
     configure_mlflow("market_basket")

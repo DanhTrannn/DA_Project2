@@ -9,16 +9,16 @@ st.set_page_config(page_title="TV1 - Customer Analytics", layout="wide")
 @st.cache_data
 def load_data():
     engine = create_engine(DB_URL)
-
+    
     segment = pd.read_sql("select * from analytics.customer_segment", engine)
     summary = pd.read_sql("select * from analytics.customer_segment_summary", engine)
     metrics = pd.read_sql("select * from analytics.customer_segmentation_metrics order by k", engine)
     top_value = pd.read_sql("select * from analytics.customer_top_value", engine)
+    eda = pd.read_sql("select * from analytics.customer_eda_summary", engine)
 
-    return segment, summary, metrics, top_value
+    return segment, summary, metrics, top_value, eda
 
-
-segment, summary, metrics, top_value = load_data()
+segment, summary, metrics, top_value, eda = load_data()
 
 st.title("TV1 - Customer Analytics: RFM + K-Means")
 
@@ -36,6 +36,62 @@ col1.metric("Customers", f"{len(segment):,}")
 col2.metric("Total Revenue", f"{summary['total_revenue'].sum():,.0f}")
 col3.metric("Gross Profit", f"{summary['total_gross_profit'].sum():,.0f}")
 col4.metric("Silhouette", f"{segment['silhouette_score'].iloc[0]:.4f}")
+
+st.subheader("EDA & Preprocessing Summary")
+
+st.write(
+    """
+    Trước khi chạy K-Means, nhóm kiểm tra missing values, thống kê mô tả và độ lệch phân phối.
+    Các biến monetary và average order value thường bị lệch phải, nên mô hình áp dụng log1p
+    trước khi chuẩn hóa bằng StandardScaler.
+    """
+)
+
+st.dataframe(
+    eda.rename(
+        columns={
+            "feature": "Feature",
+            "missing_values": "Missing Values",
+            "mean": "Mean",
+            "std": "Std",
+            "min": "Min",
+            "median": "Median",
+            "max": "Max",
+            "skewness_before_log": "Skewness Before Log",
+            "skewness_after_log": "Skewness After Log",
+        }
+    ),
+    use_container_width=True,
+)
+
+col_before, col_after = st.columns(2)
+
+with col_before:
+    st.write("**Skewness Before Log**")
+    st.bar_chart(
+        eda.set_index("feature")["skewness_before_log"]
+    )
+
+with col_after:
+    st.write("**Skewness After Log**")
+    st.bar_chart(
+        eda.set_index("feature")["skewness_after_log"]
+    )
+
+st.info("""
+EDA Summary
+
+• Không có giá trị thiếu (Missing Values = 0) ở tất cả các feature.
+
+• Monetary và Average Order Value có độ lệch phải (right-skewed) rất lớn
+(skewness > 10), cho thấy chỉ một số ít khách hàng tạo doanh thu rất cao.
+
+• Sau khi áp dụng log1p:
+    - Monetary: 12.80 → 0.14
+    - Average Order Value: 10.81 → -0.05
+
+=> Dữ liệu trở nên cân bằng hơn trước khi StandardScaler và K-Means.
+""")
 
 st.subheader("1. Segment Distribution")
 segment_count = summary[["segment_name", "customer_count"]].sort_values(
@@ -161,9 +217,12 @@ st.markdown(
     **Selected k:** {selected_k}  
     **Silhouette score:** {silhouette:.4f}
 
-    k được thử từ 3 đến 6. Mặc dù k = 6 có silhouette score cao nhất,
-    k = 5 được chọn vì score gần tương đương nhưng dễ diễn giải hơn về mặt kinh doanh
-    thành 5 nhóm: **High Value, Loyal, At Risk, Developing và Low Value**.
+    K-Means được đánh giá với k từ 3 đến 6 trên dữ liệu đã tiền xử lý
+    bằng **log1p transformation** và **StandardScaler**.
+
+    Kết quả cho thấy **k = 5** đạt silhouette score cao nhất trong các giá trị đã thử.
+    Vì vậy, nhóm chọn **k = 5** cho mô hình cuối cùng. Số cụm này cũng phù hợp để diễn giải
+    thành các nhóm khách hàng: **High Value, Loyal, At Risk, Developing và Low Value**.
     """
 )
 
@@ -191,8 +250,8 @@ st.markdown(
 
     **Insight 2 - Loyal customers:**  
     Nhóm **Loyal** có tần suất mua trung bình khoảng **{loyal['avg_frequency']:.2f} đơn/khách**,
-    cao nhất trong các nhóm. Nhóm này phù hợp để triển khai **cross-sell, bundle sản phẩm**
-    và loyalty points nhằm tăng giá trị đơn hàng.
+    cao nhất trong các nhóm sau khi tách riêng nhóm High Value. Nhóm này phù hợp để triển khai
+    **cross-sell, bundle sản phẩm** và loyalty points nhằm tăng giá trị đơn hàng.
 
     **Insight 3 - At Risk customers:**  
     Nhóm **At Risk** có recency trung bình khoảng **{risk['avg_recency']:.0f} ngày**,
@@ -200,9 +259,9 @@ st.markdown(
     email remarketing hoặc voucher quay lại.
 
     **Insight 4 - Developing customers:**  
-    Nhóm **Developing** là nhóm đông nhất với **{int(developing['customer_count']):,} khách hàng**.
-    Họ có hành vi mua gần đây nhưng giá trị đơn hàng còn thấp, nên có thể phát triển bằng
-    gợi ý sản phẩm, ưu đãi lần mua tiếp theo và chương trình loyalty cơ bản.
+    Nhóm **Developing** có **{int(developing['customer_count']):,} khách hàng** với recency trung bình
+    khoảng **{developing['avg_recency']:.0f} ngày**. Họ mua tương đối gần đây nhưng giá trị còn thấp,
+    nên có thể phát triển bằng gợi ý sản phẩm, ưu đãi lần mua tiếp theo và chương trình loyalty cơ bản.
 
     **Insight 5 - Low Value customers:**  
     Nhóm **Low Value** có monetary và frequency thấp. Doanh nghiệp không nên đầu tư chăm sóc thủ công quá nhiều,

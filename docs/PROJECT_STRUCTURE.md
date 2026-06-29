@@ -71,6 +71,7 @@ DW, DataMart hoặc bảng `analytics` đã chuẩn hóa.
 | `superset/` | Config và bootstrap dashboard Superset |
 | `docs/` | Tài liệu vận hành, KPI, dashboard và cấu trúc đồ án |
 | `run_tv4.sh` | Script chạy pipeline nền TV4 end-to-end |
+| `run_tv1.sh` | Chạy model TV1 và khởi động app Streamlit chung |
 | `run_tv3.sh` | Chạy model TV3 và khởi động app Streamlit chung |
 
 ## 4. Các lớp dữ liệu trong PostgreSQL

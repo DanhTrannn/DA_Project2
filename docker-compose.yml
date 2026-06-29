@@ -91,10 +91,13 @@ services:
       <<: *dbt-environment
       DB_HOST: db
       DB_PORT: "5432"
+      MLFLOW_TRACKING_URI: http://mlflow:5000
     ports:
       - "${STREAMLIT_PORT:-8501}:8501"
     depends_on:
       db:
+        condition: service_healthy
+      mlflow:
         condition: service_healthy
     profiles: ["analytics"]
 
@@ -179,29 +182,6 @@ services:
       - "${SUPERSET_PORT:-8088}:8088"
     volumes:
       - superset-data:/app/superset_home
-    depends_on:
-      db:
-        condition: service_healthy
-
-  streamlit:
-    build:
-      context: ./analytics
-    container_name: adventureworks-streamlit
-    command: >
-      sh -c "pip install streamlit &&
-      python -m streamlit run /app/streamlit/customer_analytics.py
-      --server.address 0.0.0.0
-      --server.port 8501"
-    environment:
-      POSTGRES_USER: "${POSTGRES_USER:-postgres}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
-      SOURCE_HOST: db
-      SOURCE_INTERNAL_PORT: "5432"
-      SOURCE_DATABASE: "${SOURCE_DATABASE:-Adventureworks}"
-    ports:
-      - "8501:8501"
-    volumes:
-      - ./streamlit_app:/app/streamlit
     depends_on:
       db:
         condition: service_healthy

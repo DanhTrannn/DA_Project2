@@ -19,14 +19,14 @@ pipeline này cung cấp.
 - dbt data tests và Prefect flow end-to-end.
 - Giao diện dbt Docs, Prefect, MLflow và Superset.
 
-Các phần do TV1-TV2 tiếp tục triển khai:
+Các phần do TV2 tiếp tục triển khai:
 
-- K-Means customer segmentation.
 - Apriori/FP-Growth market basket.
-- Tích hợp các trang Streamlit còn lại cho TV1-TV2.
+- Tích hợp trang Streamlit Market Basket.
 - Tạo chart Superset từ dashboard spec.
 - AdventureWorksDW tùy chọn.
 
+TV1 đã triển khai Customer Analytics với RFM + K-Means.
 TV3 đã triển khai Sales Forecast Analytics trong ứng dụng Streamlit chung.
 
 AdventureWorks OLTP không có sổ cái tài chính và dữ liệu công nợ hoàn chỉnh.
@@ -45,6 +45,12 @@ Chạy toàn bộ phần TV4 sau khi build:
 
 ```bash
 ./run_tv4.sh
+```
+
+Chạy mô hình TV1 và ứng dụng Streamlit chung:
+
+```bash
+./run_tv1.sh
 ```
 
 Chạy mô hình TV3 và ứng dụng Streamlit chung:

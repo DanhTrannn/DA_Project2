@@ -30,6 +30,11 @@ def money(x):
     return f"${float(x):,.0f}"
 
 
+def md_money(x):
+    # Dùng trong st.markdown để ký tự $ không bị hiểu nhầm là công thức LaTeX
+    return money(x).replace("$", "\\$")
+
+
 def pct(x):
     if pd.isna(x):
         return "N/A"
@@ -151,46 +156,125 @@ def build_eda_insights(actual):
     overall_margin = valid["gross_margin"].mean()
 
     insights = []
-
     insights.append(
-        f"Dữ liệu EDA đang dùng {len(valid)} tháng hoàn chỉnh, từ "
-        f"{first['month_start'].date()} đến {last['month_start'].date()}."
+        f"EDA dùng **{len(valid)} tháng hoàn chỉnh**, từ **{first['month_start'].date()}** đến **{last['month_start'].date()}**."
     )
-
     insights.append(
-        f"Doanh thu thay đổi từ {money(first['revenue'])} lên {money(last['revenue'])} "
-        f"trong toàn kỳ ({pct(revenue_change)}). Chuỗi có xu hướng tăng dài hạn, "
-        "nhưng biến động theo tháng vẫn khá rõ nên cần kết hợp với metric sai số khi diễn giải forecast."
+        f"Doanh thu tăng từ {md_money(first['revenue'])} lên {md_money(last['revenue'])} "
+        f"({pct(revenue_change)}), cho thấy xu hướng dài hạn đi lên nhưng vẫn dao động mạnh theo tháng."
     )
-
     insights.append(
-        f"Số đơn hàng thay đổi {pct(order_change)} và số lượng bán thay đổi {pct(quantity_change)} "
-        "so với đầu kỳ. Hai chỉ số này cho thấy biến động doanh thu có liên quan nhiều đến volume bán hàng."
+        f"Order count tăng {pct(order_change)}, quantity sold tăng {pct(quantity_change)}; "
+        "doanh thu vì vậy chịu ảnh hưởng rõ từ volume bán hàng."
     )
 
     if prev is not None:
         mom = safe_float(last["revenue"]) / safe_float(prev["revenue"], 1) - 1
         if abs(mom) > 0.3:
             insights.append(
-                f"Tháng hoàn chỉnh gần nhất ({last['month_start'].date()}) biến động {pct(mom)} so với tháng trước. "
-                "Vì vậy forecast tháng kế tiếp nên được xem là tín hiệu lập kế hoạch, không phải con số chắc chắn."
+                f"Tháng gần nhất ({last['month_start'].strftime('%Y-%m')}) thay đổi {pct(mom)} so với tháng trước, "
+                "nên forecast cần được xem là tín hiệu tham khảo."
             )
 
     if pd.notna(recent_margin) and pd.notna(overall_margin):
-        if recent_margin > overall_margin:
-            insights.append(
-                f"Gross margin 6 tháng gần nhất đạt trung bình {pct(recent_margin)}, "
-                f"cao hơn mức trung bình toàn kỳ {pct(overall_margin)}. Đây là tín hiệu tích cực về chất lượng doanh thu, "
-                "nhưng vẫn cần theo dõi cùng với doanh thu thực tế."
-            )
-        else:
-            insights.append(
-                f"Gross margin 6 tháng gần nhất đạt {pct(recent_margin)}, "
-                f"không cao hơn nhiều so với trung bình toàn kỳ {pct(overall_margin)}. Cần theo dõi thêm hiệu quả lợi nhuận."
-            )
+        insights.append(
+            f"Gross margin 6 tháng gần nhất là {pct(recent_margin)}, so với trung bình toàn kỳ {pct(overall_margin)}."
+        )
 
     return insights
 
+def prepare_eda_features(actual_eda):
+    """Tạo thêm các cột EDA từ bảng monthly_sales_series."""
+    df = actual_eda.copy().sort_values("month_start")
+    df["year"] = df["month_start"].dt.year
+    df["quarter"] = df["month_start"].dt.to_period("Q").astype(str)
+    df["month_no"] = df["month_start"].dt.month
+    df["month_name"] = df["month_start"].dt.strftime("%b")
+
+    df["revenue_diff"] = df["revenue"].diff()
+    df["mom_growth"] = df["revenue"].pct_change()
+    df["yoy_growth"] = df["revenue"].pct_change(12)
+
+    df["aov"] = df["revenue"] / df["order_count"].replace(0, pd.NA)
+    df["avg_price_per_unit"] = df["revenue"] / df["quantity_sold"].replace(0, pd.NA)
+
+    return df
+
+
+def build_growth_insight(df):
+    if df.empty or len(df) < 2:
+        return "Chưa đủ dữ liệu để phân tích tăng trưởng."
+
+    valid_mom = df.dropna(subset=["mom_growth"])
+    if valid_mom.empty:
+        return "Chưa đủ dữ liệu để tính MoM Growth."
+
+    best_mom = valid_mom.loc[valid_mom["mom_growth"].idxmax()]
+    worst_mom = valid_mom.loc[valid_mom["mom_growth"].idxmin()]
+
+    text = (
+        f"MoM tăng mạnh nhất ở **{best_mom['month_start'].strftime('%Y-%m')}** ({pct(best_mom['mom_growth'])}); "
+        f"giảm mạnh nhất ở **{worst_mom['month_start'].strftime('%Y-%m')}** ({pct(worst_mom['mom_growth'])})."
+    )
+
+    valid_yoy = df.dropna(subset=["yoy_growth"])
+    if not valid_yoy.empty:
+        latest_yoy = valid_yoy.iloc[-1]
+        text += f" YoY gần nhất: **{latest_yoy['month_start'].strftime('%Y-%m')} = {pct(latest_yoy['yoy_growth'])}**."
+
+    return text
+
+def build_profit_insight(df):
+    if df.empty:
+        return "Chưa đủ dữ liệu để phân tích lợi nhuận."
+
+    total_revenue = df["revenue"].sum()
+    total_profit = df["gross_profit"].sum()
+    avg_margin = df["gross_margin"].mean()
+    recent_margin = df["gross_margin"].tail(6).mean()
+
+    return (
+        f"Gross profit toàn kỳ đạt {md_money(total_profit)} trên revenue {md_money(total_revenue)}. "
+        f"Gross margin trung bình là **{pct(avg_margin)}**, 6 tháng gần nhất là **{pct(recent_margin)}**; "
+        "vì vậy cần xem cả revenue và margin khi đánh giá hiệu quả bán hàng."
+    )
+
+def build_driver_insight(df):
+    if df.empty or len(df) < 2:
+        return "Chưa đủ dữ liệu để phân tích động lực doanh thu."
+
+    first = df.iloc[0]
+    last = df.iloc[-1]
+
+    rev_change = safe_float(last["revenue"]) / safe_float(first["revenue"], 1) - 1
+    order_change = safe_float(last["order_count"]) / safe_float(first["order_count"], 1) - 1
+    qty_change = safe_float(last["quantity_sold"]) / safe_float(first["quantity_sold"], 1) - 1
+    aov_change = safe_float(last["aov"]) / safe_float(first["aov"], 1) - 1
+
+    return (
+        f"Revenue tăng **{pct(rev_change)}** trong toàn kỳ. Order count tăng **{pct(order_change)}**, "
+        f"quantity sold tăng **{pct(qty_change)}**, trong khi AOV thay đổi **{pct(aov_change)}**. "
+        "Điều này gợi ý doanh thu tăng chủ yếu nhờ mở rộng số đơn/volume, nhưng giá trị trung bình mỗi đơn có xu hướng giảm."
+    )
+
+def build_time_level_insight(df):
+    if df.empty:
+        return "Chưa đủ dữ liệu để nhận xét theo thời gian."
+
+    year_sum = df.groupby("year", as_index=False)["revenue"].sum()
+    best_year = year_sum.loc[year_sum["revenue"].idxmax()]
+
+    quarter_sum = df.groupby("quarter", as_index=False)["revenue"].sum()
+    best_quarter = quarter_sum.loc[quarter_sum["revenue"].idxmax()]
+
+    best_month = df.loc[df["revenue"].idxmax()]
+
+    return (
+        f"Doanh thu có xu hướng tăng đến năm 2024. "
+        f"Năm cao nhất: **{int(best_year['year'])}** ({md_money(best_year['revenue'])}); "
+        f"quý cao nhất: **{best_quarter['quarter']}** ({md_money(best_quarter['revenue'])}); "
+        f"tháng cao nhất: **{best_month['month_start'].strftime('%Y-%m')}** ({md_money(best_month['revenue'])})."
+    )
 
 def build_model_ranking_insight(metrics):
     if metrics.empty:
@@ -230,7 +314,7 @@ def build_forecast_insight(test_df, future_df, model, metrics):
             worst = tmp.loc[tmp["abs_error"].idxmax()]
             parts.append(
                 f"Trong tập test, sai lệch lớn nhất nằm ở tháng {worst['month_start'].date()} "
-                f"với actual {money(worst['actual_revenue'])} và forecast {money(worst['forecast_revenue'])}."
+                f"với actual {md_money(worst['actual_revenue'])} và forecast {md_money(worst['forecast_revenue'])}."
             )
 
     metric_row = metrics[metrics["model_name"] == model]
@@ -244,8 +328,8 @@ def build_forecast_insight(test_df, future_df, model, metrics):
         first_future = future_df.iloc[0]
         last_future = future_df.iloc[-1]
         parts.append(
-            f"Giai đoạn forecast tương lai dao động từ {money(first_future['forecast_revenue'])} "
-            f"đến {money(last_future['forecast_revenue'])}. Kết quả này phản ánh xu hướng theo mô hình hiện tại "
+            f"Giai đoạn forecast tương lai dao động từ {md_money(first_future['forecast_revenue'])} "
+            f"đến {md_money(last_future['forecast_revenue'])}. Kết quả này phản ánh xu hướng theo mô hình hiện tại "
             "và nên được cập nhật khi có dữ liệu thực tế mới."
         )
 
@@ -270,7 +354,7 @@ def build_decomposition_insight(decomp):
 
     return (
         f"Thành phần trend thay đổi khoảng **{pct(trend_growth)}** trong toàn kỳ. "
-        f"Biên độ seasonality khoảng **{money(seasonal_amp)}**, cho thấy yếu tố mùa vụ có ảnh hưởng nhất định. "
+        f"Biên độ seasonality khoảng **{md_money(seasonal_amp)}**, cho thấy yếu tố mùa vụ có ảnh hưởng nhất định. "
         f"Residual lớn nhất ở tháng **{residual_row['month_start'].date()}**, vì vậy tháng này nên được xem là điểm biến động cần kiểm tra thêm."
     )
 
@@ -287,8 +371,8 @@ def build_scenario_insight(scenario):
     best = first[first["scenario_name"] == "Best Case"]["forecast_revenue"].iloc[0]
 
     return (
-        f"Ở tháng {first_month.date()}, Normal Case là **{money(normal)}**. "
-        f"Worst Case khoảng **{money(worst)}** và Best Case khoảng **{money(best)}**. "
+        f"Ở tháng {first_month.date()}, Normal Case là **{md_money(normal)}**. "
+        f"Worst Case khoảng **{md_money(worst)}** và Best Case khoảng **{md_money(best)}**. "
         "Ba kịch bản này dùng để tham khảo khi lập kế hoạch, không phải ba dự báo độc lập."
     )
 
@@ -303,8 +387,8 @@ def build_whatif_insight(what_if, impact):
 
     return (
         f"Nếu giả định điều kiện kinh doanh làm doanh thu thay đổi **{impact:+d}%**, "
-        f"tổng forecast trong kỳ sẽ thay đổi từ **{money(base_total)}** thành **{money(adjusted_total)}** "
-        f"(chênh lệch **{money(diff)}**). Đây là mô phỏng kịch bản, không phải kết quả model mới."
+        f"tổng forecast trong kỳ sẽ thay đổi từ **{md_money(base_total)}** thành **{md_money(adjusted_total)}** "
+        f"(chênh lệch **{md_money(diff)}**). Đây là mô phỏng kịch bản, không phải kết quả model mới."
     )
 
 
@@ -315,7 +399,7 @@ def build_executive_comment(s):
 
     return (
         f"Mô hình **{model}** được chọn vì có WAPE thấp nhất trong các mô hình thử nghiệm "
-        f"(**{pct(best_wape)}**). Forecast tháng tới khoảng **{money(s.get('next_month_forecast'))}**. "
+        f"(**{pct(best_wape)}**). Forecast tháng tới khoảng **{md_money(s.get('next_month_forecast'))}**. "
         f"Với Risk Level **{risk}**, kết quả phù hợp để hỗ trợ lập kế hoạch ngắn hạn "
         "và nên được cập nhật khi có dữ liệu thực tế mới."
     )
@@ -386,9 +470,7 @@ st.info(build_executive_comment(s))
 st.divider()
 
 
-# =========================
 # 7. EDA section
-# =========================
 
 st.header("A. Exploratory Data Analysis")
 
@@ -424,6 +506,147 @@ with right:
     fig.update_layout(yaxis_tickformat=".0%")
     st.plotly_chart(fig, use_container_width=True)
 
+
+# Additional EDA: Month / Quarter / Year, Growth, Profit, Revenue Driver
+eda_features = prepare_eda_features(actual_eda)
+
+st.subheader("5. Revenue by Month / Quarter / Year")
+tab_month, tab_quarter, tab_year = st.tabs(["Monthly", "Quarterly", "Yearly"])
+
+with tab_month:
+    fig_month = px.line(
+        eda_features,
+        x="month_start",
+        y="revenue",
+        markers=True,
+        title="Monthly Revenue"
+    )
+    st.plotly_chart(fig_month, use_container_width=True)
+
+with tab_quarter:
+    quarter_df = eda_features.groupby("quarter", as_index=False)["revenue"].sum()
+    fig_quarter = px.bar(
+        quarter_df,
+        x="quarter",
+        y="revenue",
+        text_auto=".2s",
+        title="Quarterly Revenue"
+    )
+    fig_quarter.update_layout(xaxis_title="Quarter", yaxis_title="Revenue")
+    st.plotly_chart(fig_quarter, use_container_width=True)
+
+with tab_year:
+    year_df = eda_features.groupby("year", as_index=False)["revenue"].sum()
+    fig_year = px.bar(
+        year_df,
+        x="year",
+        y="revenue",
+        text_auto=".2s",
+        title="Yearly Revenue"
+    )
+    fig_year.update_layout(xaxis_title="Year", yaxis_title="Revenue")
+    st.plotly_chart(fig_year, use_container_width=True)
+
+st.markdown("**Insight theo thời gian:**")
+st.markdown(build_time_level_insight(eda_features))
+
+st.subheader("6. Revenue Growth")
+growth_plot = eda_features.dropna(subset=["mom_growth"]).copy()
+growth_plot["mom_growth_pct"] = growth_plot["mom_growth"] * 100
+growth_plot["yoy_growth_pct"] = growth_plot["yoy_growth"] * 100
+
+left, right = st.columns(2)
+with left:
+    fig_mom = px.bar(
+        growth_plot,
+        x="month_start",
+        y="mom_growth_pct",
+        title="MoM Revenue Growth (%)"
+    )
+    fig_mom.update_layout(xaxis_title="Month", yaxis_title="MoM Growth (%)")
+    st.plotly_chart(fig_mom, use_container_width=True)
+
+with right:
+    yoy_plot = growth_plot.dropna(subset=["yoy_growth_pct"])
+    if yoy_plot.empty:
+        st.info("Chưa đủ 12 tháng để vẽ YoY Growth.")
+    else:
+        fig_yoy = px.line(
+            yoy_plot,
+            x="month_start",
+            y="yoy_growth_pct",
+            markers=True,
+            title="YoY Revenue Growth (%)"
+        )
+        fig_yoy.update_layout(xaxis_title="Month", yaxis_title="YoY Growth (%)")
+        st.plotly_chart(fig_yoy, use_container_width=True)
+
+st.markdown("**Insight tăng trưởng:**")
+st.markdown(build_growth_insight(eda_features))
+
+st.subheader("7. Gross Profit and Gross Margin")
+left, right = st.columns(2)
+with left:
+    fig_gp = px.line(
+        eda_features,
+        x="month_start",
+        y="gross_profit",
+        markers=True,
+        title="Monthly Gross Profit"
+    )
+    st.plotly_chart(fig_gp, use_container_width=True)
+
+with right:
+    fig_gm = px.line(
+        eda_features,
+        x="month_start",
+        y="gross_margin",
+        markers=True,
+        title="Monthly Gross Margin (%)"
+    )
+    fig_gm.update_layout(yaxis_tickformat=".0%")
+    st.plotly_chart(fig_gm, use_container_width=True)
+
+st.markdown("**Insight lợi nhuận:**")
+st.markdown(build_profit_insight(eda_features))
+
+st.subheader("8. Revenue Driver Analysis")
+driver_df = eda_features[["month_start", "revenue", "order_count", "quantity_sold", "aov"]].copy()
+# Chuẩn hóa về index 100 để so sánh xu hướng các chỉ số khác đơn vị.
+for col in ["revenue", "order_count", "quantity_sold", "aov"]:
+    first_valid = driver_df[col].replace(0, pd.NA).dropna()
+    if not first_valid.empty:
+        driver_df[col + "_index"] = driver_df[col] / first_valid.iloc[0] * 100
+    else:
+        driver_df[col + "_index"] = pd.NA
+
+driver_long = driver_df.melt(
+    id_vars="month_start",
+    value_vars=["revenue_index", "order_count_index", "quantity_sold_index", "aov_index"],
+    var_name="metric",
+    value_name="index_value"
+)
+driver_long["metric"] = driver_long["metric"].map({
+    "revenue_index": "Revenue",
+    "order_count_index": "Order Count",
+    "quantity_sold_index": "Quantity Sold",
+    "aov_index": "Average Order Value"
+})
+
+fig_driver = px.line(
+    driver_long,
+    x="month_start",
+    y="index_value",
+    color="metric",
+    markers=True,
+    title="Revenue Driver Index (Start = 100)"
+)
+fig_driver.update_layout(xaxis_title="Month", yaxis_title="Index")
+st.plotly_chart(fig_driver, use_container_width=True)
+
+st.markdown("**Insight động lực doanh thu:**")
+st.markdown(build_driver_insight(eda_features))
+
 st.markdown("**Insight EDA:**")
 if not excluded_actual.empty:
     excluded_months = ", ".join(excluded_actual["month_start"].dt.strftime("%Y-%m").tolist())
@@ -435,12 +658,11 @@ if not excluded_actual.empty:
 for item in build_eda_insights(actual_eda):
     st.markdown(f"- {item}")
 
+
 st.divider()
 
 
-# =========================
 # 8. Model ranking
-# =========================
 
 st.header("B. Forecast Model Comparison")
 
@@ -667,7 +889,7 @@ st.markdown(f"""
 
 - Model được chọn: **{s.get('best_model')}**
 - WAPE: **{pct(s.get('best_wape'))}**
-- Forecast tháng tới: **{money(s.get('next_month_forecast'))}**
+- Forecast tháng tới: **{md_money(s.get('next_month_forecast'))}**
 - Risk Level: **{s.get('risk_level')}**
 
 **Nhận xét:**  

@@ -22,6 +22,7 @@ select
     k.country_code,
     m.country_name,
     k.year,
+    make_date(k.year, 1, 1) as period_start,
     k.order_count,
     k.quantity_sold,
     k.revenue,
@@ -44,4 +45,3 @@ select
 from {{ ref('sales_country_year_kpi') }} k
 left join macro_by_country_year m
     using (country_code, year)
-

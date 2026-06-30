@@ -12,6 +12,7 @@ Script thực hiện theo thứ tự:
 2. Thử tải dữ liệu vĩ mô từ World Bank Indicators API.
 3. Nạp macro CSV bằng `dbt seed` vào schema `raw_macro`.
 4. Chạy staging, Core DW, DataMart, analytics và audit tests.
+5. Nếu Superset đang chạy, tạo/cập nhật dashboard TV4 theo cơ chế idempotent.
 
 Nếu chỉ cần chạy lại dbt mà không tải macro:
 
@@ -38,11 +39,10 @@ Pipeline đạt yêu cầu khi:
 - Các dòng trong `audit.source_to_dw_reconciliation` đều có `status = 'PASS'`.
 - `audit.data_quality_summary` không có `status = 'FAIL'`.
 - `mart_sales.executive_kpi` có một dòng KPI tổng quan.
-- Macro Context có `macro_coverage_status = 'complete'` sau khi tải World Bank thành công.
+- Macro Context có dữ liệu và ghi rõ `complete` hoặc `partial_macro_data`.
 
-Nếu World Bank timeout, pipeline vẫn chạy. `macro_coverage_status` sẽ là
-`missing_macro_data` và `audit.data_quality_summary` ghi `WARN`; không có số
-liệu vĩ mô giả được chèn vào kết quả.
+Nếu World Bank timeout, loader giữ seed chính thức đã cache. Nếu chưa từng có
+cache, pipeline báo lỗi thay vì chèn số liệu vĩ mô giả.
 
 ## 3. Schema được tạo
 
@@ -59,6 +59,9 @@ liệu vĩ mô giả được chèn vào kết quả.
 | `mart_macro` | Business KPI kết hợp macro theo country-year |
 | `analytics` | Feature tables và macro correlation mô tả |
 | `audit` | Reconciliation và data quality summary |
+
+Core DW hiện có thêm `core_dw.dim_salesperson`; P&L dashboard đọc từ
+`mart_finance.management_pnl_summary`.
 
 ## 4. Làm mới dữ liệu vĩ mô
 

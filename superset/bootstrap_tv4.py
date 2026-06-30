@@ -14,6 +14,28 @@ USERNAME = os.getenv("SUPERSET_ADMIN_USER", "admin")
 PASSWORD = os.getenv("SUPERSET_ADMIN_PASSWORD", "admin")
 DATABASE_NAME = os.getenv("SUPERSET_SOURCE_DATABASE_NAME", "Adventureworks")
 DASHBOARD_TITLE = "AdventureWorks TV4 - Executive & Macro"
+DASHBOARD_SLUG = "adventureworks-tv4-executive-macro"
+LEGACY_CHART_NAMES = {
+    "TV4 - Revenue",
+    "TV4 - Estimated Gross Profit",
+    "TV4 - Gross Margin %",
+    "TV4 - Revenue Trend by Country",
+    "TV4 - Source to DW Reconciliation",
+    "TV4 - Macro Context by Country and Year",
+    "Quy mô | Tổng doanh thu AdventureWorks",
+    "Hiệu quả | Lợi nhuận gộp ước tính",
+    "Biên lợi nhuận | Tỷ lệ lợi nhuận gộp ước tính",
+    "Hoạt động | Tổng số đơn hàng",
+    "Rò rỉ lợi nhuận | Giá trị bán dưới giá vốn",
+    "Xu hướng | Doanh thu và lợi nhuận gộp theo tháng",
+    "P&L gross-level | Doanh thu chuyển thành lợi nhuận gộp",
+    "Đối soát | Nguồn và Kho Dữ Liệu phải khớp",
+    "Chất lượng dữ liệu | Không được có kiểm tra FAIL",
+    "Thị trường | Doanh thu theo quốc gia trong bối cảnh 2022-2025",
+    "Vĩ mô | CPI, tăng trưởng GDP và thất nghiệp theo năm",
+    "Độ phủ | KPI doanh nghiệp đã ghép đủ dữ liệu World Bank",
+    "Tương quan mô tả | Không dùng để kết luận quan hệ nhân quả",
+}
 
 
 class SupersetClient:
@@ -82,6 +104,15 @@ def simple_metric(column_name: str, label: str, aggregate: str = "SUM") -> dict[
     }
 
 
+def sql_metric(expression: str, label: str, option_name: str) -> dict[str, Any]:
+    return {
+        "expressionType": "SQL",
+        "sqlExpression": expression,
+        "label": label,
+        "optionName": option_name,
+    }
+
+
 def get_database_id(client: SupersetClient) -> int:
     for database in client.list_all("database"):
         if database.get("database_name") == DATABASE_NAME:
@@ -102,7 +133,9 @@ def get_or_create_dataset(
             and dataset.get("table_name") == table_name
             and (database.get("id") in {None, database_id})
         ):
-            return int(dataset["id"])
+            dataset_id = int(dataset["id"])
+            client.request("PUT", f"/api/v1/dataset/{dataset_id}/refresh")
+            return dataset_id
     response = client.request(
         "POST",
         "/api/v1/dataset/",
@@ -125,7 +158,7 @@ def get_or_create_dashboard(client: SupersetClient) -> int:
         "/api/v1/dashboard/",
         {
             "dashboard_title": DASHBOARD_TITLE,
-            "slug": "adventureworks-tv4-executive-macro",
+            "slug": DASHBOARD_SLUG,
             "published": True,
             "json_metadata": json.dumps({}),
             "position_json": json.dumps({}),
@@ -159,6 +192,12 @@ def get_or_create_chart(
     return int(response["id"])
 
 
+def remove_legacy_charts(client: SupersetClient) -> None:
+    for chart in client.list_all("chart"):
+        if chart.get("slice_name") in LEGACY_CHART_NAMES:
+            client.request("DELETE", f"/api/v1/chart/{int(chart['id'])}")
+
+
 def dashboard_layout(charts: list[tuple[int, str]]) -> str:
     root_id = "ROOT_ID"
     grid_id = "GRID_ID"
@@ -172,32 +211,76 @@ def dashboard_layout(charts: list[tuple[int, str]]) -> str:
             "parents": [root_id],
         },
     }
-    for row_number in range(0, len(charts), 3):
-        row_id = f"ROW-{row_number // 3 + 1}"
-        row_charts = charts[row_number : row_number + 3]
-        chart_nodes = [f"CHART-{chart_id}" for chart_id, _ in row_charts]
-        layout[grid_id]["children"].append(row_id)
-        layout[row_id] = {
-            "id": row_id,
-            "type": "ROW",
-            "children": chart_nodes,
-            "meta": {"background": "BACKGROUND_TRANSPARENT"},
+    sections = [
+        (
+            "01. Tổng quan điều hành",
+            "Quy mô bán hàng, lợi nhuận gộp và phần giá trị bị bào mòn bởi các dòng bán dưới giá vốn.",
+            [[0, 1, 2], [3, 4]],
+            14,
+        ),
+        (
+            "02. Hiệu quả tài chính",
+            "Theo dõi doanh thu và lợi nhuận gộp theo thời gian; P&L chỉ phản ánh gross-level vì nguồn không có đầy đủ chi phí hoạt động, nợ và dòng tiền.",
+            [[5], [6]],
+            38,
+        ),
+        (
+            "03. Chất lượng và đối soát dữ liệu",
+            "Các chỉ tiêu nguồn và DW phải khớp; kiểm tra chất lượng không được có trạng thái FAIL.",
+            [[7, 8]],
+            42,
+        ),
+        (
+            "04. Bối cảnh kinh tế vĩ mô",
+            "Đặt KPI AdventureWorks cạnh CPI, tăng trưởng GDP và thất nghiệp theo quốc gia/năm. Đây là tương quan mô tả, không phải bằng chứng nhân quả.",
+            [[9], [10], [11, 12]],
+            38,
+        ),
+    ]
+
+    row_number = 0
+    for section_number, (title, description, rows, height) in enumerate(sections, 1):
+        markdown_id = f"MARKDOWN-{section_number}"
+        layout[grid_id]["children"].append(markdown_id)
+        layout[markdown_id] = {
+            "id": markdown_id,
+            "type": "MARKDOWN",
+            "children": [],
+            "meta": {
+                "code": f"## {title}\n{description}",
+                "height": 7,
+                "width": 12,
+            },
             "parents": [root_id, grid_id],
         }
-        for chart_id, slice_name in row_charts:
-            node_id = f"CHART-{chart_id}"
-            layout[node_id] = {
-                "id": node_id,
-                "type": "CHART",
-                "children": [],
-                "meta": {
-                    "chartId": chart_id,
-                    "height": 30,
-                    "width": 4,
-                    "sliceName": slice_name,
-                },
-                "parents": [root_id, grid_id, row_id],
+        for chart_indexes in rows:
+            row_number += 1
+            row_id = f"ROW-{row_number}"
+            row_charts = [charts[index] for index in chart_indexes]
+            chart_nodes = [f"CHART-{chart_id}" for chart_id, _ in row_charts]
+            layout[grid_id]["children"].append(row_id)
+            layout[row_id] = {
+                "id": row_id,
+                "type": "ROW",
+                "children": chart_nodes,
+                "meta": {"background": "BACKGROUND_TRANSPARENT"},
+                "parents": [root_id, grid_id],
             }
+            width = 12 // len(row_charts)
+            for chart_id, slice_name in row_charts:
+                node_id = f"CHART-{chart_id}"
+                layout[node_id] = {
+                    "id": node_id,
+                    "type": "CHART",
+                    "children": [],
+                    "meta": {
+                        "chartId": chart_id,
+                        "height": height,
+                        "width": width,
+                        "sliceName": slice_name,
+                    },
+                    "parents": [root_id, grid_id, row_id],
+                }
     return json.dumps(layout)
 
 
@@ -209,6 +292,9 @@ def main() -> None:
     datasets = {
         "executive": get_or_create_dataset(client, database_id, "mart_sales", "executive_kpi"),
         "monthly": get_or_create_dataset(client, database_id, "mart_sales", "sales_monthly_kpi"),
+        "pnl": get_or_create_dataset(
+            client, database_id, "mart_finance", "management_pnl_summary"
+        ),
         "reconciliation": get_or_create_dataset(
             client, database_id, "audit", "source_to_dw_reconciliation"
         ),
@@ -216,18 +302,22 @@ def main() -> None:
         "macro": get_or_create_dataset(
             client, database_id, "mart_macro", "business_kpi_macro_period"
         ),
+        "macro_relation": get_or_create_dataset(
+            client, database_id, "analytics", "macro_kpi_relation"
+        ),
     }
     dashboard_id = get_or_create_dashboard(client)
+    remove_legacy_charts(client)
 
     chart_specs = [
         (
             datasets["executive"],
-            "TV4 - Revenue",
+            "TV4 | Quy mô | Tổng doanh thu AdventureWorks",
             "big_number_total",
             {
                 "datasource": f"{datasets['executive']}__table",
                 "viz_type": "big_number_total",
-                "metric": simple_metric("revenue", "Revenue"),
+                "metric": simple_metric("revenue", "Doanh thu"),
                 "adhoc_filters": [],
                 "time_range": "No filter",
                 "y_axis_format": "SMART_NUMBER",
@@ -235,35 +325,63 @@ def main() -> None:
         ),
         (
             datasets["executive"],
-            "TV4 - Estimated Gross Profit",
-            "big_number_total",
-            {
-                "datasource": f"{datasets['executive']}__table",
-                "viz_type": "big_number_total",
-                "metric": simple_metric("estimated_gross_profit", "Gross Profit"),
-                "adhoc_filters": [],
-                "time_range": "No filter",
-                "y_axis_format": "SMART_NUMBER",
-            },
-        ),
-        (
-            datasets["executive"],
-            "TV4 - Gross Margin %",
+            "TV4 | Hiệu quả | Lợi nhuận gộp ước tính",
             "big_number_total",
             {
                 "datasource": f"{datasets['executive']}__table",
                 "viz_type": "big_number_total",
                 "metric": simple_metric(
-                    "estimated_gross_margin_pct", "Gross Margin %", "MAX"
+                    "estimated_gross_profit", "Lợi nhuận gộp ước tính"
                 ),
                 "adhoc_filters": [],
                 "time_range": "No filter",
-                "y_axis_format": ".2%",
+                "y_axis_format": "SMART_NUMBER",
+            },
+        ),
+        (
+            datasets["executive"],
+            "TV4 | Biên lợi nhuận | Tỷ lệ lợi nhuận gộp ước tính",
+            "big_number_total",
+            {
+                "datasource": f"{datasets['executive']}__table",
+                "viz_type": "big_number_total",
+                "metric": simple_metric(
+                    "estimated_gross_margin_pct", "Biên lợi nhuận gộp", "MAX"
+                ),
+                "adhoc_filters": [],
+                "time_range": "No filter",
+                "y_axis_format": ".1%",
+            },
+        ),
+        (
+            datasets["executive"],
+            "TV4 | Hoạt động | Tổng số đơn hàng",
+            "big_number_total",
+            {
+                "datasource": f"{datasets['executive']}__table",
+                "viz_type": "big_number_total",
+                "metric": simple_metric("order_count", "Số đơn hàng"),
+                "adhoc_filters": [],
+                "time_range": "No filter",
+                "y_axis_format": "SMART_NUMBER",
+            },
+        ),
+        (
+            datasets["executive"],
+            "TV4 | Rò rỉ lợi nhuận | Giá trị bán dưới giá vốn",
+            "big_number_total",
+            {
+                "datasource": f"{datasets['executive']}__table",
+                "viz_type": "big_number_total",
+                "metric": simple_metric("loss_amount", "Giá trị lỗ"),
+                "adhoc_filters": [],
+                "time_range": "No filter",
+                "y_axis_format": "SMART_NUMBER",
             },
         ),
         (
             datasets["monthly"],
-            "TV4 - Revenue Trend by Country",
+            "TV4 | Xu hướng | Doanh thu và lợi nhuận gộp theo tháng",
             "echarts_timeseries_line",
             {
                 "datasource": f"{datasets['monthly']}__table",
@@ -271,15 +389,40 @@ def main() -> None:
                 "x_axis": "month",
                 "time_grain_sqla": "P1M",
                 "time_range": "No filter",
-                "metrics": [simple_metric("revenue", "Revenue")],
-                "groupby": ["country_code"],
+                "metrics": [
+                    simple_metric("revenue", "Doanh thu"),
+                    simple_metric(
+                        "estimated_gross_profit", "Lợi nhuận gộp ước tính"
+                    ),
+                ],
+                "groupby": [],
                 "adhoc_filters": [],
                 "show_legend": True,
+                "y_axis_format": "SMART_NUMBER",
+            },
+        ),
+        (
+            datasets["pnl"],
+            "TV4 | P&L gross-level | Doanh thu chuyển thành lợi nhuận gộp",
+            "echarts_timeseries_bar",
+            {
+                "datasource": f"{datasets['pnl']}__table",
+                "viz_type": "echarts_timeseries_bar",
+                "x_axis": "line_item",
+                "metrics": [simple_metric("amount", "Giá trị")],
+                "groupby": [],
+                "adhoc_filters": [],
+                "row_limit": 10,
+                "orientation": "horizontal",
+                "show_value": True,
+                "show_legend": False,
+                "y_axis_format": "SMART_NUMBER",
+                "time_range": "No filter",
             },
         ),
         (
             datasets["reconciliation"],
-            "TV4 - Source to DW Reconciliation",
+            "TV4 | Đối soát | Nguồn và Kho Dữ Liệu phải khớp",
             "table",
             {
                 "datasource": f"{datasets['reconciliation']}__table",
@@ -297,8 +440,64 @@ def main() -> None:
             },
         ),
         (
+            datasets["quality"],
+            "TV4 | Chất lượng dữ liệu | Không được có kiểm tra FAIL",
+            "table",
+            {
+                "datasource": f"{datasets['quality']}__table",
+                "viz_type": "table",
+                "query_mode": "raw",
+                "all_columns": [
+                    "model_name",
+                    "check_name",
+                    "failed_record_count",
+                    "status",
+                ],
+                "adhoc_filters": [],
+                "row_limit": 100,
+            },
+        ),
+        (
             datasets["macro"],
-            "TV4 - Macro Context by Country and Year",
+            "TV4 | Thị trường | Doanh thu theo quốc gia trong bối cảnh 2022-2025",
+            "echarts_timeseries_line",
+            {
+                "datasource": f"{datasets['macro']}__table",
+                "viz_type": "echarts_timeseries_line",
+                "x_axis": "period_start",
+                "time_grain_sqla": "P1Y",
+                "time_range": "No filter",
+                "metrics": [simple_metric("revenue", "Doanh thu")],
+                "groupby": ["country_code"],
+                "adhoc_filters": [],
+                "show_legend": True,
+                "y_axis_format": "SMART_NUMBER",
+            },
+        ),
+        (
+            datasets["macro"],
+            "TV4 | Vĩ mô | CPI, tăng trưởng GDP và thất nghiệp theo năm",
+            "echarts_timeseries_line",
+            {
+                "datasource": f"{datasets['macro']}__table",
+                "viz_type": "echarts_timeseries_line",
+                "x_axis": "period_start",
+                "time_grain_sqla": "P1Y",
+                "time_range": "No filter",
+                "metrics": [
+                    simple_metric("inflation_pct", "Lạm phát", "AVG"),
+                    simple_metric("gdp_growth_pct", "Tăng trưởng GDP", "AVG"),
+                    simple_metric("unemployment_pct", "Thất nghiệp", "AVG"),
+                ],
+                "groupby": [],
+                "adhoc_filters": [],
+                "show_legend": True,
+                "y_axis_format": ".1f",
+            },
+        ),
+        (
+            datasets["macro"],
+            "TV4 | Độ phủ | KPI doanh nghiệp đã ghép đủ dữ liệu World Bank",
             "table",
             {
                 "datasource": f"{datasets['macro']}__table",
@@ -315,7 +514,29 @@ def main() -> None:
                     "macro_coverage_status",
                 ],
                 "adhoc_filters": [],
-                "row_limit": 100,
+                "row_limit": 200,
+            },
+        ),
+        (
+            datasets["macro_relation"],
+            "TV4 | Tương quan mô tả | Không dùng để kết luận quan hệ nhân quả",
+            "table",
+            {
+                "datasource": f"{datasets['macro_relation']}__table",
+                "viz_type": "table",
+                "query_mode": "raw",
+                "all_columns": [
+                    "relation_scope",
+                    "country_code",
+                    "kpi_name",
+                    "indicator_code",
+                    "sample_size",
+                    "correlation",
+                    "correlation_strength",
+                    "interpretation_caveat",
+                ],
+                "adhoc_filters": [],
+                "row_limit": 200,
             },
         ),
     ]
@@ -337,7 +558,7 @@ def main() -> None:
         f"/api/v1/dashboard/{dashboard_id}",
         {
             "dashboard_title": DASHBOARD_TITLE,
-            "slug": "adventureworks-tv4-executive-macro",
+            "slug": DASHBOARD_SLUG,
             "published": True,
             "position_json": dashboard_layout(charts),
             "json_metadata": json.dumps(
@@ -352,8 +573,7 @@ def main() -> None:
         },
     )
     print(
-        f"Dashboard ready: {BASE_URL}/superset/dashboard/"
-        "adventureworks-tv4-executive-macro/"
+        f"Dashboard ready: {BASE_URL}/superset/dashboard/{DASHBOARD_SLUG}/"
     )
 
 

@@ -68,6 +68,13 @@ def get_or_create_tv2_chart(
         if "|" in name
     }
     for chart in client.list_all("chart"):
+        owner_ids = {
+            int(dashboard["id"])
+            for dashboard in chart.get("dashboards") or []
+            if dashboard.get("id") is not None
+        }
+        if dashboard_id not in owner_ids:
+            continue
         chart_name = str(chart.get("slice_name") or "")
         if chart_name in accepted_names or any(
             chart_name.startswith(prefix) for prefix in stable_prefixes
@@ -77,6 +84,22 @@ def get_or_create_tv2_chart(
             return chart_id
     response = client.request("POST", "/api/v1/chart/", payload)
     return int(response["id"])
+
+
+def remove_stale_dashboard_charts(
+    client: SupersetClient,
+    dashboard_id: int,
+    keep_ids: set[int],
+) -> None:
+    for chart in client.list_all("chart"):
+        owner_ids = {
+            int(dashboard["id"])
+            for dashboard in chart.get("dashboards") or []
+            if dashboard.get("id") is not None
+        }
+        chart_id = int(chart["id"])
+        if dashboard_id in owner_ids and chart_id not in keep_ids:
+            client.request("DELETE", f"/api/v1/chart/{chart_id}")
 
 
 def numeric_filter(
@@ -609,6 +632,12 @@ def main() -> None:
             params,
         )
         charts.append((chart_id, slice_name))
+
+    remove_stale_dashboard_charts(
+        client,
+        dashboard_id,
+        {chart_id for chart_id, _ in charts},
+    )
 
     client.request(
         "PUT",

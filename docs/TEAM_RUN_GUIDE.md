@@ -9,17 +9,20 @@ phần phân tích và mô hình của mình.
 Từ thư mục gốc `AdventureWorks-for-Postgres`:
 
 ```bash
-docker compose up -d --build
-./run_tv4.sh
+./run_full_pipeline.sh
 ```
 
-Script `run_tv4.sh` sẽ:
+Script sẽ:
 
 1. Khởi động PostgreSQL và dbt.
 2. Tải lại macro chính thức từ World Bank.
 3. Nạp seed macro vào `raw_macro`.
 4. Chạy staging, Core DW, DataMart, analytics và audit tests.
-5. Tạo dashboard Superset TV4 nếu Superset đang chạy.
+5. Chạy ba mô hình Data Mining và kiểm tra output.
+6. Tạo bốn dashboard Superset.
+7. Khởi động và kiểm tra Streamlit, MLflow, dbt Docs và Prefect.
+
+Nếu chỉ cần chạy lại phần nền của TV4, dùng `./run_tv4.sh`.
 
 ## 2. Kiểm tra kết quả
 

@@ -12,7 +12,7 @@ pipeline này cung cấp.
 - AdventureWorks OLTP gồm 68 bảng thuộc các schema `sales`, `production`,
   `purchasing`, `person` và `humanresources`.
 - 13 dbt staging views trong schema `staging` của database `Adventureworks`.
-- Core DW: date/product/customer/geography dimensions và sales facts.
+- Core DW: date/product/customer/geography/salesperson dimensions và sales facts.
 - DataMart nền cho Sales, Finance gross-level, Customer, Product và Forecast.
 - Audit/reconciliation giữa OLTP và DW.
 - Macro Context từ World Bank theo country/year.
@@ -33,13 +33,16 @@ liệu bổ sung trước khi triển khai.
 
 ## Khởi động
 
-Không cần chạy script bên ngoài. Khởi động toàn bộ stack mặc định:
+Chạy toàn bộ pipeline, ba mô hình và các giao diện:
 
 ```bash
-docker compose up -d --build
+./run_full_pipeline.sh
 ```
 
-Chạy toàn bộ phần TV4 sau khi build:
+Kết quả kiểm chứng và luồng bàn giao cuối nằm tại
+[`docs/FINAL_PROJECT_HANDOVER.md`](docs/FINAL_PROJECT_HANDOVER.md).
+
+Nếu chỉ cần chạy lại phần nền TV4:
 
 ```bash
 ./run_tv4.sh
@@ -69,10 +72,16 @@ docker compose exec -T db psql -U postgres -d Adventureworks < analytics/sql/tv3
 Khi Superset đang chạy, tạo/cập nhật các dashboard:
 
 ```bash
+docker compose exec -T superset /app/bootstrap/import_tv1_dashboard.sh
 docker compose exec -T superset python /app/bootstrap/bootstrap_tv4.py
 docker compose exec -T superset python /app/bootstrap/bootstrap_tv2.py
 docker compose exec -T superset python /app/bootstrap/bootstrap_tv3.py
 ```
+
+Dashboard TV1 được tự động import từ ZIP mỗi khi service Superset khởi động.
+Script luôn đồng bộ lại database URI sau import vì file export không chứa
+password thật. Dashboard và chart vẫn được lưu trong volume `superset-data`;
+import lặp sẽ cập nhật theo UUID, không tạo bản sao.
 
 Khởi động một service và dependency của nó:
 
@@ -100,8 +109,10 @@ docker compose ps
 | Prefect | `http://localhost:4200` |
 | MLflow | `http://localhost:5000` |
 | Superset | `http://localhost:8088`, tài khoản `admin` / `admin` |
+| Superset TV1 | `http://localhost:8088/superset/dashboard/tv1-customer-analytics/` |
 | Superset TV2 | `http://localhost:8088/superset/dashboard/adventureworks-tv2-product-analytics/` |
 | Superset TV3 | `http://localhost:8088/superset/dashboard/adventureworks-tv3-sales-forecast/` |
+| Superset TV4 | `http://localhost:8088/superset/dashboard/adventureworks-tv4-executive-macro/` |
 | Streamlit Analytics | `http://localhost:8501` |
 
 Superset tự tạo kết nối OLTP:

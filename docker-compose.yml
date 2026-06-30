@@ -171,6 +171,7 @@ services:
         superset set-database-uri \
           --database_name "$${SUPERSET_SOURCE_DATABASE_NAME:-Adventureworks}" \
           --uri "$${SUPERSET_SOURCE_URI}"
+        /app/bootstrap/import_tv1_dashboard.sh
         exec /usr/bin/run-server.sh
     environment:
       SUPERSET_SECRET_KEY: "${SUPERSET_SECRET_KEY:-change-this-secret-key}"

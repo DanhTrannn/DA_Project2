@@ -19,9 +19,8 @@ Charts:
 4. KPI Order Count.
 5. KPI Loss Amount.
 6. Line: Revenue và Gross Profit theo tháng.
-7. Line: Revenue Growth % theo tháng.
-8. Bar: Revenue/Gross Profit theo country.
-9. Table: territory có loss amount hoặc margin thấp.
+7. Bar: P&L gross-level gồm Revenue, Estimated COGS, Estimated Gross Profit
+   và Loss Amount.
 
 Filters: month, country_code, territory_id.
 
@@ -35,9 +34,7 @@ Dataset:
 Charts:
 
 1. Table: metric, source value, DW value, difference, status.
-2. KPI: số reconciliation FAIL.
-3. Bar: failed record count theo data-quality check.
-4. Table: macro coverage warning.
+2. Table: model, data-quality check, failed record count và status.
 
 ## 3. Macro Context
 
@@ -49,16 +46,19 @@ Dataset:
 Charts:
 
 1. Line: Revenue theo country/year.
-2. Line: Inflation % theo country/year.
-3. Dual-axis hoặc normalized line: Revenue Growth và Inflation.
-4. Scatter: Inflation % và Revenue/Gross Margin.
-5. Table: country, year, revenue, margin, CPI, GDP growth, unemployment.
-6. Table: correlation, sample size, strength, caveat.
+2. Line: Inflation, GDP growth và unemployment theo year.
+3. Table: country, year, revenue, margin, CPI, GDP growth, unemployment và
+   trạng thái coverage.
+4. Table: correlation, sample size, strength và caveat.
 
 Filters: country_code, year.
 
-Dashboard phải có ghi chú hiển thị:
+Dashboard có 13 chart, được chia thành bốn phần bằng narrative Markdown. Phần
+Macro hiển thị ghi chú:
 
 > Macro indicators provide descriptive context only. Correlation does not
 > establish a causal effect on AdventureWorks revenue or margin.
 
+URL ổn định:
+
+`http://localhost:8088/superset/dashboard/adventureworks-tv4-executive-macro/`

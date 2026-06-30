@@ -171,6 +171,7 @@ echo
 echo "Full pipeline completed successfully."
 echo "Streamlit : http://localhost:${streamlit_port}"
 echo "Superset  : http://localhost:${superset_port} (admin/admin by default)"
+echo "TV1 BI    : http://localhost:${superset_port}/superset/dashboard/tv1-customer-analytics/"
 echo "TV2 BI    : http://localhost:${superset_port}/superset/dashboard/adventureworks-tv2-product-analytics/"
 echo "TV3 BI    : http://localhost:${superset_port}/superset/dashboard/adventureworks-tv3-sales-forecast/"
 echo "TV4 BI    : http://localhost:${superset_port}/superset/dashboard/adventureworks-tv4-executive-macro/"

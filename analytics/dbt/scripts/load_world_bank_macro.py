@@ -173,7 +173,11 @@ def main() -> int:
         dir=output_path.parent,
         delete=False,
     ) as temporary_file:
-        writer = csv.DictWriter(temporary_file, fieldnames=FIELDNAMES)
+        writer = csv.DictWriter(
+            temporary_file,
+            fieldnames=FIELDNAMES,
+            lineterminator="\n",
+        )
         writer.writeheader()
         writer.writerows(rows)
         temporary_path = Path(temporary_file.name)

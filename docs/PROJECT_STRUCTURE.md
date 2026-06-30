@@ -127,6 +127,7 @@ Bảng chính:
 | `dim_customer` | Dimension khách hàng |
 | `dim_product` | Dimension sản phẩm |
 | `dim_geography` | Dimension địa lý/country/territory |
+| `dim_salesperson` | Dimension nhân viên bán hàng |
 | `fact_sales_order` | Fact cấp đơn hàng |
 | `fact_sales_order_line` | Fact cấp dòng đơn hàng |
 
@@ -164,13 +165,13 @@ Bảng hiện có:
 - `feature_customer_rfm`
 - `feature_monthly_sales`
 - `macro_kpi_relation`
+- `customer_segment`
+- `product_association_rules`
+- `sales_forecast`
+- `sales_forecast_metric`
 
-Khi TV1, TV2, TV3 làm xong model, nên đưa output vào schema này, ví dụ:
-
-- `customer_segments`
-- `market_basket_rules`
-- `sales_forecast_result`
-- `model_evaluation_metrics`
+Ba thành viên đã ghi output mô hình vào schema này để Streamlit và Superset
+đọc lại, thay vì huấn luyện lại mô hình trong lúc render giao diện.
 
 ### 4.6 Audit
 

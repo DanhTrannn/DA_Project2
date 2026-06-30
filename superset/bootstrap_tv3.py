@@ -60,6 +60,13 @@ def get_or_create_chart(
         for name in (slice_name, *legacy_prefixes)
     }
     for chart in client.list_all("chart"):
+        owner_ids = {
+            int(dashboard["id"])
+            for dashboard in chart.get("dashboards") or []
+            if dashboard.get("id") is not None
+        }
+        if dashboard_id not in owner_ids:
+            continue
         chart_name = str(chart.get("slice_name") or "")
         if any(chart_name.startswith(prefix) for prefix in prefixes):
             chart_id = int(chart["id"])
@@ -67,6 +74,22 @@ def get_or_create_chart(
             return chart_id
     response = client.request("POST", "/api/v1/chart/", payload)
     return int(response["id"])
+
+
+def remove_stale_dashboard_charts(
+    client: SupersetClient,
+    dashboard_id: int,
+    keep_ids: set[int],
+) -> None:
+    for chart in client.list_all("chart"):
+        owner_ids = {
+            int(dashboard["id"])
+            for dashboard in chart.get("dashboards") or []
+            if dashboard.get("id") is not None
+        }
+        chart_id = int(chart["id"])
+        if dashboard_id in owner_ids and chart_id not in keep_ids:
+            client.request("DELETE", f"/api/v1/chart/{chart_id}")
 
 
 def sql_filter(expression: str, name: str) -> dict[str, object]:
@@ -242,8 +265,9 @@ def dashboard_layout(charts: list[tuple[int, str]]) -> str:
     sections = [
         [(charts[index], 3, 18) for index in range(4)],
         [(charts[4], 12, 34)],
-        [(charts[5], 6, 32), (charts[6], 6, 32)],
-        [(charts[7], 6, 32), (charts[8], 6, 32)],
+        [(charts[5], 12, 34)],
+        [(charts[6], 6, 32), (charts[7], 6, 32)],
+        [(charts[8], 12, 34)],
         [(charts[9], 12, 38)],
     ]
     for row_number, section in enumerate(sections, start=1):
@@ -289,7 +313,7 @@ def time_chart_params(
         "groupby": [],
         "adhoc_filters": [sql_filter("is_complete_month = TRUE", "tv3_complete_months")],
         "show_legend": False,
-        "show_value": viz_type == "echarts_timeseries_bar",
+        "show_value": False,
         "rich_tooltip": True,
         "y_axis_format": y_axis_format,
     }
@@ -515,6 +539,12 @@ def main() -> None:
             params,
         )
         charts.append((chart_id, slice_name))
+
+    remove_stale_dashboard_charts(
+        client,
+        dashboard_id,
+        {chart_id for chart_id, _ in charts},
+    )
 
     client.request(
         "PUT",

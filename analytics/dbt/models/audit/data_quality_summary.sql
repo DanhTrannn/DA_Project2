@@ -40,6 +40,46 @@ with checks as (
     union all
 
     select
+        'fact_sales_order_line',
+        'duplicate_sales_order_detail_id',
+        count(*) - count(distinct sales_order_detail_id)
+    from {{ ref('fact_sales_order_line') }}
+
+    union all
+
+    select
+        'fact_sales_order',
+        'duplicate_sales_order_id',
+        count(*) - count(distinct sales_order_id)
+    from {{ ref('fact_sales_order') }}
+
+    union all
+
+    select
+        'fact_sales_order',
+        'invalid_order_date',
+        count(*) filter (where order_date is null or due_date < order_date)
+    from {{ ref('fact_sales_order') }}
+
+    union all
+
+    select
+        'fact_sales_order_line',
+        'negative_unit_price',
+        count(*) filter (where unit_price < 0)
+    from {{ ref('fact_sales_order_line') }}
+
+    union all
+
+    select
+        'fact_sales_order_line',
+        'invalid_discount_rate',
+        count(*) filter (where unit_price_discount < 0 or unit_price_discount > 1)
+    from {{ ref('fact_sales_order_line') }}
+
+    union all
+
+    select
         'business_kpi_macro_period',
         'missing_macro_context',
         count(*) filter (where macro_coverage_status = 'missing_macro_data')
@@ -57,4 +97,3 @@ select
     end as status,
     current_timestamp as checked_at
 from checks
-

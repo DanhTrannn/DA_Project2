@@ -29,6 +29,14 @@ models:
       - name: customer_key
         data_tests: [not_null, unique]
 
+  - name: dim_salesperson
+    description: Sales employees used to analyze orders by salesperson.
+    columns:
+      - name: salesperson_key
+        data_tests: [not_null, unique]
+      - name: salesperson_name
+        data_tests: [not_null]
+
   - name: fact_sales_order
     description: One row per sales order.
     columns:
@@ -79,6 +87,16 @@ models:
               arguments:
                 values: [gross_level_only]
 
+  - name: management_pnl_summary
+    description: Gross-level P&L line items prepared for the executive dashboard.
+    columns:
+      - name: line_item_order
+        data_tests: [not_null, unique]
+      - name: line_item
+        data_tests: [not_null, unique]
+      - name: amount
+        data_tests: [not_null]
+
   - name: customer_base
     description: Customer value and profitability base for Customer Analytics.
     columns:
@@ -125,6 +143,8 @@ models:
       - name: country_code
         data_tests: [not_null]
       - name: year
+        data_tests: [not_null]
+      - name: period_start
         data_tests: [not_null]
       - name: analysis_caveat
         data_tests: [not_null]

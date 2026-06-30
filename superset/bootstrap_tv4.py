@@ -13,29 +13,8 @@ BASE_URL = os.getenv("SUPERSET_URL", "http://localhost:8088").rstrip("/")
 USERNAME = os.getenv("SUPERSET_ADMIN_USER", "admin")
 PASSWORD = os.getenv("SUPERSET_ADMIN_PASSWORD", "admin")
 DATABASE_NAME = os.getenv("SUPERSET_SOURCE_DATABASE_NAME", "Adventureworks")
-DASHBOARD_TITLE = "AdventureWorks TV4 - Executive & Macro"
-DASHBOARD_SLUG = "adventureworks-tv4-executive-macro"
-LEGACY_CHART_NAMES = {
-    "TV4 - Revenue",
-    "TV4 - Estimated Gross Profit",
-    "TV4 - Gross Margin %",
-    "TV4 - Revenue Trend by Country",
-    "TV4 - Source to DW Reconciliation",
-    "TV4 - Macro Context by Country and Year",
-    "Quy mô | Tổng doanh thu AdventureWorks",
-    "Hiệu quả | Lợi nhuận gộp ước tính",
-    "Biên lợi nhuận | Tỷ lệ lợi nhuận gộp ước tính",
-    "Hoạt động | Tổng số đơn hàng",
-    "Rò rỉ lợi nhuận | Giá trị bán dưới giá vốn",
-    "Xu hướng | Doanh thu và lợi nhuận gộp theo tháng",
-    "P&L gross-level | Doanh thu chuyển thành lợi nhuận gộp",
-    "Đối soát | Nguồn và Kho Dữ Liệu phải khớp",
-    "Chất lượng dữ liệu | Không được có kiểm tra FAIL",
-    "Thị trường | Doanh thu theo quốc gia trong bối cảnh 2022-2025",
-    "Vĩ mô | CPI, tăng trưởng GDP và thất nghiệp theo năm",
-    "Độ phủ | KPI doanh nghiệp đã ghép đủ dữ liệu World Bank",
-    "Tương quan mô tả | Không dùng để kết luận quan hệ nhân quả",
-}
+DASHBOARD_TITLE = "AdventureWorks TV4 - Executive & Data Quality"
+DASHBOARD_SLUG = "adventureworks-tv4-executive-data-quality"
 
 
 class SupersetClient:
@@ -151,7 +130,8 @@ def get_or_create_dataset(
 
 def get_or_create_dashboard(client: SupersetClient) -> int:
     for dashboard in client.list_all("dashboard"):
-        if dashboard.get("dashboard_title") == DASHBOARD_TITLE:
+        title = str(dashboard.get("dashboard_title") or "")
+        if title == DASHBOARD_TITLE or title.startswith("AdventureWorks TV4 - Executive"):
             return int(dashboard["id"])
     response = client.request(
         "POST",
@@ -192,10 +172,20 @@ def get_or_create_chart(
     return int(response["id"])
 
 
-def remove_legacy_charts(client: SupersetClient) -> None:
+def remove_stale_dashboard_charts(
+    client: SupersetClient,
+    dashboard_id: int,
+    keep_ids: set[int],
+) -> None:
     for chart in client.list_all("chart"):
-        if chart.get("slice_name") in LEGACY_CHART_NAMES:
-            client.request("DELETE", f"/api/v1/chart/{int(chart['id'])}")
+        owner_ids = {
+            int(dashboard["id"])
+            for dashboard in chart.get("dashboards") or []
+            if dashboard.get("id") is not None
+        }
+        chart_id = int(chart["id"])
+        if dashboard_id in owner_ids and chart_id not in keep_ids:
+            client.request("DELETE", f"/api/v1/chart/{chart_id}")
 
 
 def dashboard_layout(charts: list[tuple[int, str]]) -> str:
@@ -229,12 +219,6 @@ def dashboard_layout(charts: list[tuple[int, str]]) -> str:
             "Các chỉ tiêu nguồn và DW phải khớp; kiểm tra chất lượng không được có trạng thái FAIL.",
             [[7, 8]],
             42,
-        ),
-        (
-            "04. Bối cảnh kinh tế vĩ mô",
-            "Đặt KPI AdventureWorks cạnh CPI, tăng trưởng GDP và thất nghiệp theo quốc gia/năm. Đây là tương quan mô tả, không phải bằng chứng nhân quả.",
-            [[9], [10], [11, 12]],
-            38,
         ),
     ]
 
@@ -299,15 +283,8 @@ def main() -> None:
             client, database_id, "audit", "source_to_dw_reconciliation"
         ),
         "quality": get_or_create_dataset(client, database_id, "audit", "data_quality_summary"),
-        "macro": get_or_create_dataset(
-            client, database_id, "mart_macro", "business_kpi_macro_period"
-        ),
-        "macro_relation": get_or_create_dataset(
-            client, database_id, "analytics", "macro_kpi_relation"
-        ),
     }
     dashboard_id = get_or_create_dashboard(client)
-    remove_legacy_charts(client)
 
     chart_specs = [
         (
@@ -457,88 +434,6 @@ def main() -> None:
                 "row_limit": 100,
             },
         ),
-        (
-            datasets["macro"],
-            "TV4 | Thị trường | Doanh thu theo quốc gia trong bối cảnh 2022-2025",
-            "echarts_timeseries_line",
-            {
-                "datasource": f"{datasets['macro']}__table",
-                "viz_type": "echarts_timeseries_line",
-                "x_axis": "period_start",
-                "time_grain_sqla": "P1Y",
-                "time_range": "No filter",
-                "metrics": [simple_metric("revenue", "Doanh thu")],
-                "groupby": ["country_code"],
-                "adhoc_filters": [],
-                "show_legend": True,
-                "y_axis_format": "SMART_NUMBER",
-            },
-        ),
-        (
-            datasets["macro"],
-            "TV4 | Vĩ mô | CPI, tăng trưởng GDP và thất nghiệp theo năm",
-            "echarts_timeseries_line",
-            {
-                "datasource": f"{datasets['macro']}__table",
-                "viz_type": "echarts_timeseries_line",
-                "x_axis": "period_start",
-                "time_grain_sqla": "P1Y",
-                "time_range": "No filter",
-                "metrics": [
-                    simple_metric("inflation_pct", "Lạm phát", "AVG"),
-                    simple_metric("gdp_growth_pct", "Tăng trưởng GDP", "AVG"),
-                    simple_metric("unemployment_pct", "Thất nghiệp", "AVG"),
-                ],
-                "groupby": [],
-                "adhoc_filters": [],
-                "show_legend": True,
-                "y_axis_format": ".1f",
-            },
-        ),
-        (
-            datasets["macro"],
-            "TV4 | Độ phủ | KPI doanh nghiệp đã ghép đủ dữ liệu World Bank",
-            "table",
-            {
-                "datasource": f"{datasets['macro']}__table",
-                "viz_type": "table",
-                "query_mode": "raw",
-                "all_columns": [
-                    "country_code",
-                    "year",
-                    "revenue",
-                    "estimated_gross_margin_pct",
-                    "inflation_pct",
-                    "gdp_growth_pct",
-                    "unemployment_pct",
-                    "macro_coverage_status",
-                ],
-                "adhoc_filters": [],
-                "row_limit": 200,
-            },
-        ),
-        (
-            datasets["macro_relation"],
-            "TV4 | Tương quan mô tả | Không dùng để kết luận quan hệ nhân quả",
-            "table",
-            {
-                "datasource": f"{datasets['macro_relation']}__table",
-                "viz_type": "table",
-                "query_mode": "raw",
-                "all_columns": [
-                    "relation_scope",
-                    "country_code",
-                    "kpi_name",
-                    "indicator_code",
-                    "sample_size",
-                    "correlation",
-                    "correlation_strength",
-                    "interpretation_caveat",
-                ],
-                "adhoc_filters": [],
-                "row_limit": 200,
-            },
-        ),
     ]
 
     charts: list[tuple[int, str]] = []
@@ -552,6 +447,12 @@ def main() -> None:
             params,
         )
         charts.append((chart_id, slice_name))
+
+    remove_stale_dashboard_charts(
+        client,
+        dashboard_id,
+        {chart_id for chart_id, _ in charts},
+    )
 
     client.request(
         "PUT",

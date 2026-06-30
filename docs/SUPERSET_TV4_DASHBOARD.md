@@ -1,64 +1,45 @@
 # Superset Dashboard Spec - TV4
 
-Superset kết nối database `Adventureworks`. Dataset phải đọc từ DataMart/audit,
-không đọc trực tiếp bảng OLTP.
+Dashboard TV4 đọc từ DataMart và audit, không đọc trực tiếp OLTP.
 
-## 1. Executive Overview
+URL:
 
-Dataset:
+`http://localhost:8088/superset/dashboard/adventureworks-tv4-executive-data-quality/`
 
-- `mart_sales.executive_kpi`
-- `mart_sales.sales_monthly_kpi`
-- `mart_finance.management_pnl_monthly`
+## 1. Tổng quan điều hành
 
-Charts:
+Dataset: `mart_sales.executive_kpi`.
 
-1. KPI Revenue.
-2. KPI Estimated Gross Profit.
-3. KPI Estimated Gross Margin %.
-4. KPI Order Count.
-5. KPI Loss Amount.
-6. Line: Revenue và Gross Profit theo tháng.
-7. Bar: P&L gross-level gồm Revenue, Estimated COGS, Estimated Gross Profit
-   và Loss Amount.
+1. Tổng doanh thu.
+2. Lợi nhuận gộp ước tính.
+3. Biên lợi nhuận gộp ước tính.
+4. Tổng số đơn hàng.
+5. Giá trị bán dưới giá vốn.
 
-Filters: month, country_code, territory_id.
-
-## 2. Data Quality and Reconciliation
+## 2. Hiệu quả tài chính
 
 Dataset:
 
-- `audit.source_to_dw_reconciliation`
-- `audit.data_quality_summary`
+- `mart_sales.sales_monthly_kpi`.
+- `mart_finance.management_pnl_summary`.
 
 Charts:
 
-1. Table: metric, source value, DW value, difference, status.
-2. Table: model, data-quality check, failed record count và status.
+1. Doanh thu và lợi nhuận gộp theo tháng.
+2. Gross-level P&L gồm revenue, estimated COGS, estimated gross profit và
+   loss amount.
 
-## 3. Macro Context
+## 3. Chất lượng và đối soát
 
 Dataset:
 
-- `mart_macro.business_kpi_macro_period`
-- `analytics.macro_kpi_relation`
+- `audit.source_to_dw_reconciliation`.
+- `audit.data_quality_summary`.
 
 Charts:
 
-1. Line: Revenue theo country/year.
-2. Line: Inflation, GDP growth và unemployment theo year.
-3. Table: country, year, revenue, margin, CPI, GDP growth, unemployment và
-   trạng thái coverage.
-4. Table: correlation, sample size, strength và caveat.
+1. Source value, DW value, difference và reconciliation status.
+2. Model, check name, failed record count và quality status.
 
-Filters: country_code, year.
-
-Dashboard có 13 chart, được chia thành bốn phần bằng narrative Markdown. Phần
-Macro hiển thị ghi chú:
-
-> Macro indicators provide descriptive context only. Correlation does not
-> establish a causal effect on AdventureWorks revenue or margin.
-
-URL ổn định:
-
-`http://localhost:8088/superset/dashboard/adventureworks-tv4-executive-macro/`
+Dashboard có tổng cộng 9 chart. Bootstrap phải chạy lặp được mà không tạo
+chart trùng.

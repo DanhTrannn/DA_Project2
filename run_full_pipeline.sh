@@ -111,7 +111,7 @@ require_command curl
 docker compose version >/dev/null
 docker info >/dev/null
 
-echo "=== 1/7 Starting PostgreSQL, dbt, MLflow and Superset ==="
+echo "=== 1/6 Starting PostgreSQL, dbt, MLflow and Superset ==="
 docker compose up -d --build db dbt mlflow superset
 
 mlflow_port="$(published_port mlflow 5000)"
@@ -119,39 +119,33 @@ superset_port="$(published_port superset 8088)"
 wait_http "MLflow" "http://localhost:${mlflow_port}/health"
 
 echo
-echo "=== 2/7 Refreshing macro data ==="
-if ! docker compose exec -T dbt python /app/dbt/scripts/load_world_bank_macro.py; then
-  echo "WARNING: Macro refresh failed; dbt will use the cached macro seed." >&2
-fi
-
-echo
-echo "=== 3/7 Building and testing the complete dbt warehouse ==="
+echo "=== 2/6 Building and testing the complete dbt warehouse ==="
 docker compose exec -T dbt dbt build \
   --project-dir /app/dbt \
   --profiles-dir /app/dbt
 
 echo
-echo "=== 4/7 Building the Data Mining runtime ==="
+echo "=== 3/6 Building the Data Mining runtime ==="
 docker compose build streamlit
 run_model "TV1 customer segmentation" "aw_analytics.segmentation"
 run_model "TV2 FP-Growth market basket analysis" "aw_analytics.market_basket"
 run_model "TV3 sales forecasting" "aw_analytics.tv3_sales_intelligence"
 
 echo
-echo "=== 5/7 Verifying model outputs ==="
+echo "=== 4/6 Verifying model outputs ==="
 verify_output "TV1 customer segments" "analytics.customer_segment" 1
 verify_output "TV2 association rules" "analytics.product_association_rules" 10
 verify_output "TV3 sales forecast" "analytics.sales_forecast" 1
 
 echo
-echo "=== 6/7 Bootstrapping the Superset dashboards ==="
+echo "=== 5/6 Bootstrapping the Superset dashboards ==="
 wait_http "Superset" "http://localhost:${superset_port}/health"
 docker compose exec -T superset python /app/bootstrap/bootstrap_tv4.py
 docker compose exec -T superset python /app/bootstrap/bootstrap_tv2.py
 docker compose exec -T superset python /app/bootstrap/bootstrap_tv3.py
 
 echo
-echo "=== 7/7 Starting and validating analytics applications ==="
+echo "=== 6/6 Starting and validating analytics applications ==="
 docker compose build dbt-docs prefect-server
 docker compose up -d streamlit dbt-docs prefect-server
 
@@ -174,7 +168,7 @@ echo "Superset  : http://localhost:${superset_port} (admin/admin by default)"
 echo "TV1 BI    : http://localhost:${superset_port}/superset/dashboard/tv1-customer-analytics/"
 echo "TV2 BI    : http://localhost:${superset_port}/superset/dashboard/adventureworks-tv2-product-analytics/"
 echo "TV3 BI    : http://localhost:${superset_port}/superset/dashboard/adventureworks-tv3-sales-forecast/"
-echo "TV4 BI    : http://localhost:${superset_port}/superset/dashboard/adventureworks-tv4-executive-macro/"
+echo "TV4 BI    : http://localhost:${superset_port}/superset/dashboard/adventureworks-tv4-executive-data-quality/"
 echo "MLflow    : http://localhost:${mlflow_port}"
 echo "dbt Docs  : http://localhost:${dbt_docs_port}"
 echo "Prefect   : http://localhost:${prefect_port}"

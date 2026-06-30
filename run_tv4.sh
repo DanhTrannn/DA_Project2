@@ -6,12 +6,6 @@ export HOST_UID="${HOST_UID:-$(id -u)}"
 export HOST_GID="${HOST_GID:-$(id -g)}"
 
 docker compose up -d db dbt
-if ! docker compose exec -T dbt python /app/dbt/scripts/load_world_bank_macro.py; then
-  echo "WARNING: World Bank refresh failed; continuing with cached/empty macro seed."
-fi
-docker compose exec -T dbt dbt seed \
-  --project-dir /app/dbt \
-  --profiles-dir /app/dbt
 docker compose exec -T dbt dbt build \
   --project-dir /app/dbt \
   --profiles-dir /app/dbt
@@ -23,4 +17,4 @@ else
 fi
 
 echo "TV4 pipeline completed."
-echo "Inspect audit.source_to_dw_reconciliation and mart_macro.business_kpi_macro_period."
+echo "Inspect audit.source_to_dw_reconciliation and audit.data_quality_summary."

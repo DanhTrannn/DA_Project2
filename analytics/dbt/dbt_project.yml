@@ -40,10 +40,6 @@ models:
         +enabled: true
         +schema: mart_sales_forecast
         +materialized: table
-      macro:
-        +enabled: true
-        +schema: mart_macro
-        +materialized: table
     features:
       +schema: analytics
       +materialized: table
@@ -51,19 +47,3 @@ models:
     audit:
       +schema: audit
       +materialized: table
-
-seeds:
-  adventureworks_analytics:
-    +schema: raw_macro
-    macro_observations:
-      +column_types:
-        country_code: varchar(2)
-        country_name: varchar(64)
-        year: integer
-        indicator_code: varchar(32)
-        indicator_name: varchar(128)
-        value: numeric(18,6)
-        unit: varchar(64)
-        source_name: varchar(64)
-        source_url: text
-        retrieved_at: date

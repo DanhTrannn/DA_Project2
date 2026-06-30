@@ -495,12 +495,28 @@ def main() -> None:
             titles[8],
             ("So sánh mô hình |",),
             "echarts_timeseries_bar",
-            time_chart_params(
-                datasets["eda"],
-                "echarts_timeseries_bar",
-                simple_metric("revenue_yoy_growth_pct", "Tăng trưởng YoY", "AVG"),
-                ".1%",
-            ),
+            {
+                **time_chart_params(
+                    datasets["eda"],
+                    "echarts_timeseries_bar",
+                    simple_metric(
+                        "revenue_yoy_growth_pct",
+                        "Tăng trưởng YoY",
+                        "AVG",
+                    ),
+                    ".1%",
+                ),
+                "adhoc_filters": [
+                    sql_filter(
+                        "is_complete_month = TRUE",
+                        "tv3_yoy_complete_months",
+                    ),
+                    sql_filter(
+                        "revenue_yoy_growth_pct IS NOT NULL",
+                        "tv3_yoy_available_periods",
+                    ),
+                ],
+            },
         ),
         (
             datasets["eda"],

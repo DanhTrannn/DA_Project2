@@ -10,19 +10,6 @@ def run_command(command: list[str]) -> None:
     subprocess.run(command, check=True)
 
 
-@task
-def refresh_macro_data() -> None:
-    result = subprocess.run(
-        ["python", "/app/dbt/scripts/load_world_bank_macro.py"],
-        check=False,
-    )
-    if result.returncode != 0:
-        print(
-            "Macro refresh failed; continuing with the cached/empty seed. "
-            "Macro coverage will be reported as a warning."
-        )
-
-
 DBT_BASE_COMMAND = [
     "--project-dir",
     "/app/dbt",
@@ -33,8 +20,6 @@ DBT_BASE_COMMAND = [
 
 @flow(name="adventureworks-analytics-pipeline", log_prints=True)
 def analytics_pipeline() -> None:
-    refresh_macro_data()
-    run_command(["dbt", "seed", *DBT_BASE_COMMAND])
     run_command(
         [
             "dbt",

@@ -1,8 +1,8 @@
 # AdventureWorks OLTP Analytics
 
 Đồ án sử dụng AdventureWorks OLTP trên PostgreSQL. Pipeline TV4 đã triển khai
-import/staging, Core DW, DataMart nền, KPI quản trị, audit/reconciliation và
-Macro Context. Các model Data Mining của TV1-TV3 sử dụng feature/mart do
+import/staging, Core DW, DataMart nền, KPI quản trị và audit/reconciliation.
+Các model Data Mining của TV1-TV3 sử dụng feature/mart do
 pipeline này cung cấp.
 
 ## Phạm vi
@@ -15,7 +15,6 @@ pipeline này cung cấp.
 - Core DW: date/product/customer/geography/salesperson dimensions và sales facts.
 - DataMart nền cho Sales, Finance gross-level, Customer, Product và Forecast.
 - Audit/reconciliation giữa OLTP và DW.
-- Macro Context từ World Bank theo country/year.
 - dbt data tests và Prefect flow end-to-end.
 - Giao diện dbt Docs, Prefect, MLflow và Superset.
 
@@ -28,8 +27,8 @@ TV3 đã triển khai Sales Forecast Analytics trong ứng dụng Streamlit chun
 AdventureWorksDW vẫn là thành phần tùy chọn, không được dùng bởi pipeline chính.
 
 AdventureWorks OLTP không có sổ cái tài chính và dữ liệu công nợ hoàn chỉnh.
-KPI lợi nhuận, lỗ/lãi, nợ và tác động vĩ mô cần business rule hoặc nguồn dữ
-liệu bổ sung trước khi triển khai.
+KPI lợi nhuận ròng, nợ và dòng tiền cần business rule hoặc nguồn dữ liệu bổ
+sung trước khi triển khai.
 
 ## Khởi động
 
@@ -112,7 +111,7 @@ docker compose ps
 | Superset TV1 | `http://localhost:8088/superset/dashboard/tv1-customer-analytics/` |
 | Superset TV2 | `http://localhost:8088/superset/dashboard/adventureworks-tv2-product-analytics/` |
 | Superset TV3 | `http://localhost:8088/superset/dashboard/adventureworks-tv3-sales-forecast/` |
-| Superset TV4 | `http://localhost:8088/superset/dashboard/adventureworks-tv4-executive-macro/` |
+| Superset TV4 | `http://localhost:8088/superset/dashboard/adventureworks-tv4-executive-data-quality/` |
 | Streamlit Analytics | `http://localhost:8501` |
 
 Superset tự tạo kết nối OLTP:
@@ -133,7 +132,6 @@ dbt:
 
 ```bash
 docker compose exec dbt bash
-dbt seed --project-dir /app/dbt --profiles-dir /app/dbt
 dbt build --project-dir /app/dbt --profiles-dir /app/dbt
 dbt ls --resource-type model
 ```
@@ -181,8 +179,7 @@ Các schema TV4 được tạo thêm:
 - `mart_sales`: Executive, monthly và country-year KPI.
 - `mart_finance`: P&L quản trị gross-level.
 - `mart_customer`, `mart_product`, `mart_sales_forecast`: đầu vào cho TV1-TV3.
-- `raw_macro`, `mart_macro`: World Bank observations và Macro Context.
-- `analytics`: feature tables và macro correlation mô tả.
+- `analytics`: feature tables và output Data Mining.
 - `audit`: source-to-DW reconciliation và data-quality summary.
 
 Tài liệu vận hành:

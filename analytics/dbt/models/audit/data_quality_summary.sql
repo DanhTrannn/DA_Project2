@@ -76,14 +76,6 @@ with checks as (
         'invalid_discount_rate',
         count(*) filter (where unit_price_discount < 0 or unit_price_discount > 1)
     from {{ ref('fact_sales_order_line') }}
-
-    union all
-
-    select
-        'business_kpi_macro_period',
-        'missing_macro_context',
-        count(*) filter (where macro_coverage_status = 'missing_macro_data')
-    from {{ ref('business_kpi_macro_period') }}
 )
 
 select
@@ -91,7 +83,6 @@ select
     check_name,
     failed_record_count,
     case
-        when check_name = 'missing_macro_context' and failed_record_count > 0 then 'WARN'
         when failed_record_count = 0 then 'PASS'
         else 'FAIL'
     end as status,

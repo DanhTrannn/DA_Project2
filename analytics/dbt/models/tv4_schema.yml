@@ -68,7 +68,7 @@ models:
         data_tests: [not_null]
 
   - name: sales_country_year_kpi
-    description: Annual business KPI by country, used by Macro Context.
+    description: Annual business KPI by country for market analysis.
     columns:
       - name: country_code
         data_tests: [not_null]
@@ -129,32 +129,6 @@ models:
       - name: is_complete_month
         data_tests: [not_null]
 
-  - name: macro_observation_standardized
-    description: Standardized World Bank macro observations by country, year and indicator.
-    columns:
-      - name: observation_key
-        data_tests: [not_null, unique]
-      - name: source_url
-        data_tests: [not_null]
-
-  - name: business_kpi_macro_period
-    description: AdventureWorks country-year KPI joined to World Bank macro indicators.
-    columns:
-      - name: country_code
-        data_tests: [not_null]
-      - name: year
-        data_tests: [not_null]
-      - name: period_start
-        data_tests: [not_null]
-      - name: analysis_caveat
-        data_tests: [not_null]
-
-  - name: macro_kpi_relation
-    description: Descriptive KPI/macro correlations with sample size and a non-causality caveat.
-    columns:
-      - name: interpretation_caveat
-        data_tests: [not_null]
-
   - name: source_to_dw_reconciliation
     description: Source-to-DW reconciliation for sales row counts and revenue.
     columns:
@@ -167,23 +141,10 @@ models:
                 values: [PASS, FAIL]
 
   - name: data_quality_summary
-    description: Data quality failures and macro coverage warnings for the TV4 dashboard.
+    description: Data quality failures for the TV4 dashboard.
     columns:
       - name: status
         data_tests:
           - accepted_values:
               arguments:
                 values: [PASS, WARN, FAIL]
-
-seeds:
-  - name: macro_observations
-    description: World Bank macro data downloaded by scripts/load_world_bank_macro.py.
-    columns:
-      - name: country_code
-        data_tests: [not_null]
-      - name: year
-        data_tests: [not_null]
-      - name: indicator_code
-        data_tests: [not_null]
-      - name: value
-        data_tests: [not_null]

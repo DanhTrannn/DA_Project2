@@ -340,6 +340,211 @@ Cùng một fact line được tổng hợp theo nhiều dimension nhưng tổng
 bộ vẫn phải bằng 340. Đây là lợi ích của việc tính measure một lần tại Core DW
 rồi tái sử dụng cho các DataMart.
 
+## 3. Thiết kế và vai trò của DataMart
+
+### 3.1 DataMart là gì?
+
+DataMart là lớp dữ liệu được tổ chức theo một chủ đề hoặc một nhóm câu hỏi
+nghiệp vụ cụ thể. Core DW giữ dữ liệu ở grain chi tiết và dùng chung, trong khi
+DataMart tổng hợp dữ liệu thành cấu trúc thuận tiện cho phân tích.
+
+Trong đồ án, DataMart không phải dữ liệu mô phỏng và cũng không phải một Kho
+Dữ Liệu tách biệt. Các mart đều được dbt tạo từ dimension và fact của Core DW.
+Vì vậy, chúng kế thừa cùng nguồn dữ liệu, grain và công thức metric đã được
+chuẩn hóa.
+
+Việc xây dựng DataMart có các mục đích:
+
+1. Giảm số lượng phép join và phép tính mà dashboard phải thực hiện.
+2. Cố định grain phù hợp với từng câu hỏi phân tích.
+3. Bảo đảm Superset, Streamlit và Data Mining sử dụng cùng công thức KPI.
+4. Hạn chế cộng trùng metric cấp order và metric cấp order line.
+5. Tăng khả năng đọc hiểu và tái sử dụng dữ liệu.
+
+```mermaid
+flowchart LR
+    O["fact_sales_order<br/>Grain: order"]
+    L["fact_sales_order_line<br/>Grain: order line"]
+    D["Conformed dimensions"]
+
+    S["mart_sales<br/>KPI quản trị"]
+    F["mart_finance<br/>P&L gross-level"]
+    C["mart_customer<br/>Customer analytics"]
+    P["mart_product<br/>Product analytics"]
+    T["mart_sales_forecast<br/>Time series"]
+
+    O --> S
+    L --> S
+    O --> F
+    L --> F
+    D --> C
+    O --> C
+    L --> C
+    D --> P
+    L --> P
+    L --> T
+```
+
+### 3.2 DataMart bán hàng
+
+Schema `mart_sales` cung cấp các KPI bán hàng ở nhiều mức tổng hợp.
+
+#### `executive_kpi`
+
+Grain là một dòng cho toàn bộ phạm vi dữ liệu. Bảng tổng hợp trực tiếp từ
+`fact_sales_order_line` và cung cấp khoảng thời gian dữ liệu, số đơn hàng, số
+dòng bán, sản lượng, doanh thu, giá vốn, lợi nhuận gộp, biên lợi nhuận, giá trị
+bán dưới giá vốn và AOV.
+
+Bảng này phục vụ các KPI ở đầu dashboard quản trị. Người dùng có thể nhìn nhanh
+quy mô, hiệu quả và rủi ro lợi nhuận của doanh nghiệp mà không phải tự tổng hợp
+fact.
+
+#### `sales_monthly_kpi`
+
+Grain của bảng là:
+
+```text
+Month + Country + Territory
+```
+
+Bảng tổng hợp doanh thu, chiết khấu, giá vốn, lợi nhuận, số đơn và số dòng bán
+theo tháng và khu vực. Sau khi tổng hợp về grain tháng, bảng dùng `LAG` để tính:
+
+```text
+Revenue Change = Revenue hiện tại - Revenue tháng trước
+Revenue Growth = Revenue hiện tại / Revenue tháng trước - 1
+```
+
+Mart này phục vụ phân tích xu hướng, so sánh thị trường và phát hiện tháng hoặc
+khu vực tăng trưởng bất thường.
+
+#### `sales_country_year_kpi`
+
+Grain là `Country + Year`. Bảng phục vụ so sánh số đơn, doanh thu, lợi nhuận,
+biên lợi nhuận và AOV giữa các quốc gia theo năm.
+
+### 3.3 DataMart tài chính quản trị
+
+Schema `mart_finance` trình bày kết quả kinh doanh ở mức lợi nhuận gộp. Đây
+không phải báo cáo tài chính kế toán đầy đủ.
+
+#### `management_pnl_monthly`
+
+Grain của bảng là `Month + Country + Territory`. Mart sử dụng cả hai fact
+nhưng không join chúng ở grain chi tiết:
+
+1. `fact_sales_order_line` được tổng hợp theo tháng và khu vực để lấy Revenue,
+   Estimated COGS, Estimated Gross Profit và Loss Amount.
+2. `fact_sales_order` được tổng hợp độc lập theo cùng grain để lấy Tax, Freight
+   và Total Due.
+3. Hai kết quả đã tổng hợp được join bằng Month và Geography Key.
+
+Cách làm này tránh lặp tax và freight trên từng dòng sản phẩm. Trường
+`accounting_scope = gross_level_only` nhắc người dùng rằng mart không thể hiện
+lợi nhuận hoạt động hoặc lợi nhuận ròng.
+
+#### `management_pnl_summary`
+
+Grain là một dòng cho một khoản mục P&L. Bảng trình bày bốn khoản mục: Doanh
+thu, Giá vốn ước tính, Lợi nhuận gộp ước tính và Giá trị lỗ ở các dòng bán dưới
+giá vốn. Cấu trúc này phù hợp với bảng P&L hoặc biểu đồ waterfall.
+
+### 3.4 DataMart khách hàng
+
+Schema `mart_customer` đưa dữ liệu bán hàng về grain khách hàng để phục vụ EDA
+và phân cụm.
+
+#### `customer_base`
+
+Grain là một dòng trên một khách hàng. Bảng kết hợp `dim_customer` với
+`fact_sales_order_line` để tính ngày mua đầu tiên và gần nhất, số đơn, sản
+lượng, doanh thu, lợi nhuận gộp, biên lợi nhuận và AOV.
+
+Mart phục vụ xếp hạng khách hàng theo giá trị, phân tích theo loại và khu vực,
+đồng thời cung cấp dữ liệu EDA trước khi clustering.
+
+#### `customer_rfm`
+
+Grain là một dòng trên một khách hàng đã phát sinh đơn hàng. Các biến RFM được
+tính từ `fact_sales_order`:
+
+```text
+Recency = Ngày tham chiếu - Ngày mua gần nhất
+Frequency = Số đơn hàng phân biệt
+Monetary = Tổng subtotal của khách hàng
+```
+
+Ngày tham chiếu bằng ngày giao dịch lớn nhất cộng một ngày. Cách chọn này phù
+hợp với dữ liệu lịch sử và không phụ thuộc ngày chạy hệ thống. Mart là đầu vào
+trực tiếp cho K-Means phân khúc khách hàng.
+
+### 3.5 DataMart sản phẩm
+
+Schema `mart_product` chứa `product_sales_summary` với grain một dòng trên một
+sản phẩm. Bảng kết hợp `dim_product` và `fact_sales_order_line` để tổng hợp sản
+lượng, doanh thu, giá vốn, lợi nhuận, biên lợi nhuận và giá trị bán dưới giá
+vốn.
+
+Mart giúp phân biệt sản phẩm bán nhiều, sản phẩm tạo doanh thu cao và sản phẩm
+tạo lợi nhuận cao. Đây là nguồn cho dashboard EDA sản phẩm. Dữ liệu order line
+chi tiết vẫn được dùng riêng cho FP-Growth vì mô hình cần biết các sản phẩm
+xuất hiện cùng một đơn hàng.
+
+### 3.6 DataMart chuỗi thời gian
+
+Schema `mart_sales_forecast` chuẩn bị dữ liệu tháng cho phân tích xu hướng và
+dự báo.
+
+#### `monthly_sales_series`
+
+Grain là một dòng trên một tháng. Bảng tổng hợp số đơn, sản lượng, doanh thu,
+giá vốn, lợi nhuận và biên lợi nhuận toàn doanh nghiệp. Grain tháng tạo chuỗi
+thời gian thống nhất cho huấn luyện và so sánh mô hình dự báo.
+
+#### `monthly_sales_eda`
+
+Bảng mở rộng chuỗi tháng với năm, số tháng, cờ `is_complete_month`, mức thay đổi
+doanh thu cùng kỳ và tăng trưởng YoY:
+
+```text
+YoY Change = Revenue tháng hiện tại - Revenue cùng tháng năm trước
+YoY Growth = Revenue tháng hiện tại / Revenue cùng tháng năm trước - 1
+```
+
+Cờ tháng hoàn chỉnh giúp dashboard không diễn giải sai kỳ cuối chưa đủ dữ liệu.
+Superset sử dụng mart này cho EDA, còn mô hình dự báo sử dụng chuỗi tháng đã
+chuẩn hóa.
+
+### 3.7 DataMart được sử dụng ở đâu?
+
+| DataMart | Superset sử dụng để | Data Mining sử dụng để |
+|---|---|---|
+| `mart_sales` | KPI tổng quan, xu hướng và thị trường | Không dùng trực tiếp |
+| `mart_finance` | P&L gross-level và rò rỉ lợi nhuận | Không dùng trực tiếp |
+| `mart_customer` | Customer EDA và giá trị khách hàng | RFM và K-Means |
+| `mart_product` | Product EDA và profitability | Hỗ trợ diễn giải FP-Growth |
+| `mart_sales_forecast` | EDA xu hướng, mùa vụ và YoY | Dự báo doanh thu |
+
+Superset tập trung trình bày dữ liệu lịch sử và insight EDA. Streamlit tập trung
+trình bày kết quả mô hình và hỗ trợ tương tác. Việc phân vai này hạn chế trùng
+lặp giữa hai công cụ.
+
+### 3.8 Nguyên tắc kiểm tra DataMart
+
+Một DataMart chỉ đáng tin cậy khi thỏa các điều kiện:
+
+1. Grain được xác định rõ và khóa của grain không bị trùng.
+2. Tổng Revenue ở các mart phải đối soát được với Core DW.
+3. Metric ratio phải được tính từ tổng tử số và mẫu số.
+4. Metric từ hai fact chỉ được kết hợp sau khi tổng hợp về cùng grain.
+5. Tháng chưa đầy đủ phải được đánh dấu trước khi trình bày tăng trưởng.
+
+Ví dụ, tổng Revenue của `product_sales_summary`, `customer_base` và
+`monthly_sales_series` phải bằng tổng `net_sales` của `fact_sales_order_line`
+nếu áp dụng cùng phạm vi dữ liệu. Chênh lệch không giải thích được cho thấy lỗi
+join, lọc hoặc grain.
+
 ## 4. Chi tiết dimension và fact
 
 ```mermaid

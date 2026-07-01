@@ -438,7 +438,7 @@ st.caption(
 try:
     actual, forecast, metrics, decomp, scenario, summary = load_all()
 except Exception as exc:
-    st.error("Chưa đọc được dữ liệu. Hãy chạy script `tv3_sales_intelligence.py` trước.")
+    st.error("Chưa đọc được dữ liệu. Hãy chạy module `sales_forecasting.py` trước.")
     st.exception(exc)
     st.stop()
 

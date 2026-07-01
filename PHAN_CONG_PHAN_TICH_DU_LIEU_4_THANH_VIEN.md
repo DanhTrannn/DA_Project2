@@ -167,7 +167,7 @@ Dashboard TV4 gồm:
 - Reconciliation không có FAIL.
 - Data quality không có FAIL.
 - Dashboard TV4 chạy được và đọc từ mart/audit.
-- `run_full_pipeline.sh` chạy được end-to-end.
+- `run_pipeline.sh` chạy được end-to-end.
 - Có README, run guide, KPI dictionary, project structure và handover.
 
 ## 7. Công việc chung

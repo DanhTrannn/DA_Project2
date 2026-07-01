@@ -5,7 +5,7 @@ import os
 
 import psycopg2
 
-from bootstrap_tv4 import (
+from bootstrap_executive_dashboard import (
     BASE_URL,
     SupersetClient,
     get_database_id,

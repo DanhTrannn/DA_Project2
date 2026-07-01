@@ -74,7 +74,7 @@ Sản phẩm có doanh thu cao nhưng nằm thấp cần được xem lại giá
 Từ thư mục gốc project:
 
 ```bash
-./run_full_pipeline.sh
+./run_pipeline.sh
 ```
 
 Script sẽ build DataMart, chạy ba model, tạo dashboard TV4 và dashboard TV2.
@@ -85,7 +85,7 @@ Khi DataMart đã tồn tại:
 
 ```bash
 docker compose up -d --build superset
-docker compose exec -T superset python /app/bootstrap/bootstrap_tv2.py
+docker compose exec -T superset python /app/bootstrap/bootstrap_product_dashboard.py
 ```
 
 Bootstrap có tính idempotent: chạy lại sẽ cập nhật dashboard/chart hiện tại,

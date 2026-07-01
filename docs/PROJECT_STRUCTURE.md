@@ -64,5 +64,4 @@ thức KPI, không tự join trực tiếp OLTP.
 - Superset TV1-TV3: EDA/KPI theo từng bài toán.
 - Superset TV4: Executive KPI, gross-level P&L, reconciliation và quality.
 - Streamlit: kết quả và recommendation của ba mô hình.
-- MLflow: experiment/model metrics.
 - dbt Docs: lineage và model documentation.

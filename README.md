@@ -16,7 +16,7 @@ pipeline này cung cấp.
 - DataMart nền cho Sales, Finance gross-level, Customer, Product và Forecast.
 - Audit/reconciliation giữa OLTP và DW.
 - dbt data tests và Prefect flow end-to-end.
-- Giao diện dbt Docs, Prefect, MLflow và Superset.
+- Giao diện dbt Docs, Prefect và Superset.
 
 TV1 đã triển khai Customer Analytics với RFM + K-Means.
 TV2 đã triển khai Product Analytics, FP-Growth, Streamlit Market Basket và
@@ -35,46 +35,19 @@ sung trước khi triển khai.
 Chạy toàn bộ pipeline, ba mô hình và các giao diện:
 
 ```bash
-./run_full_pipeline.sh
-```
-
-Kết quả kiểm chứng và luồng bàn giao cuối nằm tại
-[`docs/FINAL_PROJECT_HANDOVER.md`](docs/FINAL_PROJECT_HANDOVER.md).
-
-Nếu chỉ cần chạy lại phần nền TV4:
-
-```bash
-./run_tv4.sh
-```
-
-Chạy mô hình TV1 và ứng dụng Streamlit chung:
-
-```bash
-./run_tv1.sh
-```
-
-Chạy mô hình TV3 và ứng dụng Streamlit chung:
-
-```bash
-./run_tv3.sh
+./run_pipeline.sh
 ```
 
 Sau khi script hoàn tất, mở `http://localhost:8501`. Chạy lại script khi
 DataMart có dữ liệu bán hàng mới để cập nhật forecast.
 
-Xem nhanh các bảng kết quả TV3 bằng PostgreSQL:
-
-```bash
-docker compose exec -T db psql -U postgres -d Adventureworks < analytics/sql/tv3_check_output.sql
-```
-
 Khi Superset đang chạy, tạo/cập nhật các dashboard:
 
 ```bash
 docker compose exec -T superset /app/bootstrap/import_tv1_dashboard.sh
-docker compose exec -T superset python /app/bootstrap/bootstrap_tv4.py
-docker compose exec -T superset python /app/bootstrap/bootstrap_tv2.py
-docker compose exec -T superset python /app/bootstrap/bootstrap_tv3.py
+docker compose exec -T superset python /app/bootstrap/bootstrap_executive_dashboard.py
+docker compose exec -T superset python /app/bootstrap/bootstrap_product_dashboard.py
+docker compose exec -T superset python /app/bootstrap/bootstrap_sales_dashboard.py
 ```
 
 Dashboard TV1 được tự động import từ ZIP mỗi khi service Superset khởi động.
@@ -89,7 +62,6 @@ docker compose up -d db
 docker compose up -d dbt
 docker compose up -d dbt-docs
 docker compose up -d prefect-server
-docker compose up -d mlflow
 docker compose up -d superset
 ```
 
@@ -106,7 +78,6 @@ docker compose ps
 | AdventureWorks OLTP PostgreSQL | `localhost:15432`, database `Adventureworks` |
 | dbt Docs | `http://localhost:8081` |
 | Prefect | `http://localhost:4200` |
-| MLflow | `http://localhost:5000` |
 | Superset | `http://localhost:8088`, tài khoản `admin` / `admin` |
 | Superset TV1 | `http://localhost:8088/superset/dashboard/tv1-customer-analytics/` |
 | Superset TV2 | `http://localhost:8088/superset/dashboard/adventureworks-tv2-product-analytics/` |
@@ -148,7 +119,6 @@ Vào shell các service:
 docker compose exec db bash
 docker compose exec dbt bash
 docker compose exec prefect-server bash
-docker compose exec mlflow bash
 docker compose exec superset bash
 ```
 

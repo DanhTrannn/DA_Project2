@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import mlflow
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import FunctionTransformer
@@ -10,7 +9,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 from aw_analytics.db import engine, ensure_analytics_schema
-from aw_analytics.tracking import configure_mlflow
 
 
 FEATURES = ["recency_days", "frequency", "monetary", "average_order_value"]
@@ -271,15 +269,6 @@ def run_customer_segmentation(n_clusters: int = SELECTED_K) -> pd.DataFrame:
     profile["selected_k"] = selected_k
     profile["silhouette_score"] = score
     profile["scored_at"] = pd.Timestamp.now(tz="UTC")
-
-    configure_mlflow("customer_segmentation")
-
-    with mlflow.start_run():
-        mlflow.log_param("selected_k", selected_k)
-        mlflow.log_param("features", ",".join(FEATURES))
-        mlflow.log_metric("silhouette_score", score)
-        mlflow.log_metric("inertia", inertia)
-        mlflow.sklearn.log_model(pipeline, "model")
 
     customers.to_sql(
         "customer_segment",

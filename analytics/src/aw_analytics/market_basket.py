@@ -2,12 +2,10 @@ from __future__ import annotations
 
 import os
 
-import mlflow
 import pandas as pd
 from mlxtend.frequent_patterns import association_rules, fpgrowth
 
 from aw_analytics.db import engine, ensure_analytics_schema
-from aw_analytics.tracking import configure_mlflow
 
 
 def run_market_basket(min_support: float | None = None) -> pd.DataFrame:
@@ -50,13 +48,6 @@ def run_market_basket(min_support: float | None = None) -> pd.DataFrame:
         ]
         output = output.sort_values(["lift", "confidence", "support"], ascending=False)        
         output["scored_at"] = pd.Timestamp.now(tz="UTC")
-
-    configure_mlflow("market_basket")
-    with mlflow.start_run():
-        mlflow.log_param("algorithm", "fp_growth")
-        mlflow.log_param("min_support", min_support)
-        mlflow.log_metric("transactions", len(basket))
-        mlflow.log_metric("rules", len(output))
 
     output.to_sql(
         "product_association_rules",

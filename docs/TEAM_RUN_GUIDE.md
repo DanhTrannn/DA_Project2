@@ -3,24 +3,18 @@
 ## Chạy toàn bộ đồ án
 
 ```bash
-./run_full_pipeline.sh
+./run_pipeline.sh
 ```
 
 Pipeline thực hiện:
 
-1. Khởi động PostgreSQL, dbt, MLflow và Superset.
+1. Khởi động PostgreSQL, dbt và Superset.
 2. Xây staging, Core DW, DataMart, analytics features và audit.
 3. Chạy TV1 Customer Segmentation, TV2 Market Basket và TV3 Forecast.
 4. Kiểm tra số dòng output của ba model.
 5. Bootstrap bốn dashboard Superset.
 6. Khởi động và kiểm tra Streamlit, dbt Docs và Prefect.
 7. Chạy AppTest cho cả ba trang Streamlit.
-
-Chỉ chạy nền TV4:
-
-```bash
-./run_tv4.sh
-```
 
 ## Kiểm tra dữ liệu
 
@@ -53,7 +47,6 @@ Kết quả đạt yêu cầu khi reconciliation và data quality không có `FA
 | Streamlit | `http://localhost:8501` |
 | Superset | `http://localhost:8088` |
 | TV4 | `http://localhost:8088/superset/dashboard/adventureworks-tv4-executive-data-quality/` |
-| MLflow | `http://localhost:5000` |
 | dbt Docs | `http://localhost:8081` |
 | Prefect | `http://localhost:4200` |
 

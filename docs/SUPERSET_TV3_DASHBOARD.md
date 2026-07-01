@@ -39,13 +39,13 @@ Sau khi dbt đã tạo `mart_sales_forecast.monthly_sales_eda`:
 
 ```bash
 docker compose up -d --build superset
-docker compose exec -T superset python /app/bootstrap/bootstrap_tv3.py
+docker compose exec -T superset python /app/bootstrap/bootstrap_sales_dashboard.py
 ```
 
 Hoặc chạy toàn bộ project:
 
 ```bash
-./run_full_pipeline.sh
+./run_pipeline.sh
 ```
 
 ## Cách xem

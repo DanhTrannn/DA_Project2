@@ -235,15 +235,20 @@ def build_model_predictions(train, test, cfg):
     metric_rows = []
 
     for model_name, pred in preds.items():
-        metric_rows.append(evaluate_model(y_true, pred, model_name))
+        model_metric = evaluate_model(y_true, pred, model_name)
+        metric_rows.append(model_metric)
+
+        error_rate = float(model_metric["wape"])
+        if pd.isna(error_rate):
+            error_rate = 0.10
 
         for date, actual, forecast in zip(test["month_start"], y_true, pred):
             forecast_rows.append({
                 "month_start": date.date(),
                 "actual_revenue": float(actual),
                 "forecast_revenue": float(forecast),
-                "forecast_lower": float(max(forecast * 0.90, 0)),
-                "forecast_upper": float(forecast * 1.10),
+                "forecast_lower": float(max(forecast * (1 - error_rate), 0)),
+                "forecast_upper": float(forecast * (1 + error_rate)),
                 "model_name": model_name,
                 "dataset_type": "test"
             })
@@ -254,8 +259,7 @@ def build_model_predictions(train, test, cfg):
 
     return pd.DataFrame(forecast_rows), metric_df
 
-
-def build_future_forecast(df, best_model, cfg):
+def build_future_forecast(df, best_model, best_wape, cfg):
     last_month = pd.Timestamp(df["month_start"].max())
 
     future_dates = pd.date_range(
@@ -281,6 +285,10 @@ def build_future_forecast(df, best_model, cfg):
     else:
         pred = forecast_holt_winters(df, horizon, cfg.season_length)
 
+    error_rate = float(best_wape)
+    if pd.isna(error_rate):
+        error_rate = 0.10
+
     rows = []
 
     for date, forecast in zip(future_dates, pred):
@@ -288,8 +296,8 @@ def build_future_forecast(df, best_model, cfg):
             "month_start": date.date(),
             "actual_revenue": None,
             "forecast_revenue": float(forecast),
-            "forecast_lower": float(max(forecast * 0.90, 0)),
-            "forecast_upper": float(forecast * 1.10),
+            "forecast_lower": float(max(forecast * (1 - error_rate), 0)),
+            "forecast_upper": float(forecast * (1 + error_rate)),
             "model_name": best_model,
             "dataset_type": "future"
         })
@@ -503,6 +511,8 @@ def main():
     forecast_df, metric_df = build_model_predictions(train, test, cfg)
 
     best_model = metric_df.iloc[0]["model_name"]
+    best_wape = metric_df.iloc[0]["wape"]
+
 
     print("Model ranking:")
     print(metric_df.to_string(
@@ -516,7 +526,7 @@ def main():
         }
     ))
 
-    future_df = build_future_forecast(df, best_model, cfg)
+    future_df = build_future_forecast(df, best_model, best_wape, cfg)
     decomp_df = build_decomposition(df, cfg)
     scenario_df = build_scenarios(future_df)
     summary_df = build_executive_summary(df, metric_df, future_df)

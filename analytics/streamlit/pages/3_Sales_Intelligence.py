@@ -254,7 +254,7 @@ def build_driver_insight(df):
     return (
         f"Revenue tăng **{pct(rev_change)}** trong toàn kỳ. Order count tăng **{pct(order_change)}**, "
         f"quantity sold tăng **{pct(qty_change)}**, trong khi AOV thay đổi **{pct(aov_change)}**. "
-        "Điều này gợi ý doanh thu tăng chủ yếu nhờ mở rộng số đơn/volume, nhưng giá trị trung bình mỗi đơn có xu hướng giảm."
+        "Điều này cho thấy doanh thu tăng chủ yếu nhờ số lượng đơn hàng và số lượng sản phẩm bán ra tăng, trong khi giá trị trung bình mỗi đơn hàng có xu hướng giảm."
     )
 
 def build_time_level_insight(df):
@@ -377,18 +377,20 @@ def build_scenario_insight(scenario):
     )
 
 
-def build_whatif_insight(what_if, impact):
+def build_driver_whatif_insight(what_if, order_impact, aov_impact):
     if what_if.empty:
         return "Chưa có dữ liệu What-if."
 
     base_total = what_if["forecast_revenue"].sum()
-    adjusted_total = what_if["adjusted_forecast"].sum()
+    adjusted_total = what_if["adjusted_revenue"].sum()
     diff = adjusted_total - base_total
 
     return (
-        f"Nếu giả định điều kiện kinh doanh làm doanh thu thay đổi **{impact:+d}%**, "
-        f"tổng forecast trong kỳ sẽ thay đổi từ **{md_money(base_total)}** thành **{md_money(adjusted_total)}** "
-        f"(chênh lệch **{md_money(diff)}**). Đây là mô phỏng kịch bản, không phải kết quả model mới."
+        f"Nếu số đơn hàng thay đổi **{order_impact:+d}%** và AOV thay đổi **{aov_impact:+d}%**, "
+        f"tổng doanh thu dự báo sẽ thay đổi từ **{md_money(base_total)}** "
+        f"thành **{md_money(adjusted_total)}** "
+        f"(chênh lệch **{md_money(diff)}**). "
+        "Đây là mô phỏng dựa trên driver kinh doanh: Revenue = Order Count × AOV."
     )
 
 
@@ -438,7 +440,7 @@ st.caption(
 try:
     actual, forecast, metrics, decomp, scenario, summary = load_all()
 except Exception as exc:
-    st.error("Chưa đọc được dữ liệu. Hãy chạy module `sales_forecasting.py` trước.")
+    st.error("Chưa đọc được dữ liệu. Hãy chạy script `tv3_sales_intelligence.py` trước.")
     st.exception(exc)
     st.stop()
 
@@ -843,41 +845,105 @@ st.header("F. What-if Analysis")
 if future_df.empty:
     st.warning("Model đang chọn không có future forecast.")
 else:
-    st.caption("Phần này chỉ mô phỏng tác động giả định của điều kiện kinh doanh lên forecast, không phải model dự báo mới.")
-    impact = st.slider(
-        "Giả định tác động nhu cầu/kinh doanh lên doanh thu (%)",
+    st.caption(
+        "Phần này mô phỏng tác động của số đơn hàng và AOV "
+        "lên doanh thu dự báo. Đây không phải model dự báo mới."
+    )
+
+    order_impact = st.slider(
+        "Giả định thay đổi số đơn hàng (%)",
         min_value=-20,
         max_value=20,
         value=0,
         step=5
     )
 
-    what_if = future_df[["month_start", "forecast_revenue"]].copy()
-    what_if["adjusted_forecast"] = what_if["forecast_revenue"] * (1 + impact / 100)
+    aov_impact = st.slider(
+        "Giả định thay đổi AOV - giá trị trung bình mỗi đơn hàng (%)",
+        min_value=-20,
+        max_value=20,
+        value=0,
+        step=5
+    )
 
-    fig5 = go.Figure()
+    latest_aov_series = eda_features["aov"].dropna()
 
-    fig5.add_trace(go.Scatter(
-        x=what_if["month_start"],
-        y=what_if["forecast_revenue"],
-        mode="lines+markers",
-        name="Original Forecast"
-    ))
+    if latest_aov_series.empty:
+        st.warning("Không đủ dữ liệu AOV để chạy What-if.")
+    else:
+        latest_aov = latest_aov_series.iloc[-1]
 
-    fig5.add_trace(go.Scatter(
-        x=what_if["month_start"],
-        y=what_if["adjusted_forecast"],
-        mode="lines+markers",
-        name=f"What-if {impact:+d}%"
-    ))
+        what_if = future_df[["month_start", "forecast_revenue"]].copy()
 
-    fig5.update_layout(title="What-if Forecast Simulation", xaxis_title="Month", yaxis_title="Revenue")
-    st.plotly_chart(fig5, use_container_width=True)
+        what_if["base_aov"] = latest_aov
+        what_if["estimated_order_count"] = (
+            what_if["forecast_revenue"] / what_if["base_aov"]
+        )
 
-    st.markdown("**Insight What-if:**")
-    st.markdown(build_whatif_insight(what_if, impact))
+        what_if["adjusted_order_count"] = (
+            what_if["estimated_order_count"] * (1 + order_impact / 100)
+        )
 
-st.divider()
+        what_if["adjusted_aov"] = (
+            what_if["base_aov"] * (1 + aov_impact / 100)
+        )
+
+        what_if["adjusted_revenue"] = (
+            what_if["adjusted_order_count"] * what_if["adjusted_aov"]
+        )
+
+        fig5 = go.Figure()
+
+        fig5.add_trace(go.Scatter(
+            x=what_if["month_start"],
+            y=what_if["forecast_revenue"],
+            mode="lines+markers",
+            name="Original Forecast"
+        ))
+
+        fig5.add_trace(go.Scatter(
+            x=what_if["month_start"],
+            y=what_if["adjusted_revenue"],
+            mode="lines+markers",
+            name=f"What-if Order {order_impact:+d}%, AOV {aov_impact:+d}%"
+        ))
+
+        fig5.update_layout(
+            title="Driver-based What-if Forecast Simulation",
+            xaxis_title="Month",
+            yaxis_title="Revenue"
+        )
+
+        st.plotly_chart(fig5, use_container_width=True)
+
+        show_what_if = what_if.copy()
+        show_what_if["forecast_revenue"] = show_what_if["forecast_revenue"].map(money)
+        show_what_if["base_aov"] = show_what_if["base_aov"].map(money)
+        show_what_if["adjusted_aov"] = show_what_if["adjusted_aov"].map(money)
+        show_what_if["adjusted_revenue"] = show_what_if["adjusted_revenue"].map(money)
+        show_what_if["estimated_order_count"] = show_what_if["estimated_order_count"].map(number)
+        show_what_if["adjusted_order_count"] = show_what_if["adjusted_order_count"].map(number)
+
+        st.dataframe(
+            show_what_if[[
+                "month_start",
+                "forecast_revenue",
+                "estimated_order_count",
+                "base_aov",
+                "adjusted_order_count",
+                "adjusted_aov",
+                "adjusted_revenue"
+            ]],
+            use_container_width=True,
+            hide_index=True
+        )
+
+        st.markdown("**Insight What-if:**")
+        st.markdown(build_driver_whatif_insight(
+            what_if,
+            order_impact,
+            aov_impact
+        ))
 
 
 # 13. Executive summary

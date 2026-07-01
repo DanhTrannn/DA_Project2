@@ -340,44 +340,6 @@ Cùng một fact line được tổng hợp theo nhiều dimension nhưng tổng
 bộ vẫn phải bằng 340. Đây là lợi ích của việc tính measure một lần tại Core DW
 rồi tái sử dụng cho các DataMart.
 
-## 3. Fact constellation
-
-Hai fact không nối trực tiếp trong mô hình phân tích. Chúng dùng chung các
-conformed dimension.
-
-```mermaid
-flowchart LR
-    DATE["dim_date<br/>PK: date_key"]
-    CUSTOMER["dim_customer<br/>PK: customer_key"]
-    GEO["dim_geography<br/>PK: geography_key"]
-    SALESPERSON["dim_salesperson<br/>PK: salesperson_key"]
-    PRODUCT["dim_product<br/>PK: product_key"]
-
-    ORDER["fact_sales_order<br/>Grain: một order"]
-    LINE["fact_sales_order_line<br/>Grain: một product line trong order"]
-
-    DATE -->|"order_date_key"| ORDER
-    CUSTOMER -->|"customer_key"| ORDER
-    GEO -->|"geography_key"| ORDER
-    SALESPERSON -->|"sales_person_id"| ORDER
-
-    DATE ==>|"order_date_key"| LINE
-    CUSTOMER -->|"customer_key"| LINE
-    GEO -->|"geography_key"| LINE
-    PRODUCT -->|"product_key"| LINE
-
-    classDef dateDimension fill:#fff3cd,stroke:#9a6700,stroke-width:2px,color:#111;
-    classDef factTable fill:#dbeafe,stroke:#1d4ed8,stroke-width:2px,color:#111;
-    class DATE dateDimension;
-    class ORDER,LINE factTable;
-```
-
-Quan hệ thời gian của fact line:
-
-```text
-fact_sales_order_line.order_date_key -> dim_date.date_key
-```
-
 ## 4. Chi tiết dimension và fact
 
 ```mermaid
